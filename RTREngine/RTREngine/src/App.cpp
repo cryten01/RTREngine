@@ -1,7 +1,18 @@
 #include "Utils.h"
 
+/* --------------------------------------------- */
+// Global variables
+/* --------------------------------------------- */
+
 // Window dimensions
 const GLuint WIDTH = 800, HEIGHT = 600;
+
+
+/* --------------------------------------------- */
+// Prototypes
+/* --------------------------------------------- */
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
 
 
 int main(int argc, char** argv)
@@ -21,8 +32,8 @@ int main(int argc, char** argv)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // window size fixed
+	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
 	// Create a GLFWwindow object is used for GLFW's functions
 	window = glfwCreateWindow(WIDTH, HEIGHT, "RTR Engine", NULL, NULL);
@@ -48,19 +59,32 @@ int main(int argc, char** argv)
 	// GL defaults
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
-	glClearColor(0, 0, 0, 0);
+	glClearColor(0, 1, 0, 0);
 	glViewport(0, 0, WIDTH, HEIGHT);
 
+	// Set callbacks here
+	glfwSetKeyCallback(window, key_callback);
 
 	/* --------------------------------------------- */
 	// Initialize scene and render loop
 	/* --------------------------------------------- */
 
-	/* Loop until the user closes the window */
+	// Render loop variables
+	float currentTime = float(glfwGetTime());
+	float deltaTime = 0.0f;
+	float runTime = 0.0f;
+
+	// Loop until the user closes the window
 	while (!glfwWindowShouldClose(window))
 	{
-		// Render here
+		// Clear buffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+		// Compute frame time
+		deltaTime = currentTime;
+		currentTime = float(glfwGetTime());
+		deltaTime = currentTime - deltaTime;
+		runTime += deltaTime;
 
 		// For debugging purposes only
 		glBegin(GL_TRIANGLES);
@@ -68,9 +92,6 @@ int main(int argc, char** argv)
 		glVertex2f( 0.0f,  0.5f);
 		glVertex2f( 0.5f, -0.5f);
 		glEnd();
-
-		// Swap front and back buffers
-		glfwSwapBuffers(window);
 
 		// Poll events and swap buffers
 		glfwPollEvents();
@@ -80,7 +101,21 @@ int main(int argc, char** argv)
 	/* --------------------------------------------- */
 	// Destroy context and exit
 	/* --------------------------------------------- */
-	
+
 	glfwTerminate();
+
 	return EXIT_SUCCESS;
+}
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	// esc - Exit
+	if (action != GLFW_RELEASE)
+		return;
+
+	switch (key)
+	{
+	case GLFW_KEY_ESCAPE:
+		glfwSetWindowShouldClose(window, true);
+		break;
+	}
 }

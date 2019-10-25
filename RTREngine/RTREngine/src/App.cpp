@@ -6,6 +6,7 @@
 
 // Window dimensions
 const GLuint WIDTH = 800, HEIGHT = 600;
+const char* TITLE = "RTR Engine";
 
 
 /* --------------------------------------------- */
@@ -36,7 +37,7 @@ int main(int argc, char** argv)
 	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
 	// Create a GLFWwindow object is used for GLFW's functions
-	window = glfwCreateWindow(WIDTH, HEIGHT, "RTR Engine", NULL, NULL);
+	window = glfwCreateWindow(WIDTH, HEIGHT, TITLE, NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -60,7 +61,7 @@ int main(int argc, char** argv)
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0, 1, 0, 0);
-	glViewport(0, 0, WIDTH, HEIGHT);
+
 
 	// Set callbacks here
 	glfwSetKeyCallback(window, key_callback);
@@ -68,6 +69,12 @@ int main(int argc, char** argv)
 	/* --------------------------------------------- */
 	// Initialize scene and render loop
 	/* --------------------------------------------- */
+
+	// Load shaders here
+	// Create materials here
+	// Create geometry here
+
+
 
 	// Render loop variables
 	float currentTime = float(glfwGetTime());
@@ -85,6 +92,10 @@ int main(int argc, char** argv)
 		currentTime = float(glfwGetTime());
 		deltaTime = currentTime - deltaTime;
 		runTime += deltaTime;
+
+
+		// Set per-frame uniforms here
+		// Render here
 
 		// For debugging purposes only
 		glBegin(GL_TRIANGLES);
@@ -108,6 +119,7 @@ int main(int argc, char** argv)
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	
 	// esc - Exit
 	if (action != GLFW_RELEASE)
 		return;

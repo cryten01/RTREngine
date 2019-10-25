@@ -5,7 +5,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
-
+#include <memory>
 
 // GLEW
 #define GLEW_STATIC

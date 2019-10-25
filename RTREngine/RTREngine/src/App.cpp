@@ -1,4 +1,5 @@
 #include "Utils.h"
+#include "Shader.h"
 
 /* --------------------------------------------- */
 // Global variables
@@ -71,6 +72,8 @@ int main(int argc, char** argv)
 	/* --------------------------------------------- */
 
 	// Load shaders here
+	std::shared_ptr<Shader> colorShader = std::make_shared<Shader>("Assets/Shader/color.vert", "Assets/Shader/color.frag");
+
 	// Create materials here
 	// Create geometry here
 
@@ -117,6 +120,7 @@ int main(int argc, char** argv)
 
 	return EXIT_SUCCESS;
 }
+
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	

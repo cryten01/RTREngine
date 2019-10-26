@@ -31,10 +31,11 @@ glm::mat4 Camera::getViewProjectionMatrix()
 
 void Camera::update(int x, int y, float zoom, bool dragging, bool strafing) 
 {
+	// Update _yaw and _pitch if dragging is activated
 	if (dragging)
 	{
 		// Calculate yaw by adding relative change of mouseX
-		_yaw -= (_mouseX - x);
+		_yaw += (_mouseX - x);
 		// Keep yaw in range between -360
 		_yaw = fmodf(_yaw, 360.0f);
 
@@ -43,13 +44,25 @@ void Camera::update(int x, int y, float zoom, bool dragging, bool strafing)
 		// Clamp pitch to prevent camera inversion
 		_pitch = clamp(_pitch, -90.0f, 90.0f);
 
+		// Debug only!
 		std::cout << "Dragging: " << _yaw << " " << _pitch << std::endl;
 	} 
-	else 
-	{
 
-	}
+	/* _viewMatrix transformations */
 
+	// reset _viewMatrix for calculating absolute values 
+	_viewMatrix = glm::mat4(1.0f); 
+	// apply _yaw values to _viewMatrix (y axis)
+	_viewMatrix = glm::rotate(_viewMatrix, glm::radians(_yaw), glm::vec3(0.0, 1.0, 0.0));
+	// apply _pitch values to _viewMatrix (x axis)
+	_viewMatrix = glm::rotate(_viewMatrix, glm::radians(_pitch), glm::vec3(1.0, 0.0, 0.0));
+	// set distance based on radius
+	float radius = 4.0f;
+	_viewMatrix = glm::translate(_viewMatrix, glm::vec3(0.0, 0.0, radius));
+	// invert direction in order to view at origin
+	_viewMatrix = inverse(_viewMatrix);
+
+	// Updates current mouse positions
 	_mouseX = x;
 	_mouseY = y;
 };

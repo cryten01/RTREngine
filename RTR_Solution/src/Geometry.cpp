@@ -27,6 +27,8 @@ Geometry::Geometry(glm::mat4 modelMatrix, GeometryData& data, std::shared_ptr<Ma
 	glBindVertexArray(0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+	// TODO: why transformMatrix can't be empty?
+	_transformMatrix = glm::mat4(1.0f);
 }
 
 

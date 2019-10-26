@@ -17,6 +17,5 @@ uniform mat4 viewProjMatrix;
 uniform vec3 camera_world;
 
 void main() {
-//	gl_Position = viewProjMatrix * modelMatrix * vec4(position, 1);
-	gl_Position = vec4(position, 1);
+	gl_Position = viewProjMatrix * modelMatrix * vec4(position, 1);
 }

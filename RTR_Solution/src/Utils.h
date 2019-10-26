@@ -20,6 +20,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm\gtc\matrix_transform.hpp>
 
+// SOIL2
+#include <SOIL2.h>
 
 // Custom error msg
 #define EXIT_WITH_ERROR(err) \

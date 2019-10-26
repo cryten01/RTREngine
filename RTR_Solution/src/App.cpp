@@ -1,8 +1,10 @@
 #include "Utils.h"
 #include "Shader.h"
 #include "Camera.h"
+#include "Texture.h"
 #include "Material.h"
 #include "Geometry.h"
+
 
 /* --------------------------------------------- */
 // Global variables
@@ -89,11 +91,14 @@ int main(int argc, char** argv)
 	// Load shaders here (location starts at solution folder)
 	std::shared_ptr<Shader> colorShader = std::make_shared<Shader>("../assets/shader/color.vert", "../assets/shader/color.frag");
 
+	// Create textures here
+	std::shared_ptr<Texture> sunTexture = std::make_shared<Texture>("../assets/textures/sun.dds");
+
 	// Create materials here
 	std::shared_ptr<Material> blueMaterial = std::make_shared<Material>(colorShader, glm::vec3(0.0f, 0.0f, 1.0f));
 
 	// Create geometry here
-	GeometryData sphereData = Geometry::createSphereGeometry(4, 4, 0.35f);
+	GeometryData sphereData = Geometry::createSphereGeometry(12, 12, 0.35f);
 	Geometry sphere = Geometry(glm::mat4(1.0f), sphereData, blueMaterial);
 
 	// Initialize camera here
@@ -116,6 +121,9 @@ int main(int argc, char** argv)
 		currentTime = float(glfwGetTime());
 		deltaTime = currentTime - deltaTime;
 		runTime += deltaTime;
+
+		// Update sphere (Rotation for debugging purposes only!)
+		sphere.transform(glm::rotate(glm::mat4(1.0f), glm::radians(10.0f * deltaTime), glm::vec3(0, 1, 0)));
 
 		// Update camera
 		glfwGetCursorPos(window, &mouse_x, &mouse_y);

@@ -5,6 +5,8 @@
 
 struct GeometryData {
 	std::vector<glm::vec3> positions;
+	std::vector<glm::vec2> uv;
+	std::vector<glm::vec3> normals;
 	std::vector<unsigned int> indices;
 };
 
@@ -13,6 +15,8 @@ class Geometry
 protected:
 	GLuint _vao;
 	GLuint _vboPositions;
+	GLuint _vboNormals;
+	GLuint _vboUV;
 	GLuint _vboIndices;
 	unsigned int _elements;
 
@@ -31,5 +35,6 @@ public:
 	void resetModelMatrix();
 
 	static GeometryData createSphereGeometry(unsigned int longitudeSegments, unsigned int latitudeSegments, float radius);
+	static float normalizeUV(float value, float min, float max);
 };
 

@@ -1,6 +1,6 @@
 #include "Shader.h"
 
-Shader::Shader(std::string vertexFilePath, std::string fragmentFilePath)
+Shader::Shader(const std::string& vertexFilePath, const std::string& fragmentFilePath)
 {
 	std::string vertexShaderSource = readInFile(vertexFilePath);
 	std::string fragmentShaderSource = readInFile(fragmentFilePath);
@@ -12,17 +12,14 @@ Shader::Shader(std::string vertexFilePath, std::string fragmentFilePath)
 	glAttachShader(_programID, vertexID);
 	glAttachShader(_programID, fragmentID);
 	glLinkProgram(_programID);
-
-	// Checks if linking of shaders was successful
-	GLint succededProgram;
-	glGetProgramiv(_programID, GL_LINK_STATUS, &succededProgram);
+	glValidateProgram(_programID);
 
 	// Delete shaders as they are linked to our program and no longer necessary
 	glDeleteShader(vertexID);
 	glDeleteShader(fragmentID);
 }
 
-
+/** Reads in a shader file in order to provide the source code for OpenGL */
 std::string Shader::readInFile(const std::string& filePath)
 {
 	std::string fileContent;
@@ -43,27 +40,36 @@ std::string Shader::readInFile(const std::string& filePath)
 	return fileContent;
 };
 
-
+/** OpenGL compiles the shader source code and assign an identifier to it */
 GLuint Shader::compileShader(const std::string& source, GLuint type)
 {
+	// Necessary because OpenGL needs a raw string
 	const char* shaderSource = source.c_str();
 
 	GLuint shaderID = glCreateShader(type);
 	glShaderSource(shaderID, 1, &shaderSource, NULL);
 	glCompileShader(shaderID);
 
-	// Error handling
+	/* ERROR HANDLING */
+	
 	GLint compiled;
+
+	// Returns the compile status from the shader and stores it into compiled
 	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &compiled);
 
+	// OpenGL checks if the shader compile status is false
 	if (compiled == GL_FALSE) 
 	{
+		// Queries the error message length of the shader
 		GLint length;
 		glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &length);
 
+		// Gets and prints the actual log
 		GLchar* message = new char[length];
 		glGetShaderInfoLog(shaderID, length, NULL, message);
-
+		std::cerr << message << std::endl;
+		
+		// Deletes message otherwise memory leak
 		delete[] message;
 	}
 

@@ -6,13 +6,13 @@ class Shader
 {
 private:
 	GLuint _programID;
-	std::vector<GLuint> _shaderIDs;
+	//std::vector<GLuint> _shaderIDs;
 
 	std::string readInFile(const std::string& filePath);
 	GLuint compileShader(const std::string& filePath, GLuint type);
 
 public:
-	 Shader(std::string vertexFilePath, std::string fragmentFilePath);
+	 Shader(const std::string& vertexFilePath, const std::string& fragmentFilePath);
 	~Shader();
 
 	void use() const;

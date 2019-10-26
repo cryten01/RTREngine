@@ -18,10 +18,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-// HSOS
-#include <hsos\Camera.h>
-#include <hsos\Matrix.h>
-#include <hsos\Vector.h>
+
 
 // Custom error msg
 #define EXIT_WITH_ERROR(err) \

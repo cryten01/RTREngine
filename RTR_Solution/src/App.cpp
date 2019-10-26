@@ -1,5 +1,8 @@
 #include "Utils.h"
 #include "Shader.h"
+#include "Camera.h"
+#include "Material.h"
+#include "Geometry.h"
 
 /* --------------------------------------------- */
 // Global variables
@@ -9,12 +12,20 @@
 const GLuint WIDTH = 800, HEIGHT = 600;
 const char* TITLE = "RTR Engine";
 
+// View frustum dimensions
+float fov = 60.0f, nearZ = 0.1f, farZ = 100.0f;
+
+// Camera controls
+static bool _dragging = false;
+static bool _strafing = false;
+static float _zoom = 6.0f;
+
 
 /* --------------------------------------------- */
 // Prototypes
 /* --------------------------------------------- */
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
-
+void setPerFrameUniforms(Shader* shader, Camera& camera);
 
 
 int main(int argc, char** argv)
@@ -61,7 +72,7 @@ int main(int argc, char** argv)
 	// GL defaults
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
-	glClearColor(0, 1, 0, 0);
+	glClearColor(0, 0, 0, 0);
 
 
 	// Set callbacks here
@@ -72,17 +83,23 @@ int main(int argc, char** argv)
 	/* --------------------------------------------- */
 
 	// Load shaders here
-	std::shared_ptr<Shader> colorShader = std::make_shared<Shader>("Assets/Shader/color.vert", "Assets/Shader/color.frag");
+	std::shared_ptr<Shader> colorShader = std::make_shared<Shader>("RTREngine/assets/shader/color.vert", "RTREngine/assets/shader/color.frag");
 
 	// Create materials here
+	std::shared_ptr<Material> blueMaterial = std::make_shared<Material>(colorShader, glm::vec3(0.0f, 0.0f, 1.0f));
+
 	// Create geometry here
+	GeometryData data = Geometry::createSphereGeometry(16, 8, 0.35f);
+	Geometry sphere = Geometry(glm::mat4(1.0f), data, blueMaterial);
 
-
+	// Initialize camera here
+	Camera camera(fov, WIDTH/HEIGHT, nearZ, farZ);
 
 	// Render loop variables
 	float currentTime = float(glfwGetTime());
 	float deltaTime = 0.0f;
 	float runTime = 0.0f;
+	double mouse_x, mouse_y;
 
 	// Loop until the user closes the window
 	while (!glfwWindowShouldClose(window))
@@ -96,16 +113,15 @@ int main(int argc, char** argv)
 		deltaTime = currentTime - deltaTime;
 		runTime += deltaTime;
 
+		// Update camera
+		glfwGetCursorPos(window, &mouse_x, &mouse_y);
+		camera.update(int(mouse_x), int(mouse_y), _zoom, _dragging, _strafing);
 
-		// Set per-frame uniforms here
+		// Set per-frame uniforms
+		setPerFrameUniforms(colorShader.get(), camera);
+
 		// Render here
-
-		// For debugging purposes only
-		glBegin(GL_TRIANGLES);
-		glVertex2f(-0.5f, -0.5f);
-		glVertex2f( 0.0f,  0.5f);
-		glVertex2f( 0.5f, -0.5f);
-		glEnd();
+		sphere.draw();
 
 		// Poll events and swap buffers
 		glfwPollEvents();
@@ -119,6 +135,14 @@ int main(int argc, char** argv)
 	glfwTerminate();
 
 	return EXIT_SUCCESS;
+}
+
+
+void setPerFrameUniforms(Shader* shader, Camera& camera)
+{
+	shader->use();
+	shader->setUniform("viewProjMatrix", camera.getViewProjectionMatrix());
+	shader->setUniform("camera_world", camera.getPosition());
 }
 
 

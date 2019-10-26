@@ -25,38 +25,22 @@ Shader::Shader(std::string vertexFilePath, std::string fragmentFilePath)
 
 std::string Shader::readInFile(const std::string& filePath)
 {
-	//std::ifstream fileStream(filePath, std::ios::in);
-	//std::string fileContent;
+	std::string fileContent;
+	std::ifstream fileStream(filePath, std::ios::in);
 
-	//if (!fileStream.is_open()) 
-	//{
-	//	std::cerr << "Could not read file " << filePath << std::endl;
-	//	return "";
-	//}
-
-	//std::string line = "";
-	//while (!fileStream.eof()) 
-	//{
-	//	std::getline(fileStream, line);
-	//	fileContent.append(line + "\n");
-	//}
-
-	//fileStream.close();
-	//return fileContent;
-
-	std::ifstream shaderFile(filePath);
-
-	if (shaderFile.good())
-	{
-		std::string code = std::string(std::istreambuf_iterator<char>(shaderFile), std::istreambuf_iterator<char>());
-		shaderFile.close();
-		return code;
-	}
-	else
-	{
+	if (!fileStream.is_open()) {
 		std::cerr << "Could not read file " << filePath << std::endl;
 		return "";
 	}
+
+	std::string line = "";
+	while (!fileStream.eof()) {
+		std::getline(fileStream, line);
+		fileContent.append(line + "\n");
+	}
+
+	fileStream.close();
+	return fileContent;
 };
 
 

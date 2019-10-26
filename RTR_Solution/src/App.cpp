@@ -16,6 +16,8 @@ const char* TITLE = "RTR Engine";
 float fov = 60.0f, nearZ = 0.1f, farZ = 100.0f;
 
 // Camera controls
+static bool _wireframe = false;
+static bool _culling = true;
 static bool _dragging = false;
 static bool _strafing = false;
 static float _zoom = 6.0f;
@@ -82,15 +84,15 @@ int main(int argc, char** argv)
 	// Initialize scene and render loop
 	/* --------------------------------------------- */
 
-	// Load shaders here
-	std::shared_ptr<Shader> colorShader = std::make_shared<Shader>("RTREngine/assets/shader/color.vert", "RTREngine/assets/shader/color.frag");
+	// Load shaders here (location starts at solution folder)
+	std::shared_ptr<Shader> colorShader = std::make_shared<Shader>("../assets/shader/color.vert", "../assets/shader/color.frag");
 
 	// Create materials here
 	std::shared_ptr<Material> blueMaterial = std::make_shared<Material>(colorShader, glm::vec3(0.0f, 0.0f, 1.0f));
 
 	// Create geometry here
-	GeometryData data = Geometry::createSphereGeometry(16, 8, 0.35f);
-	Geometry sphere = Geometry(glm::mat4(1.0f), data, blueMaterial);
+	GeometryData sphereData = Geometry::createSphereGeometry(24, 8, 0.35f);
+	Geometry sphere = Geometry(glm::mat4(1.0f), sphereData, blueMaterial);
 
 	// Initialize camera here
 	Camera camera(fov, WIDTH/HEIGHT, nearZ, farZ);
@@ -146,16 +148,27 @@ void setPerFrameUniforms(Shader* shader, Camera& camera)
 }
 
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-	
-	// esc - Exit
-	if (action != GLFW_RELEASE)
-		return;
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) 
+{	
+	// F1 - Wireframe
+	// F2 - Culling
+	// Esc - Exit
+
+	if (action != GLFW_RELEASE) return;
 
 	switch (key)
 	{
 	case GLFW_KEY_ESCAPE:
 		glfwSetWindowShouldClose(window, true);
+		break;
+	case GLFW_KEY_F1:
+		_wireframe = !_wireframe;
+		glPolygonMode(GL_FRONT_AND_BACK, _wireframe ? GL_LINE : GL_FILL);
+		break;
+	case GLFW_KEY_F2:
+		_culling = !_culling;
+		if (_culling) glEnable(GL_CULL_FACE);
+		else glDisable(GL_CULL_FACE);
 		break;
 	}
 }

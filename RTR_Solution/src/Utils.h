@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <algorithm>
 
 // GLEW
 #define GLEW_STATIC
@@ -17,7 +18,6 @@
 // GLM
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
 
 
 // Custom error msg

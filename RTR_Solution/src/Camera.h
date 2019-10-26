@@ -7,7 +7,7 @@ class Camera
 private:
 	glm::mat4 _viewMatrix;
 	glm::mat4 _projMatrix;
-	int _mouseX, _mouseY;
+	int _mouseX, _mouseY;	// safes the last known positions
 	float _yaw, _pitch;
 	glm::vec3 _position;
 	glm::vec3 _strafe;
@@ -21,5 +21,7 @@ public:
 	glm::mat4 getViewProjectionMatrix();
 
 	void update(int x, int y, float zoom, bool dragging, bool strafing);
+	float clamp(float n, float lower, float upper);
+
 };
 

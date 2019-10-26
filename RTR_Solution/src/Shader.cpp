@@ -51,7 +51,7 @@ GLuint Shader::compileShader(const std::string& source, GLuint type)
 	glCompileShader(shaderID);
 
 	/* ERROR HANDLING */
-	
+
 	GLint compiled;
 
 	// Returns the compile status from the shader and stores it into compiled

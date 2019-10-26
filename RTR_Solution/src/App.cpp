@@ -27,6 +27,7 @@ static float _zoom = 6.0f;
 // Prototypes
 /* --------------------------------------------- */
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void setPerFrameUniforms(Shader* shader, Camera& camera);
 
 
@@ -74,11 +75,12 @@ int main(int argc, char** argv)
 	// GL defaults
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
-	glClearColor(0, 0, 0, 0);
+	glClearColor(1, 1, 1, 1);
 
 
 	// Set callbacks here
 	glfwSetKeyCallback(window, key_callback);
+	glfwSetMouseButtonCallback(window, mouse_button_callback);
 
 	/* --------------------------------------------- */
 	// Initialize scene and render loop
@@ -91,11 +93,11 @@ int main(int argc, char** argv)
 	std::shared_ptr<Material> blueMaterial = std::make_shared<Material>(colorShader, glm::vec3(0.0f, 0.0f, 1.0f));
 
 	// Create geometry here
-	GeometryData sphereData = Geometry::createSphereGeometry(24, 8, 0.35f);
+	GeometryData sphereData = Geometry::createSphereGeometry(4, 4, 0.35f);
 	Geometry sphere = Geometry(glm::mat4(1.0f), sphereData, blueMaterial);
 
 	// Initialize camera here
-	Camera camera(fov, WIDTH/HEIGHT, nearZ, farZ);
+	Camera orbitCam(fov, WIDTH/HEIGHT, nearZ, farZ);
 
 	// Render loop variables
 	float currentTime = float(glfwGetTime());
@@ -117,10 +119,10 @@ int main(int argc, char** argv)
 
 		// Update camera
 		glfwGetCursorPos(window, &mouse_x, &mouse_y);
-		camera.update(int(mouse_x), int(mouse_y), _zoom, _dragging, _strafing);
+		orbitCam.update(int(mouse_x), int(mouse_y), _zoom, _dragging, _strafing);
 
 		// Set per-frame uniforms
-		setPerFrameUniforms(colorShader.get(), camera);
+		setPerFrameUniforms(colorShader.get(), orbitCam);
 
 		// Render here
 		sphere.draw();
@@ -147,6 +149,23 @@ void setPerFrameUniforms(Shader* shader, Camera& camera)
 	shader->setUniform("camera_world", camera.getPosition());
 }
 
+
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+		_dragging = true;
+	}
+	else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
+		_dragging = false;
+	}
+	else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
+		_strafing = true;
+	}
+	else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE) {
+		_strafing = false;
+	}
+}
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) 
 {	

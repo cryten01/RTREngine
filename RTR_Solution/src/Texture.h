@@ -12,6 +12,6 @@ public:
 	 Texture(const char* texFilePath);
 	~Texture();
 
-	void bind(unsigned int unit);
+	void bind(); // Todo: make it compatible with texture units
 };
 

@@ -74,11 +74,13 @@ int main(int argc, char** argv)
 		EXIT_WITH_ERROR("Failed to init GLEW")
 	}
 
-	// GL defaults
+
+	// Set GL defaults here
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
-	glClearColor(1, 1, 1, 1);
-
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Set callbacks here
 	glfwSetKeyCallback(window, key_callback);
@@ -92,14 +94,16 @@ int main(int argc, char** argv)
 	std::shared_ptr<Shader> colorShader = std::make_shared<Shader>("../assets/shader/color.vert", "../assets/shader/color.frag");
 
 	// Create textures here
-	std::shared_ptr<Texture> sunTexture = std::make_shared<Texture>("../assets/textures/leather.jpg");
+	std::shared_ptr<Texture> leatherTexture = std::make_shared<Texture>("../assets/textures/leather.jpg");
+	std::shared_ptr<Texture> minionTexture = std::make_shared<Texture>("../assets/textures/minion.jpg");
 
 	// Create materials here
+	std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(colorShader, glm::vec3(1.0f, 0.0f, 0.0f), leatherTexture);
 	std::shared_ptr<Material> blueMaterial = std::make_shared<Material>(colorShader, glm::vec3(0.0f, 0.0f, 1.0f));
 
 	// Create geometry here
 	GeometryData sphereData = Geometry::createSphereGeometry(12, 12, 0.35f);
-	Geometry sphere = Geometry(glm::mat4(1.0f), sphereData, blueMaterial);
+	Geometry sphere = Geometry(glm::mat4(1.0f), sphereData, leatherMaterial);
 
 	// Initialize camera here
 	Camera orbitCam(fov, WIDTH/HEIGHT, nearZ, farZ);

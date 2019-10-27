@@ -2,10 +2,16 @@
 
 #include "Utils.h"
 #include "Shader.h"
+#include "Texture.h"
+
+
+/* --------------------------------------------- */
+// Base material
+/* --------------------------------------------- */
 
 class Material
 {
-private:
+protected:
 	std::shared_ptr<Shader> _shader;
 	glm::vec3 _color;
 
@@ -14,6 +20,23 @@ public:
 	virtual ~Material();
 
 	Shader* getShader();
+	virtual void setUniforms();
+};
+
+
+/* --------------------------------------------- */
+// Texture material
+/* --------------------------------------------- */
+
+class TextureMaterial : public Material
+{
+protected:
+	std::shared_ptr<Texture> _diffuseTexture;
+
+public:
+	TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 color, std::shared_ptr<Texture> diffuseTexture);
+	virtual ~TextureMaterial();
+
 	virtual void setUniforms();
 };
 

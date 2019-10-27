@@ -8,7 +8,6 @@ Geometry::Geometry(glm::mat4 modelMatrix, GeometryData& data, std::shared_ptr<Ma
 	glGenVertexArrays(1, &_vao);
 	glBindVertexArray(_vao);
 
-
 	// create positions VBO
 	glGenBuffers(1, &_vboPositions);
 	glBindBuffer(GL_ARRAY_BUFFER, _vboPositions);
@@ -17,7 +16,6 @@ Geometry::Geometry(glm::mat4 modelMatrix, GeometryData& data, std::shared_ptr<Ma
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-
 	// create normals VBO
 	glGenBuffers(1, &_vboNormals);
 	glBindBuffer(GL_ARRAY_BUFFER, _vboNormals);
@@ -25,7 +23,6 @@ Geometry::Geometry(glm::mat4 modelMatrix, GeometryData& data, std::shared_ptr<Ma
 	// bind normals to location 1
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-
 
 	// create UVs VBO
 	glGenBuffers(1, &_vboUV);

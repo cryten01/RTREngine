@@ -92,7 +92,7 @@ int main(int argc, char** argv)
 	std::shared_ptr<Shader> colorShader = std::make_shared<Shader>("../assets/shader/color.vert", "../assets/shader/color.frag");
 
 	// Create textures here
-	std::shared_ptr<Texture> sunTexture = std::make_shared<Texture>("../assets/textures/sun.dds");
+	std::shared_ptr<Texture> sunTexture = std::make_shared<Texture>("../assets/textures/leather.jpg");
 
 	// Create materials here
 	std::shared_ptr<Material> blueMaterial = std::make_shared<Material>(colorShader, glm::vec3(0.0f, 0.0f, 1.0f));

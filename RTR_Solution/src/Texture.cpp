@@ -4,8 +4,6 @@
 
 Texture::Texture(const char* texFilePath)
 {
-	// TODO: Use Soil for DDS
-
 	// Generate reference and bind texture
 	glGenTextures(1, &_ID);
 	glBindTexture(GL_TEXTURE_2D, _ID);
@@ -16,21 +14,23 @@ Texture::Texture(const char* texFilePath)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	//// Load and generate the texture
-	//int width, height, nrChannels;
-	//unsigned char *data = stbi_load(texFilePath, &width, &height, &nrChannels, 0);
-	//if (data)
-	//{
-	//	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-	//	glGenerateMipmap(GL_TEXTURE_2D);
-	//}
-	//else
-	//{
-	//	std::cout << "Failed to load texture" << std::endl;
-	//}
+	// Load texture
+	int width, height;
+	unsigned char *texData = SOIL_load_image(texFilePath, &width, &height, 0, SOIL_LOAD_RGBA);
 
-	//// Free the image memory
-	//stbi_image_free(data);
+	// Generate texture
+	if (texData)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texData);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+
+	// Free the image memory
+	SOIL_free_image_data(texData);
 }
 
 

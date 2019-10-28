@@ -24,6 +24,9 @@
 // SOIL2
 #include <SOIL2.h>
 
+// ASSIMP
+#include <assimp\scene.h>
+
 // Custom error msg
 #define EXIT_WITH_ERROR(err) \
 	std::cout << "ERROR: " << err << std::endl; \

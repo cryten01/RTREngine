@@ -3,7 +3,7 @@
 #include "Camera.h"
 #include "Texture.h"
 #include "Material.h"
-#include "Geometry.h"
+#include "Mesh.h"
 
 
 /* --------------------------------------------- */
@@ -113,8 +113,8 @@ int main(int argc, char** argv)
 	std::shared_ptr<Material> blueMaterial = std::make_shared<Material>(colorShader, glm::vec3(0.0f, 0.0f, 1.0f));
 
 	// Create geometry here
-	GeometryData sphereData = Geometry::createSphereGeometry(12, 12, 0.35f);
-	Geometry sphere = Geometry(glm::mat4(1.0f), sphereData, leatherMaterial);
+	GeometryData sphereData = Mesh::createSphereGeometry(12, 12, 0.35f);
+	Mesh sphere = Mesh(glm::mat4(1.0f), sphereData, leatherMaterial);
 
 	// Initialize camera here
 	Camera orbitCam(fov, WIDTH/HEIGHT, nearZ, farZ);

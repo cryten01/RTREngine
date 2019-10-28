@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "Material.h"
 #include "Mesh.h"
+#include "Model.h"
 
 
 /* --------------------------------------------- */
@@ -115,6 +116,10 @@ int main(int argc, char** argv)
 	// Create geometry here
 	GeometryData sphereData = Mesh::createSphereGeometry(12, 12, 0.35f);
 	Mesh sphere = Mesh(glm::mat4(1.0f), sphereData, leatherMaterial);
+
+	// Create models here
+	Model car("..assets/models/car.obj");
+
 
 	// Initialize camera here
 	Camera orbitCam(fov, WIDTH/HEIGHT, nearZ, farZ);

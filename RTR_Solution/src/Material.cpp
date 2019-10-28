@@ -42,6 +42,6 @@ void TextureMaterial::setUniforms()
 {
 	Material::setUniforms();
 
-	_diffuseTexture->bind();
 	_shader->setUniform("diffuseTexture", 0);
+	_diffuseTexture->bind(0);
 }

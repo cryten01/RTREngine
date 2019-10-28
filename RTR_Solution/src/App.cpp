@@ -28,8 +28,8 @@ static float _zoom = 6.0f;
 /* --------------------------------------------- */
 // Prototypes
 /* --------------------------------------------- */
-static void APIENTRY DebugCallbackDefault(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const GLvoid* userParam);
-static std::string FormatDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severity, const char* msg);
+static void APIENTRY DebugCallbackDefault(GLenum source, GLenum textype, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const GLvoid* userParam);
+static std::string FormatDebugOutput(GLenum source, GLenum textype, GLuint id, GLenum severity, const char* msg);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
@@ -105,8 +105,8 @@ int main(int argc, char** argv)
 	std::shared_ptr<Shader> colorShader = std::make_shared<Shader>("../assets/shader/color.vert", "../assets/shader/color.frag");
 
 	// Create textures here
-	std::shared_ptr<Texture> leatherTexture = std::make_shared<Texture>("../assets/textures/leather.jpg");
-	std::shared_ptr<Texture> minionTexture = std::make_shared<Texture>("../assets/textures/minion.jpg");
+	std::shared_ptr<Texture> leatherTexture = std::make_shared<Texture>("../assets/textures/leather.jpg", texture_diffuse);
+	std::shared_ptr<Texture> minionTexture = std::make_shared<Texture>("../assets/textures/minion.jpg", texture_diffuse);
 
 	// Create materials here
 	std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(colorShader, glm::vec3(1.0f, 0.0f, 0.0f), leatherTexture);
@@ -217,13 +217,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 
 
-static void APIENTRY DebugCallbackDefault(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const GLvoid* userParam) {
+static void APIENTRY DebugCallbackDefault(GLenum source, GLenum textype, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const GLvoid* userParam) {
 	if (id == 131185 || id == 131218) return; // ignore performance warnings (buffer uses GPU memory, shader recompilation) from nvidia
-	std::string error = FormatDebugOutput(source, type, id, severity, message);
+	std::string error = FormatDebugOutput(source, textype, id, severity, message);
 	std::cout << error << std::endl;
 }
 
-static std::string FormatDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severity, const char* msg) {
+static std::string FormatDebugOutput(GLenum source, GLenum textype, GLuint id, GLenum severity, const char* msg) {
 	std::stringstream stringStream;
 	std::string sourceString;
 	std::string typeString;
@@ -260,7 +260,7 @@ static std::string FormatDebugOutput(GLenum source, GLenum type, GLuint id, GLen
 	}
 	}
 
-	switch (type) {
+	switch (textype) {
 	case GL_DEBUG_TYPE_ERROR: {
 		typeString = "Error";
 		break;

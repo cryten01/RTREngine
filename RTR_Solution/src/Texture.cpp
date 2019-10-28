@@ -2,7 +2,8 @@
 
 
 
-Texture::Texture(const char* texFilePath)
+Texture::Texture(const char* texFilePath, texType type)
+	: _type(type)
 {
 	// Generate reference and bind texture
 	glGenTextures(1, &_ID);
@@ -31,11 +32,15 @@ Texture::Texture(const char* texFilePath)
 
 	// Free the image memory
 	SOIL_free_image_data(texData);
+
+	// Unbinds texture again necessary?
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
 void Texture::bind(unsigned int unit)
 {
+	// Activate proper texture unit before binding
 	glActiveTexture(GL_TEXTURE0 + unit);
 	glBindTexture(GL_TEXTURE_2D, _ID);
 }

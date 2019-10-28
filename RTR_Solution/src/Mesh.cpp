@@ -66,9 +66,11 @@ void Mesh::draw()
 
 	// Set uniforms
 	shader->setUniform("modelMatrix", accumModel);
+
+	// Executes TextureMaterial::setUniforms() if texture is existent
 	_material->setUniforms();
 
-	// Draw mesh
+	// Draw mesh (apporopriate textures need to be bound first)
 	glBindVertexArray(_vao);
 	glDrawElements(GL_TRIANGLES, _elements, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);

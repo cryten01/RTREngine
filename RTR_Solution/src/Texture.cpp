@@ -3,7 +3,7 @@
 
 
 Texture::Texture(const char* texFilePath, texType type)
-	: _type(type)
+	: _path(texFilePath), _type(type)
 {
 	// Generate reference and bind texture
 	glGenTextures(1, &_ID);

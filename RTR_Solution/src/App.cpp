@@ -117,8 +117,8 @@ int main(int argc, char** argv)
 	GeometryData sphereData = Mesh::createSphereGeometry(12, 12, 0.35f);
 	Mesh sphere = Mesh(glm::mat4(1.0f), sphereData, leatherMaterial);
 
-	// Create models here
-	Model car("..assets/models/car.obj");
+	// Create models here (object files must be in separate directory)
+	Model car("../assets/models/car/car.obj", colorShader);
 
 
 	// Initialize camera here

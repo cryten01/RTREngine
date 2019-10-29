@@ -11,12 +11,10 @@ enum texType
 
 class Texture
 {
-private:
-	GLuint _ID;
-	bool _init;
-
 public:
+	GLuint _ID;
 	texType _type;
+	std::string _path;
 
 	 Texture(const char* texFilePath, texType type);
 	~Texture();

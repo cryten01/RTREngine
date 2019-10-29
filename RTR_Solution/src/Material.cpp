@@ -29,8 +29,8 @@ void Material::setUniforms()
 // Texture material
 /* --------------------------------------------- */
 
-TextureMaterial::TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 color, std::vector<std::shared_ptr<Texture>> textures)
-	: Material(shader, color), _textures(textures)
+TextureMaterial::TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 color)
+	: Material(shader, color)
 {
 }
 

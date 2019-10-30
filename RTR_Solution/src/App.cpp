@@ -153,7 +153,8 @@ int main(int argc, char** argv)
 		setPerFrameUniforms(colorShader.get(), orbitCam);
 
 		// Render here
-		sphere.draw();
+		//sphere.draw();
+		car.draw();
 
 		// Poll events and swap buffers
 		glfwPollEvents();

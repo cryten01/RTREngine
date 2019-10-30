@@ -68,24 +68,24 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 {
 	// Load GeometryData from mesh
 	GeometryData data = loadMeshGeometry(mesh);
-	std::shared_ptr<TextureMaterial> meshMaterial = std::make_shared<TextureMaterial>(_materialShader, glm::vec3(1.0f, 0.0f, 0.0f)); // Needs shader!
+	std::shared_ptr<Material> debugMaterial = std::make_shared<Material>(_materialShader, glm::vec3(1.0f, 0.0f, 0.0f)); // Needs shader!
 
-	// Check if mesh contains material or not (responsible for material creation of Mesh)
-	if (mesh->mMaterialIndex >= 0)
-	{
-		// Retrieve material
-		aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
+	//// Check if mesh contains material or not (responsible for material creation of Mesh)
+	//if (mesh->mMaterialIndex >= 0)
+	//{
+	//	// Retrieve material
+	//	aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
 
-		// Get diffuse and specular maps of mesh
-		std::vector<std::shared_ptr<Texture>> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, texture_diffuse, meshMaterial);
-		std::vector<std::shared_ptr<Texture>> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, texture_specular, meshMaterial);
+	//	// Get diffuse and specular maps of mesh
+	//	std::vector<std::shared_ptr<Texture>> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, texture_diffuse, meshMaterial);
+	//	std::vector<std::shared_ptr<Texture>> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, texture_specular, meshMaterial);
 
-		// Insert diffuseMap textures first then specularMaps into textures of this material
-		meshMaterial->_textures.insert(meshMaterial->_textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-		meshMaterial->_textures.insert(meshMaterial->_textures.end(), specularMaps.begin(), specularMaps.end());
-	}
+	//	// Insert diffuseMap textures first then specularMaps into textures of this material
+	//	meshMaterial->_textures.insert(meshMaterial->_textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+	//	meshMaterial->_textures.insert(meshMaterial->_textures.end(), specularMaps.begin(), specularMaps.end());
+	//}
 
-	return Mesh(glm::mat4(1.0f), data, meshMaterial);
+	return Mesh(glm::mat4(1.0f), data, debugMaterial);
 }
 
 
@@ -185,4 +185,13 @@ std::vector<std::shared_ptr<Texture>> Model::loadMaterialTextures(aiMaterial *ma
 		}
 	}
 	return textureContainer;
+}
+
+
+void Model::draw()
+{
+	// Draw each mesh from the model
+	for (GLuint i = 0; i < _meshes.size(); i++) {
+		_meshes[i].draw();
+	}
 }

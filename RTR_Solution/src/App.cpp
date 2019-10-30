@@ -5,6 +5,7 @@
 #include "Material.h"
 #include "Mesh.h"
 #include "Model.h"
+#include "Debugmesh.h"
 
 
 /* --------------------------------------------- */
@@ -113,12 +114,15 @@ int main(int argc, char** argv)
 	std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(colorShader, glm::vec3(1.0f, 0.0f, 0.0f), leatherTexture);
 	std::shared_ptr<Material> blueMaterial = std::make_shared<Material>(colorShader, glm::vec3(0.0f, 0.0f, 1.0f));
 
-	// Create geometry here
-	GeometryData sphereData = Mesh::createSphereGeometry(12, 12, 0.35f);
-	Mesh sphere = Mesh(glm::mat4(1.0f), sphereData, leatherMaterial);
-
 	// Create models here (object files must be in separate directory)
 	Model car("../assets/models/car/car.obj", colorShader);
+	Model nanosuit("../assets/models/nanosuit/nanosuit.obj", colorShader);
+	Debugmesh debugmesh("../assets/models/nanosuit/nanosuit.obj");
+
+	// Create geometry here
+	GeometryData sphereData = Mesh::createSphereGeometry(12, 12, 0.35f);
+	GeometryData debugData = car.debugData;
+	Mesh sphere = Mesh(glm::mat4(1.0f), debugData, blueMaterial);
 
 
 	// Initialize camera here
@@ -154,7 +158,8 @@ int main(int argc, char** argv)
 
 		// Render here
 		//sphere.draw();
-		car.draw();
+		//nanosuit.draw();
+		debugmesh.render(colorShader);
 
 		// Poll events and swap buffers
 		glfwPollEvents();

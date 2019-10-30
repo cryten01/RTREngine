@@ -67,7 +67,7 @@ void Model::processNode(aiNode *node, const aiScene *scene)
 Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 {
 	// Load GeometryData from mesh
-	GeometryData data = loadMeshGeometry(mesh);
+	debugData = loadMeshGeometry(mesh);
 	std::shared_ptr<Material> debugMaterial = std::make_shared<Material>(_materialShader, glm::vec3(1.0f, 0.0f, 0.0f)); // Needs shader!
 
 	//// Check if mesh contains material or not (responsible for material creation of Mesh)
@@ -85,7 +85,7 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 	//	meshMaterial->_textures.insert(meshMaterial->_textures.end(), specularMaps.begin(), specularMaps.end());
 	//}
 
-	return Mesh(glm::mat4(1.0f), data, debugMaterial);
+	return Mesh(glm::mat4(1.0f), debugData, debugMaterial);
 }
 
 
@@ -95,36 +95,29 @@ GeometryData Model::loadMeshGeometry(aiMesh* mesh)
 	GeometryData data;
 
 	/* Retrieve positions, normals, uvs for Mesh (one set per iteration) */
-	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
+	for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
 	{
-		glm::vec3 posNormContainer;
-
 		// Retrieve and push_back position
-		posNormContainer.x = mesh->mVertices[i].x;
-		posNormContainer.y = mesh->mVertices[i].y;
-		posNormContainer.z = mesh->mVertices[i].z;
-		data.positions.push_back(posNormContainer);
+		glm::vec3 posContainer;
+		posContainer.x = mesh->mVertices[i].x;
+		posContainer.y = mesh->mVertices[i].y;
+		posContainer.z = mesh->mVertices[i].z;
+		data.positions.push_back(posContainer);
 
 		// Retrieve and push_back normal vector
-		posNormContainer.x = mesh->mNormals[i].x;
-		posNormContainer.y = mesh->mNormals[i].y;
-		posNormContainer.z = mesh->mNormals[i].z;
-		data.normals.push_back(posNormContainer);
+		glm::vec3 normContainer;
+		normContainer.x = mesh->mNormals[i].x;
+		normContainer.y = mesh->mNormals[i].y;
+		normContainer.z = mesh->mNormals[i].z;
+		data.normals.push_back(normContainer);
 
-		// Retrieve and push_back uv coordinate (up to 8 different uv coordinates per vertex although only first relevant)
-		// Checks if mesh contains uv coordinates
-		if (mesh->mTextureCoords[0])
+		// Retrieve and push_back uv coordinate (up to 8 different uv coordinates per vertex possible although only first relevant)
+		if (mesh->HasTextureCoords(0))
 		{
 			glm::vec2 uvContainer;
-
 			uvContainer.x = mesh->mTextureCoords[0][i].x;
 			uvContainer.y = mesh->mTextureCoords[0][i].y;
 			data.uv.push_back(uvContainer);
-		}
-		// Place empty uv coordinate for completion reasons?
-		else
-		{
-			data.uv.push_back(glm::vec2(0.0f, 0.0f));
 		}
 	}
 
@@ -133,7 +126,7 @@ GeometryData Model::loadMeshGeometry(aiMesh* mesh)
 	{
 		aiFace face = mesh->mFaces[i];
 
-		// Retrieve all indices of face
+		// Retrieve all indices from all faces (1 face equals 3 indices representing a triangle)
 		for (unsigned int j = 0; j < face.mNumIndices; j++)
 		{
 			data.indices.push_back(face.mIndices[j]);

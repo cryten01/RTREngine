@@ -20,7 +20,7 @@ protected:
 	GLuint _vboNormals;
 	GLuint _vboUV;
 	GLuint _vboIndices;
-	unsigned int _elements;
+	unsigned int _elementCount;
 
 	std::shared_ptr<Material> _material;
 
@@ -31,7 +31,7 @@ public:
 	 Mesh(glm::mat4 modelMatrix, GeometryData& data, std::shared_ptr<Material> material);
 	~Mesh();
 
-	void draw();
+	void draw(std::shared_ptr<Shader> shader);
 	void transform(glm::mat4 transformation);
 	void setTransformMatrix(glm::mat4 transformMatrix);
 	void resetModelMatrix();

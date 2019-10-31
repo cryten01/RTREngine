@@ -1,31 +1,22 @@
 #include "Model.h"
 
 
-
-Model::Model(const std::string modelFilePath, std::shared_ptr<Shader> materialShader)
-	: _materialShader(materialShader)
-{
-	loadModel(modelFilePath);
-}
-
-
-Model::~Model()
-{
-}
-
-
-void Model::loadModel(const std::string modelFilePath) 
+/**
+*	Model constructor
+**/
+Model::Model(const std::string filePath, std::shared_ptr<Shader> shader)
+	: _shader(shader)
 {
 	/** Read in object file via Assimp
-	/ aiProcess_Triangulate transforms all primitive shapes into triangles
-	/ aiProcess_FlipUVs flips the texture coordinates on the y-axis where necessary 
-	*/
+	*	aiProcess_Triangulate transforms all primitive shapes into triangles (prevents mesh holes)
+	*	aiProcess_FlipUVs flips the texture coordinates on the y-axis where necessary
+	**/
 	Assimp::Importer import;
-	const aiScene *scene = import.ReadFile(modelFilePath, aiProcess_Triangulate | aiProcess_FlipUVs);
+	const aiScene *scene = import.ReadFile(filePath, aiProcess_Triangulate | aiProcess_FlipUVs);
 
-	/** Check for errors 
-	/ if scene/root node are not NULL
-	/ if data is incomplete via flags
+	/** Check for errors
+	*	if scene/root node are not NULL
+	*	if data is incomplete via flags
 	*/
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
@@ -34,13 +25,25 @@ void Model::loadModel(const std::string modelFilePath)
 	}
 
 	// Retrieve the directory path of the given file path
-	_directory = modelFilePath.substr(0, modelFilePath.find_last_of('/'));
+	//_directory = modelFilePath.substr(0, modelFilePath.find_last_of('/'));
 
 	// Recursively process all nodes starting with the root node
-	processNode(scene->mRootNode, scene);
+	// processNode(scene->mRootNode, scene);
+
+	for (int i = 0; i < scene->mNumMeshes; ++i) 
+	{
+		aiMesh* aMesh = scene->mMeshes[i];
+
+		Mesh* mesh = new Mesh (loadMesh(aMesh));
+
+		_meshEntries.push_back(mesh);
+	}
 }
 
 
+/**
+*	Processes the specified node
+**/
 void Model::processNode(aiNode *node, const aiScene *scene)
 {
 	// Process all the node's meshes (if any)
@@ -50,10 +53,10 @@ void Model::processNode(aiNode *node, const aiScene *scene)
 		aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
 	
 		// Get the actual mesh object from processMesh()
-		Mesh meshObj = processMesh(mesh, scene);
+		//Mesh meshObj = loadMesh(mesh, scene);
 
 		// Stores the meshObj
-		_meshes.push_back(meshObj);
+		//_meshes.push_back(meshObj);
 	}
 
 	// Once all meshes are processed recursively do the same for each children
@@ -64,11 +67,22 @@ void Model::processNode(aiNode *node, const aiScene *scene)
 }
 
 
-Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
+
+Model::~Model() 
 {
-	// Load GeometryData from mesh
-	debugData = loadMeshGeometry(mesh);
-	std::shared_ptr<Material> debugMaterial = std::make_shared<Material>(_materialShader, glm::vec3(1.0f, 0.0f, 0.0f)); // Needs shader!
+	for (int i = 0; i < _meshEntries.size(); ++i) {
+		delete _meshEntries.at(i);
+	}
+	_meshEntries.clear();
+}
+
+
+/**
+*	Loads the specified aiMesh
+**/
+Mesh Model::loadMesh(aiMesh *mesh)
+{
+	GeometryData geometry = loadMeshGeometry(mesh);
 
 	//// Check if mesh contains material or not (responsible for material creation of Mesh)
 	//if (mesh->mMaterialIndex >= 0)
@@ -85,51 +99,73 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 	//	meshMaterial->_textures.insert(meshMaterial->_textures.end(), specularMaps.begin(), specularMaps.end());
 	//}
 
-	return Mesh(glm::mat4(1.0f), debugData, debugMaterial);
+	return Mesh(
+		glm::mat4(1.0f), 
+		geometry, 
+		std::make_shared<Material>(_shader, glm::vec3(1.0f, 0.0f, 0.0f))
+	);
 }
 
 
-/** loadMeshGeometry similar to createSphereGeometry in Mesh.cpp */
-GeometryData Model::loadMeshGeometry(aiMesh* mesh) 
+/**
+*	Renders all loaded meshes
+**/
+void Model::draw(std::shared_ptr<Shader> shader) {
+	for (GLuint i = 0; i < _meshEntries.size(); i++) {
+		_meshEntries.at(i)->draw(_shader);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+*	Loads the specified geometry. Similar to createSphereGeometry in Mesh.cpp
+**/
+GeometryData Model::loadMeshGeometry(aiMesh* mesh)
 {
 	GeometryData data;
 
-	/* Retrieve positions, normals, uvs for Mesh (one set per iteration) */
-	for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
-	{
-		// Retrieve and push_back position
-		glm::vec3 posContainer;
-		posContainer.x = mesh->mVertices[i].x;
-		posContainer.y = mesh->mVertices[i].y;
-		posContainer.z = mesh->mVertices[i].z;
-		data.positions.push_back(posContainer);
+	if (mesh->HasPositions() && mesh->HasNormals() && mesh->HasTextureCoords(0)) {
+		for (int i = 0; i < mesh->mNumVertices; ++i) {
+			glm::vec3 vertexPos;
+			vertexPos.x = mesh->mVertices[i].x;
+			vertexPos.y = mesh->mVertices[i].y;
+			vertexPos.z = mesh->mVertices[i].z;
+			data.positions.push_back(vertexPos);
 
-		// Retrieve and push_back normal vector
-		glm::vec3 normContainer;
-		normContainer.x = mesh->mNormals[i].x;
-		normContainer.y = mesh->mNormals[i].y;
-		normContainer.z = mesh->mNormals[i].z;
-		data.normals.push_back(normContainer);
+			glm::vec2 uv;
+			uv.x = mesh->mTextureCoords[0][i].x;
+			uv.y = mesh->mTextureCoords[0][i].y;
+			data.uv.push_back(uv);
 
-		// Retrieve and push_back uv coordinate (up to 8 different uv coordinates per vertex possible although only first relevant)
-		if (mesh->HasTextureCoords(0))
-		{
-			glm::vec2 uvContainer;
-			uvContainer.x = mesh->mTextureCoords[0][i].x;
-			uvContainer.y = mesh->mTextureCoords[0][i].y;
-			data.uv.push_back(uvContainer);
+			glm::vec3 normal;
+			normal.x = mesh->mNormals[i].x;
+			normal.y = mesh->mNormals[i].y;
+			normal.z = mesh->mNormals[i].z;
+			data.normals.push_back(normal);
 		}
 	}
 
-	/* Loop over all faces in oder to retrieve all indices */
-	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
-	{
-		aiFace face = mesh->mFaces[i];
-
-		// Retrieve all indices from all faces (1 face equals 3 indices representing a triangle)
-		for (unsigned int j = 0; j < face.mNumIndices; j++)
-		{
-			data.indices.push_back(face.mIndices[j]);
+	if (mesh->HasFaces()) {
+		for (int i = 0; i < mesh->mNumFaces; ++i) {
+			data.indices.push_back(mesh->mFaces[i].mIndices[0]);
+			data.indices.push_back(mesh->mFaces[i].mIndices[1]);
+			data.indices.push_back(mesh->mFaces[i].mIndices[2]);
 		}
 	}
 
@@ -137,6 +173,9 @@ GeometryData Model::loadMeshGeometry(aiMesh* mesh)
 }
 
 
+/**
+*	Loads all textures of a certain material
+**/
 std::vector<std::shared_ptr<Texture>> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, texType typeName, std::shared_ptr<TextureMaterial> material)
 {
 	std::vector<std::shared_ptr<Texture>> textureContainer;
@@ -180,11 +219,3 @@ std::vector<std::shared_ptr<Texture>> Model::loadMaterialTextures(aiMaterial *ma
 	return textureContainer;
 }
 
-
-void Model::draw()
-{
-	// Draw each mesh from the model
-	for (GLuint i = 0; i < _meshes.size(); i++) {
-		_meshes[i].draw();
-	}
-}

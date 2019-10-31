@@ -5,26 +5,27 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include "Shader.h"
+#include "Mesh.h"
+#include "Material.h"
 
 class Debugmesh
 {
 public:
 	struct MeshEntry {
-		static enum BUFFERS {
-			VERTEX_BUFFER, 
-			TEXCOORD_BUFFER, 
-			NORMAL_BUFFER, 
-			INDEX_BUFFER
-		};
-		GLuint vao;
-		GLuint vbo[4];
+		GLuint _vao;
+		GLuint _vboPositions;
+		GLuint _vboNormals;
+		GLuint _vboUV;
+		GLuint _vboIndices;
 
 		unsigned int elementCount;
 
 		 MeshEntry(aiMesh *mesh);
 		~MeshEntry();
 
-		void load(aiMesh *mesh);
+		GeometryData loadGeometry(aiMesh *mesh);
+		void createMesh(GeometryData& data);
+
 		void render(std::shared_ptr<Shader> shader);
 	};
 

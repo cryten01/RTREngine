@@ -115,14 +115,12 @@ int main(int argc, char** argv)
 	std::shared_ptr<Material> blueMaterial = std::make_shared<Material>(colorShader, glm::vec3(0.0f, 0.0f, 1.0f));
 
 	// Create models here (object files must be in separate directory)
-	Model car("../assets/models/car/car.obj", colorShader);
+	Debugmesh debugmesh("../assets/models/giraffe/giraffe.obj");
 	Model nanosuit("../assets/models/nanosuit/nanosuit.obj", colorShader);
-	Debugmesh debugmesh("../assets/models/nanosuit/nanosuit.obj");
 
 	// Create geometry here
 	GeometryData sphereData = Mesh::createSphereGeometry(12, 12, 0.35f);
-	GeometryData debugData = car.debugData;
-	Mesh sphere = Mesh(glm::mat4(1.0f), debugData, blueMaterial);
+	Mesh sphere = Mesh(glm::mat4(1.0f), sphereData, blueMaterial);
 
 
 	// Initialize camera here
@@ -157,9 +155,9 @@ int main(int argc, char** argv)
 		setPerFrameUniforms(colorShader.get(), orbitCam);
 
 		// Render here
-		//sphere.draw();
-		//nanosuit.draw();
-		debugmesh.render(colorShader);
+		//sphere.draw(colorShader);
+		nanosuit.draw(colorShader);
+		//debugmesh.render(colorShader);
 
 		// Poll events and swap buffers
 		glfwPollEvents();

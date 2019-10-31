@@ -2,48 +2,49 @@
 
 
 Mesh::Mesh(glm::mat4 modelMatrix, GeometryData& data, std::shared_ptr<Material> material)
-	: _elements(data.indices.size()), _modelMatrix(modelMatrix), _material(material)
+	: _elementCount(data.indices.size()), _modelMatrix(modelMatrix), _material(material)
 {
-	// create VAO
 	glGenVertexArrays(1, &_vao);
 	glBindVertexArray(_vao);
 
-	// create positions VBO
+
 	glGenBuffers(1, &_vboPositions);
 	glBindBuffer(GL_ARRAY_BUFFER, _vboPositions);
 	glBufferData(GL_ARRAY_BUFFER, data.positions.size() * sizeof(glm::vec3), data.positions.data(), GL_STATIC_DRAW);
-	// bind positions to location 0
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-	// create normals VBO
-	glGenBuffers(1, &_vboNormals);
-	glBindBuffer(GL_ARRAY_BUFFER, _vboNormals);
-	glBufferData(GL_ARRAY_BUFFER, data.normals.size() * sizeof(glm::vec3), data.normals.data(), GL_STATIC_DRAW);
-	// bind normals to location 1
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-	// create UVs VBO
 	glGenBuffers(1, &_vboUV);
 	glBindBuffer(GL_ARRAY_BUFFER, _vboUV);
 	glBufferData(GL_ARRAY_BUFFER, data.uv.size() * sizeof(glm::vec2), data.uv.data(), GL_STATIC_DRAW);
-	// bind positions to location 2
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+	glEnableVertexAttribArray(1);
+
+
+	glGenBuffers(1, &_vboNormals);
+	glBindBuffer(GL_ARRAY_BUFFER, _vboNormals);
+	glBufferData(GL_ARRAY_BUFFER, data.normals.size() * sizeof(glm::vec3), data.normals.data(), GL_STATIC_DRAW);
+
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
 
-	// create and bind indices VBO
 	glGenBuffers(1, &_vboIndices);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _vboIndices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, data.indices.size() * sizeof(unsigned int), data.indices.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, data.indices.size() * sizeof(GLuint), data.indices.data(), GL_STATIC_DRAW);
+
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+	glEnableVertexAttribArray(3);
 
 
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	// TODO: why transformMatrix can't be empty?
-	_transformMatrix = glm::mat4(1.0f);
+	//_transformMatrix = glm::mat4(1.0f);
 }
 
 
@@ -51,28 +52,43 @@ Mesh::~Mesh()
 {
 	glDeleteBuffers(1, &_vboPositions);
 	glDeleteBuffers(1, &_vboNormals);
+	glDeleteBuffers(1, &_vboUV);
 	glDeleteBuffers(1, &_vboIndices);
 	glDeleteVertexArrays(1, &_vao);
 }
 
-void Mesh::draw()
+void Mesh::draw(std::shared_ptr<Shader> shader)
 {
-	// Apply transformations
-	glm::mat4 accumModel = _transformMatrix * _modelMatrix;
+	//// Apply transformations
+	////glm::mat4 accumModel = _transformMatrix * _modelMatrix;
 
+	//// Select shader
+	////Shader* shader = _material->getShader();
+	//shader->use();
+
+	//// Set uniforms
+	//shader->setUniform("modelMatrix", glm::mat4(1.0f));
+	//shader->setUniform("diffuseColor", glm::vec3(1,0,1));
+
+	//// Executes TextureMaterial::setUniforms() if texture is existent
+	////_material->setUniforms();
+
+	//// Draw mesh (apporopriate textures need to be bound first)
+	//glBindVertexArray(_vao);
+	//glDrawElements(GL_TRIANGLES, _elementCount, GL_UNSIGNED_INT, 0);
+	//glBindVertexArray(0);
+
+	
+	
 	// Select shader
-	Shader* shader = _material->getShader();
 	shader->use();
 
 	// Set uniforms
-	shader->setUniform("modelMatrix", accumModel);
+	shader->setUniform("modelMatrix", glm::mat4(1.0f));
+	shader->setUniform("diffuseColor", glm::vec3(1, 0, 1));
 
-	// Executes TextureMaterial::setUniforms() if texture is existent
-	_material->setUniforms();
-
-	// Draw mesh (apporopriate textures need to be bound first)
 	glBindVertexArray(_vao);
-	glDrawElements(GL_TRIANGLES, _elements, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, _elementCount, GL_UNSIGNED_INT, NULL);
 	glBindVertexArray(0);
 }
 

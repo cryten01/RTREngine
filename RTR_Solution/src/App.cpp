@@ -5,7 +5,6 @@
 #include "Material.h"
 #include "Mesh.h"
 #include "Model.h"
-#include "Debugmesh.h"
 
 
 /* --------------------------------------------- */
@@ -107,20 +106,20 @@ int main(int argc, char** argv)
 	std::shared_ptr<Shader> colorShader = std::make_shared<Shader>("../assets/shader/color.vert", "../assets/shader/color.frag");
 
 	// Create textures here
-	std::shared_ptr<Texture> leatherTexture = std::make_shared<Texture>("../assets/textures/leather.jpg", texture_diffuse);
-	std::shared_ptr<Texture> minionTexture = std::make_shared<Texture>("../assets/textures/minion.jpg", texture_diffuse);
+	Texture leatherTexture("../assets/textures/leather.jpg", TEX_DIFFUSE);
+	Texture minionTexture("../assets/textures/minion.jpg", TEX_DIFFUSE);
 
 	// Create materials here
-	std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(colorShader, glm::vec3(1.0f, 0.0f, 0.0f), leatherTexture);
 	std::shared_ptr<Material> blueMaterial = std::make_shared<Material>(colorShader, glm::vec3(0.0f, 0.0f, 1.0f));
+	std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(colorShader, glm::vec3(1.0f, 0.0f, 0.0f), leatherTexture);
+	std::shared_ptr<Material> minionMaterial = std::make_shared<TextureMaterial>(colorShader, glm::vec3(1.0f, 0.0f, 0.0f), minionTexture);
 
 	// Create models here (object files must be in separate directory)
-	Debugmesh debugmesh("../assets/models/giraffe/giraffe.obj");
 	Model nanosuit("../assets/models/nanosuit/nanosuit.obj", colorShader);
 
 	// Create geometry here
 	GeometryData sphereData = Mesh::createSphereGeometry(12, 12, 0.35f);
-	Mesh sphere = Mesh(glm::mat4(1.0f), sphereData, blueMaterial);
+	Mesh sphere(glm::mat4(1.0f), sphereData, minionMaterial);
 
 
 	// Initialize camera here
@@ -155,9 +154,8 @@ int main(int argc, char** argv)
 		setPerFrameUniforms(colorShader.get(), orbitCam);
 
 		// Render here
-		//sphere.draw(colorShader);
-		nanosuit.draw(colorShader);
-		//debugmesh.render(colorShader);
+		sphere.draw();
+		nanosuit.render();
 
 		// Poll events and swap buffers
 		glfwPollEvents();

@@ -2,7 +2,7 @@
 
 
 
-Texture::Texture(const char* texFilePath, texType type)
+Texture::Texture(const char* texFilePath, TextureType type)
 	: _path(texFilePath), _type(type)
 {
 	// Generate reference and bind texture
@@ -33,7 +33,7 @@ Texture::Texture(const char* texFilePath, texType type)
 	// Free the image memory
 	SOIL_free_image_data(texData);
 
-	// Unbinds texture again necessary?
+	// Unbinds texture
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 

@@ -31,7 +31,7 @@ public:
 	 Mesh(glm::mat4 modelMatrix, GeometryData& data, std::shared_ptr<Material> material);
 	~Mesh();
 
-	void draw(std::shared_ptr<Shader> shader);
+	void draw();
 	void transform(glm::mat4 transformation);
 	void setTransformMatrix(glm::mat4 transformMatrix);
 	void resetModelMatrix();

@@ -2,21 +2,21 @@
 
 #include "Utils.h"
 
-// Necessary for assimp model loader
-enum texType 
+// Necessary for ASSIMP model loader
+enum TextureType 
 { 
-	texture_diffuse, 
-	texture_specular
+	TEX_DIFFUSE, 
+	TEX_SPECULAR
 };
 
 class Texture
 {
 public:
 	GLuint _ID;
-	texType _type;
+	TextureType _type;
 	std::string _path;
 
-	 Texture(const char* texFilePath, texType type);
+	 Texture(const char* filePath, TextureType type);
 	~Texture();
 
 	void bind(unsigned int unit);

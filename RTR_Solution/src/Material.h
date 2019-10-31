@@ -5,9 +5,9 @@
 #include "Texture.h"
 
 
-/* --------------------------------------------- */
-// Base material
-/* --------------------------------------------- */
+/**
+* Base material
+**/
 
 class Material
 {
@@ -24,24 +24,16 @@ public:
 };
 
 
-/* --------------------------------------------- */
-// Texture material
-/* --------------------------------------------- */
-
-/* A texture material can consist of n different textures */
-
 class TextureMaterial : public Material
 {
 protected:
-	std::shared_ptr<Texture> _diffuseTexture; // Used for legacy code only!
 	std::vector<Texture> _textures;
 
 public:
-	TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 color);
-	TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 color, std::shared_ptr<Texture> diffuseTex);
+	TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 color, Texture texture);
+	TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 color, std::vector<Texture> textures);
 	virtual ~TextureMaterial();
 
-	void addTexture(Texture texture);
 	virtual void setUniforms();
 };
 

@@ -57,13 +57,13 @@ Mesh::~Mesh()
 	glDeleteVertexArrays(1, &_vao);
 }
 
-void Mesh::draw(std::shared_ptr<Shader> shader)
+void Mesh::draw()
 {
 	// Apply transformations
 	glm::mat4 accumModel = _transformMatrix * _modelMatrix;
 
 	// Select shader
-	//Shader* shader = _material->getShader();
+	Shader* shader = _material->getShader();
 	shader->use();
 
 	// Set uniforms

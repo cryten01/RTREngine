@@ -12,11 +12,9 @@ in VertexData {
 } vert;
 
 uniform vec3 diffuseColor;
-uniform sampler2D diffuseTexture;
 
 uniform struct Material {
 	sampler2D texture_diffuse1;
-	sampler2D texture_specular1;
 } material;
 
 
@@ -28,5 +26,5 @@ void main() {
 //	vec3 texColor = texture(diffuseTexture, vert.uv).rgb;
 //	color = vec4(texColor, 1); 
 
-	color = texture2D(material.texture_specular1, vert.uv);
+	color = texture2D(material.texture_diffuse1, vert.uv);
 }

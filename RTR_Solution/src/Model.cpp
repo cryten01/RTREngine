@@ -28,7 +28,7 @@ Model::Model(const std::string filePath, std::shared_ptr<Shader> shader)
 	_directory = filePath.substr(0, filePath.find_last_of('/'));
 
 	// Recursively process all nodes starting with the root node
-	 processNode(scene->mRootNode, scene);
+	processNode(scene->mRootNode, scene);
 }
 
 
@@ -61,7 +61,7 @@ void Model::processNode(aiNode *node, const aiScene *scene)
 /**
 *	Clears all loaded MeshEntries
 **/
-Model::~Model() 
+Model::~Model()
 {
 	for (int i = 0; i < _meshEntries.size(); ++i) {
 		delete _meshEntries.at(i);
@@ -81,44 +81,21 @@ Model::~Model()
 Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 {
 	GeometryData geometry = loadGeometry(mesh);
-	std::shared_ptr<TextureMaterial> debugMaterial = std::make_shared<TextureMaterial>(_shader, glm::vec3(1.0f, 0.0f, 1.0f));
-
-
-	// Check if mesh contains material or not (responsible for material creation of Mesh)
-	if (mesh->mMaterialIndex >= 0)
-	{
-		// Retrieve material
-		aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
-
-		// For debugging only!
-		Texture debugTexture1("../assets/textures/leather.jpg", texture_diffuse);
-		Texture debugTexture2("../assets/textures/leather.jpg", texture_specular);
-
-
-		//// Get diffuse and specular maps of mesh
-		//std::vector<std::shared_ptr<Texture>> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, texture_diffuse, meshMaterial);
-		//std::vector<std::shared_ptr<Texture>> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, texture_specular, meshMaterial);
-
-		// Insert diffuseMap textures first then specularMaps into textures of this material
-		debugMaterial->addTexture(debugTexture1);
-		debugMaterial->addTexture(debugTexture2);
-
-		//debugMaterial->_textures.insert(debugMaterial->_textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-		//debugMaterial->_textures.insert(debugMaterial->_textures.end(), specularMaps.begin(), specularMaps.end());
-	}
+	std::shared_ptr<Material> debugMaterial = std::make_shared<Material>(_shader, glm::vec3(1.0f, 0.0f, 1.0f));
 
 	return Mesh(glm::mat4(1.0f), geometry, debugMaterial);
 }
 
 
 /**
-*	Loads the specified geometry. Similar to createSphereGeometry in Mesh.cpp
+*	Loads the specified geometry (similar to Mesh::createSphereGeometry())
 **/
 GeometryData Model::loadGeometry(aiMesh* mesh)
 {
 	GeometryData data;
 
-	if (mesh->HasPositions() && mesh->HasNormals() && mesh->HasTextureCoords(0)) {
+	if (mesh->HasPositions() && mesh->HasNormals() && mesh->HasTextureCoords(0) && mesh->HasFaces())
+	{
 		for (int i = 0; i < mesh->mNumVertices; ++i) {
 			glm::vec3 vertexPos;
 			vertexPos.x = mesh->mVertices[i].x;
@@ -137,9 +114,7 @@ GeometryData Model::loadGeometry(aiMesh* mesh)
 			normal.z = mesh->mNormals[i].z;
 			data.normals.push_back(normal);
 		}
-	}
 
-	if (mesh->HasFaces()) {
 		for (int i = 0; i < mesh->mNumFaces; ++i) {
 			data.indices.push_back(mesh->mFaces[i].mIndices[0]);
 			data.indices.push_back(mesh->mFaces[i].mIndices[1]);
@@ -151,23 +126,38 @@ GeometryData Model::loadGeometry(aiMesh* mesh)
 }
 
 
+/**
+*	Loads the material of a mesh
+**/
+void Model::loadMaterial(aiMesh* mesh, const aiScene *scene)
+{
+	// Retrieve material if mesh uses one
+	if (mesh->mMaterialIndex >= 0)
+	{
+		aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
+
+		// For debugging only!
+		//Texture* debugTexture1 = new Texture("../assets/textures/leather.jpg", TEX_DIFFUSE);
+		//Texture* debugTexture2 = new Texture("../assets/textures/leather.jpg", TEX_SPECULAR);
+		//debugMaterial->addTexture(debugTexture1);
+		//debugMaterial->addTexture(debugTexture2);
+	}
+}
+
 
 /**
 *	Loads all textures of a certain material
 **/
-std::vector<std::shared_ptr<Texture>> Model::loadTextures(aiMaterial *mat, aiTextureType type, texType typeName, std::shared_ptr<TextureMaterial> material)
+void Model::loadTextures(aiMaterial *mat, aiTextureType type, std::shared_ptr<TextureMaterial> material)
 {
-	std::vector<std::shared_ptr<Texture>> textureContainer;
-
-	//// Loop over the amount of textures stored
+	//// Loop over the amount of textures stored of the given type
 	//for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
 	//{
-	//	aiString str;
-	//	
 	//	// Gets the texture of the given at location i
+	//	aiString str;
 	//	mat->GetTexture(type, i, &str);
 
-	//	// Check if texture was loaded before by looping through all textures that are already loaded
+	//	// If texture was loaded before, skip it
 	//	bool skip = false;
 	//	for (unsigned int j = 0; j < _textures_loaded.size(); j++)
 	//	{
@@ -175,27 +165,27 @@ std::vector<std::shared_ptr<Texture>> Model::loadTextures(aiMaterial *mat, aiTex
 	//		if (std::strcmp(_textures_loaded[j]->_path.data(), str.C_Str()) == 0)
 	//		{
 	//			// Store texture then skip every time the same texture gets loaded again
-	//			material->_textures.push_back(_textures_loaded[j]);
+	//			material->addTexture(_textures_loaded.at(j));
 	//			skip = true;
 	//			break;
 	//		}
 	//	}
 
-	//	// If texture hasn't been loaded already, load it
+	//	// If texture was not loaded before, load it
 	//	if (!skip)
-	//	{   
+	//	{
 	//		// Create path of texture
 	//		std::string texPath = _directory + "/" + str.C_Str();
 
 	//		// Create texture (use c_str() only if string does not get changed or is used only once)
-	//		std::shared_ptr<Texture> texture = std::make_shared<Texture>(texPath.c_str(), typeName);
+	//		TextureType type = (aiTextureType_DIFFUSE) ? TEX_DIFFUSE : TEX_SPECULAR;
+	//		Texture* texture = new Texture(texPath.c_str(), type);
 
 	//		// Add texture as material texture and loaded texture
-	//		material->_textures.push_back(texture);
+	//		material->addTexture(texture);
 	//		_textures_loaded.push_back(texture);
 	//	}
 	//}
-	return textureContainer;
 }
 
 
@@ -204,9 +194,9 @@ std::vector<std::shared_ptr<Texture>> Model::loadTextures(aiMaterial *mat, aiTex
 /**
 *	Renders all loaded meshes
 **/
-void Model::draw(std::shared_ptr<Shader> shader) {
+void Model::render() {
 	for (GLuint i = 0; i < _meshEntries.size(); i++) {
-		_meshEntries.at(i)->draw(_shader);
+		_meshEntries.at(i)->draw();
 	}
 }
 

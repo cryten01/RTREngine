@@ -34,15 +34,14 @@ class TextureMaterial : public Material
 {
 protected:
 	std::shared_ptr<Texture> _diffuseTexture; // Used for legacy code only!
+	std::vector<Texture> _textures;
 
 public:
-	std::vector<std::shared_ptr<Texture>> _textures;
-
 	TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 color);
 	TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 color, std::shared_ptr<Texture> diffuseTex);
-
 	virtual ~TextureMaterial();
 
+	void addTexture(Texture texture);
 	virtual void setUniforms();
 };
 

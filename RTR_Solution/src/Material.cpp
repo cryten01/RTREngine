@@ -44,6 +44,11 @@ TextureMaterial::~TextureMaterial()
 {
 }
 
+void TextureMaterial::addTexture(Texture texture) 
+{
+	_textures.push_back(texture);
+};
+
 
 void TextureMaterial::setUniforms()
 {
@@ -65,11 +70,11 @@ void TextureMaterial::setUniforms()
 	}
 	else 
 	{
-		// Loop through all textures and bind them. Also set all texture uniforms
+		// Bind all textures and set their uniforms
 		for (unsigned int i = 0; i < _textures.size(); i++)
 		{
 			// Set correct uniform by retrieving texture number (the N in diffuse_textureN)
-			texType type = _textures[i]->_type;
+			texType type = _textures[i]._type;
 
 			if (type == texture_diffuse) {
 				diffuseNr++;
@@ -81,7 +86,7 @@ void TextureMaterial::setUniforms()
 			}
 
 			// Bind and activate correct texture unit
-			_textures[i]->bind(i);
+			_textures[i].bind(i);
 		}
 	}
 }

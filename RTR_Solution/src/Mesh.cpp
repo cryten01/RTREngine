@@ -44,7 +44,7 @@ Mesh::Mesh(glm::mat4 modelMatrix, GeometryData& data, std::shared_ptr<Material> 
 	glBindVertexArray(0);
 
 	// TODO: why transformMatrix can't be empty?
-	//_transformMatrix = glm::mat4(1.0f);
+	_transformMatrix = glm::mat4(1.0f);
 }
 
 
@@ -59,34 +59,17 @@ Mesh::~Mesh()
 
 void Mesh::draw(std::shared_ptr<Shader> shader)
 {
-	//// Apply transformations
-	////glm::mat4 accumModel = _transformMatrix * _modelMatrix;
+	// Apply transformations
+	glm::mat4 accumModel = _transformMatrix * _modelMatrix;
 
-	//// Select shader
-	////Shader* shader = _material->getShader();
-	//shader->use();
-
-	//// Set uniforms
-	//shader->setUniform("modelMatrix", glm::mat4(1.0f));
-	//shader->setUniform("diffuseColor", glm::vec3(1,0,1));
-
-	//// Executes TextureMaterial::setUniforms() if texture is existent
-	////_material->setUniforms();
-
-	//// Draw mesh (apporopriate textures need to be bound first)
-	//glBindVertexArray(_vao);
-	//glDrawElements(GL_TRIANGLES, _elementCount, GL_UNSIGNED_INT, 0);
-	//glBindVertexArray(0);
-
-	
-	
 	// Select shader
+	//Shader* shader = _material->getShader();
 	shader->use();
 
 	// Set uniforms
-	shader->setUniform("modelMatrix", glm::mat4(1.0f));
-	shader->setUniform("diffuseColor", glm::vec3(1, 0, 1));
-
+	shader->setUniform("modelMatrix", accumModel);
+	_material->setUniforms();
+	
 	glBindVertexArray(_vao);
 	glDrawElements(GL_TRIANGLES, _elementCount, GL_UNSIGNED_INT, NULL);
 	glBindVertexArray(0);

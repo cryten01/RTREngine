@@ -14,10 +14,19 @@ in VertexData {
 uniform vec3 diffuseColor;
 uniform sampler2D diffuseTexture;
 
+uniform struct Material {
+	sampler2D texture_diffuse1;
+	sampler2D texture_specular1;
+} material;
+
+
 out vec4 color;
 
 void main() {	
-	color = vec4(diffuseColor, 1);
+//	color = vec4(diffuseColor, 1);
+
 //	vec3 texColor = texture(diffuseTexture, vert.uv).rgb;
 //	color = vec4(texColor, 1); 
+
+	color = texture2D(material.texture_specular1, vert.uv);
 }

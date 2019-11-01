@@ -67,11 +67,6 @@ Model::~Model()
 		delete _meshEntries.at(i);
 	}
 	_meshEntries.clear();
-
-	for (int i = 0; i < _textures_loaded.size(); ++i) {
-		delete _textures_loaded.at(i);
-	}
-	_textures_loaded.clear();
 }
 
 
@@ -81,9 +76,9 @@ Model::~Model()
 Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 {
 	GeometryData geometry = loadGeometry(mesh);
-	std::shared_ptr<Material> debugMaterial = std::make_shared<Material>(_shader, glm::vec3(1.0f, 0.0f, 1.0f));
+	std::shared_ptr<Material> material = loadMaterial(mesh, scene);
 
-	return Mesh(glm::mat4(1.0f), geometry, debugMaterial);
+	return Mesh(glm::mat4(1.0f), geometry, material);
 }
 
 
@@ -127,68 +122,78 @@ GeometryData Model::loadGeometry(aiMesh* mesh)
 
 
 /**
-*	Loads the material of a mesh
+*	Loads the material of a mesh with its properties such as colors and texture maps
 **/
-void Model::loadMaterial(aiMesh* mesh, const aiScene *scene)
+std::shared_ptr<Material> Model::loadMaterial(aiMesh* mesh, const aiScene *scene)
 {
+	std::shared_ptr<Material> material;
+
 	// Retrieve material if mesh uses one
 	if (mesh->mMaterialIndex >= 0)
 	{
-		aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
+		// Get material from the scenes material array
+		aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
 
-		// For debugging only!
-		//Texture* debugTexture1 = new Texture("../assets/textures/leather.jpg", TEX_DIFFUSE);
-		//Texture* debugTexture2 = new Texture("../assets/textures/leather.jpg", TEX_SPECULAR);
-		//debugMaterial->addTexture(debugTexture1);
-		//debugMaterial->addTexture(debugTexture2);
+		std::vector<Texture> allMaps;
+		std::vector<Texture> diffuseMaps = loadTextures(mat, aiTextureType_DIFFUSE, TEX_DIFFUSE);
+		std::vector<Texture> specularMaps = loadTextures(mat, aiTextureType_SPECULAR, TEX_SPECULAR);
+
+		allMaps.insert(allMaps.end(), diffuseMaps.begin(), diffuseMaps.end()); 
+		allMaps.insert(allMaps.end(), specularMaps.begin(), specularMaps.end());
+
+		//Texture leatherTexture("../assets/textures/leather.jpg", TEX_DIFFUSE);
+		material = std::make_shared<TextureMaterial>(_shader, glm::vec3(1.0f, 0.0f, 1.0f), allMaps);
 	}
+
+	return material;
 }
 
 
 /**
-*	Loads all textures of a certain material
+*	Renders all allMaps of a specific type of a material
 **/
-void Model::loadTextures(aiMaterial *mat, aiTextureType type, std::shared_ptr<TextureMaterial> material)
+std::vector<Texture> Model::loadTextures(aiMaterial* mat, aiTextureType aType, TextureType type)
 {
-	//// Loop over the amount of textures stored of the given type
-	//for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
-	//{
-	//	// Gets the texture of the given at location i
-	//	aiString str;
-	//	mat->GetTexture(type, i, &str);
+	std::vector<Texture> textureEntries;
 
-	//	// If texture was loaded before, skip it
-	//	bool skip = false;
-	//	for (unsigned int j = 0; j < _textures_loaded.size(); j++)
-	//	{
-	//		// Compare strings (0 means identical)
-	//		if (std::strcmp(_textures_loaded[j]->_path.data(), str.C_Str()) == 0)
-	//		{
-	//			// Store texture then skip every time the same texture gets loaded again
-	//			material->addTexture(_textures_loaded.at(j));
-	//			skip = true;
-	//			break;
-	//		}
-	//	}
+	// Loop over all textures stored of the given type of this material (diffuse, specular)
+	for (unsigned int i = 0; i < mat->GetTextureCount(aType); i++)
+	{
+		// Retrieve local texture fileName and store it in aiString
+		aiString texName;
+		mat->GetTexture(aType, i, &texName);
 
-	//	// If texture was not loaded before, load it
-	//	if (!skip)
-	//	{
-	//		// Create path of texture
-	//		std::string texPath = _directory + "/" + str.C_Str();
+		// If texture was loaded before, skip texture generation and use the one store in _textures_loaded
+		bool skip = false;
+		for (unsigned int j = 0; j < _textures_loaded.size(); j++)
+		{
+			// Compare strings (0 means identical)
+			if (std::strcmp(_textures_loaded[j]._path.data(), texName.C_Str()) == 0)
+			{
+				// Push back already loaded texture
+				textureEntries.push_back(_textures_loaded.at(j));
+				skip = true;
+				break;
+			}
+		}
 
-	//		// Create texture (use c_str() only if string does not get changed or is used only once)
-	//		TextureType type = (aiTextureType_DIFFUSE) ? TEX_DIFFUSE : TEX_SPECULAR;
-	//		Texture* texture = new Texture(texPath.c_str(), type);
+		// If texture was not loaded before, create it
+		if (!skip)
+		{
+			// Create full texture path
+			std::string texPath = _directory + '/' + texName.C_Str();
 
-	//		// Add texture as material texture and loaded texture
-	//		material->addTexture(texture);
-	//		_textures_loaded.push_back(texture);
-	//	}
-	//}
+			// Create texture
+			Texture texture(texPath.c_str(), type);
+
+			// Store texture as material texture as well as loaded texture
+			textureEntries.push_back(texture);
+			_textures_loaded.push_back(texture);
+		}
+	}
+
+	return textureEntries;
 }
-
-
 
 
 /**
@@ -196,12 +201,6 @@ void Model::loadTextures(aiMaterial *mat, aiTextureType type, std::shared_ptr<Te
 **/
 void Model::render() {
 	for (GLuint i = 0; i < _meshEntries.size(); i++) {
-		_meshEntries.at(i)->draw();
+		_meshEntries.at(i)->render();
 	}
 }
-
-
-
-
-
-

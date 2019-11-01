@@ -57,7 +57,7 @@ Mesh::~Mesh()
 	glDeleteVertexArrays(1, &_vao);
 }
 
-void Mesh::draw()
+void Mesh::render()
 {
 	// Apply transformations
 	glm::mat4 accumModel = _transformMatrix * _modelMatrix;

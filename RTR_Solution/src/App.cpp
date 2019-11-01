@@ -115,7 +115,7 @@ int main(int argc, char** argv)
 	std::shared_ptr<Material> minionMaterial = std::make_shared<TextureMaterial>(colorShader, glm::vec3(1.0f, 0.0f, 0.0f), minionTexture);
 
 	// Create models here (object files must be in separate directory)
-	Model nanosuit("../assets/models/nanosuit/nanosuit.obj", colorShader);
+	Model demoModel("../assets/models/nanosuit/nanosuit.obj", colorShader);
 
 	// Create geometry here
 	GeometryData sphereData = Mesh::createSphereGeometry(12, 12, 0.35f);
@@ -154,8 +154,8 @@ int main(int argc, char** argv)
 		setPerFrameUniforms(colorShader.get(), orbitCam);
 
 		// Render here
-		sphere.draw();
-		nanosuit.render();
+		//sphere.render();
+		demoModel.render();
 
 		// Poll events and swap buffers
 		glfwPollEvents();

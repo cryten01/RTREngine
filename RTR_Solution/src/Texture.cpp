@@ -11,13 +11,13 @@ Texture::Texture(const char* texFilePath, TextureType type)
 
 	// Load texture
 	int width, height;
-	unsigned char *texData = SOIL_load_image(texFilePath, &width, &height, 0, SOIL_LOAD_RGB);
+	unsigned char *texData = SOIL_load_image(texFilePath, &width, &height, 0, SOIL_LOAD_RGBA);
 
 	// Generate texture
 	if (texData)
 	{
 		// Upload texData to GPU
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texData);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
 		glGenerateMipmap(GL_TEXTURE_2D);
 
 		// Set the texture wrapping/filtering options (on the currently bound texture object)

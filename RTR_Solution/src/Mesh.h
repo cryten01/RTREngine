@@ -9,7 +9,7 @@ struct GeometryData {
 	std::vector<glm::vec3> positions;
 	std::vector<glm::vec2> uv;
 	std::vector<glm::vec3> normals;
-	std::vector<unsigned int> indices;
+	std::vector<GLuint> indices;
 };
 
 class Mesh

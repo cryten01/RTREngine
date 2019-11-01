@@ -89,28 +89,34 @@ GeometryData Model::loadGeometry(aiMesh* mesh)
 {
 	GeometryData data;
 
-	if (mesh->HasPositions() && mesh->HasNormals() && mesh->HasTextureCoords(0) && mesh->HasFaces())
+	if (mesh->HasPositions() && mesh->HasNormals() && mesh->HasTextureCoords(0))
 	{
-		for (int i = 0; i < mesh->mNumVertices; ++i) {
+		for (int i = 0; i < mesh->mNumVertices; i++) {
 			glm::vec3 vertexPos;
 			vertexPos.x = mesh->mVertices[i].x;
 			vertexPos.y = mesh->mVertices[i].y;
 			vertexPos.z = mesh->mVertices[i].z;
 			data.positions.push_back(vertexPos);
 
-			glm::vec2 uv;
-			uv.x = mesh->mTextureCoords[0][i].x;
-			uv.y = mesh->mTextureCoords[0][i].y;
-			data.uv.push_back(uv);
-
 			glm::vec3 normal;
 			normal.x = mesh->mNormals[i].x;
 			normal.y = mesh->mNormals[i].y;
 			normal.z = mesh->mNormals[i].z;
 			data.normals.push_back(normal);
-		}
 
-		for (int i = 0; i < mesh->mNumFaces; ++i) {
+			if (mesh->HasTextureCoords(0))
+			{
+				glm::vec2 uv;
+				uv.x = mesh->mTextureCoords[0][i].x;
+				uv.y = mesh->mTextureCoords[0][i].y;
+				data.uv.push_back(uv);
+			}
+		}
+	}
+
+	if (mesh->HasFaces())
+	{
+		for (int i = 0; i < mesh->mNumFaces; i++) {
 			data.indices.push_back(mesh->mFaces[i].mIndices[0]);
 			data.indices.push_back(mesh->mFaces[i].mIndices[1]);
 			data.indices.push_back(mesh->mFaces[i].mIndices[2]);
@@ -138,7 +144,7 @@ std::shared_ptr<Material> Model::loadMaterial(aiMesh* mesh, const aiScene *scene
 		std::vector<Texture> diffuseMaps = loadTextures(mat, aiTextureType_DIFFUSE, TEX_DIFFUSE);
 		std::vector<Texture> specularMaps = loadTextures(mat, aiTextureType_SPECULAR, TEX_SPECULAR);
 
-		allMaps.insert(allMaps.end(), diffuseMaps.begin(), diffuseMaps.end()); 
+		allMaps.insert(allMaps.end(), diffuseMaps.begin(), diffuseMaps.end());
 		allMaps.insert(allMaps.end(), specularMaps.begin(), specularMaps.end());
 
 		//Texture leatherTexture("../assets/textures/leather.jpg", TEX_DIFFUSE);

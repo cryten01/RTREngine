@@ -5,6 +5,7 @@
 #include "Material.h"
 #include "Mesh.h"
 #include "Model.h"
+#include "Skybox.h"
 
 
 /* --------------------------------------------- */
@@ -104,6 +105,7 @@ int main(int argc, char** argv)
 
 	// Load shaders here (location starts at solution folder)
 	std::shared_ptr<Shader> colorShader = std::make_shared<Shader>("../assets/shader/color.vert", "../assets/shader/color.frag");
+	std::shared_ptr<Shader> skyboxShader = std::make_shared<Shader>("../assets/shader/skybox.vert", "../assets/shader/skybox.frag");
 
 	// Create textures here
 	Texture leatherTexture("../assets/textures/leather.jpg", TEX_DIFFUSE);
@@ -115,15 +117,27 @@ int main(int argc, char** argv)
 	std::shared_ptr<Material> minionMaterial = std::make_shared<TextureMaterial>(colorShader, glm::vec3(1.0f, 0.0f, 0.0f), minionTexture);
 
 	// Create models here (object files must be in separate directory)
-	Model demoModel("../assets/models/car/car.obj", colorShader);
+	Model demoModel("../assets/models/nanosuit/nanosuit.obj", colorShader);
 
 	// Create geometry here
 	GeometryData sphereData = Mesh::createSphereGeometry(12, 12, 0.35f);
 	Mesh sphere(glm::mat4(1.0f), sphereData, minionMaterial);
 
+	// Create skybox here
+	const char* skyboxTextures[] = {
+		"../assets/textures/skybox/right.jpg",
+		"../assets/textures/skybox/left.jpg",
+		"../assets/textures/skybox/top.jpg",
+		"../assets/textures/skybox/bottom.jpg",
+		"../assets/textures/skybox/back.jpg",
+		"../assets/textures/skybox/front.jpg"
+	};
+	Skybox skybox(60.0f, skyboxTextures);
+
 
 	// Initialize camera here
 	Camera orbitCam(fov, WIDTH/HEIGHT, nearZ, farZ);
+
 
 	// Render loop variables
 	float currentTime = float(glfwGetTime());
@@ -154,6 +168,7 @@ int main(int argc, char** argv)
 		setPerFrameUniforms(colorShader.get(), orbitCam);
 
 		// Render here
+		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix());
 		sphere.render();
 		demoModel.render();
 
@@ -175,7 +190,7 @@ int main(int argc, char** argv)
 void setPerFrameUniforms(Shader* shader, Camera& camera)
 {
 	shader->use();
-	shader->setUniform("viewProjMatrix", camera.getViewProjectionMatrix());
+	shader->setUniform("viewProjMatrix", camera.getProjMatrix() * camera.getViewMatrix());
 	shader->setUniform("camera_world", camera.getPosition());
 }
 

@@ -23,10 +23,17 @@ glm::vec3 Camera::getPosition()
 };
 
 
-glm::mat4 Camera::getViewProjectionMatrix() 
+glm::mat4 Camera::getViewMatrix() 
 {
-	return this->_projMatrix * _viewMatrix;
-};
+	return this->_viewMatrix;
+}
+
+
+glm::mat4 Camera::getProjMatrix()
+{
+	return this->_projMatrix;
+}
+;
 
 
 void Camera::update(int x, int y, float zoom, bool dragging, bool strafing) 

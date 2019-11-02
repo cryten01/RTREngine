@@ -9,31 +9,31 @@ Mesh::Mesh(glm::mat4 modelMatrix, GeometryData& data, std::shared_ptr<Material> 
 	glBindVertexArray(_vao);
 
 
-	// create positions VBO
+	// Create positions VBO
 	glGenBuffers(1, &_vboPositions);
 	glBindBuffer(GL_ARRAY_BUFFER, _vboPositions);
 	glBufferData(GL_ARRAY_BUFFER, data.positions.size() * sizeof(glm::vec3), data.positions.data(), GL_STATIC_DRAW);
-	// bind positions to location 0
+	// Bind positions to location 0
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-	// create normals VBO
+	// Create normals VBO
 	glGenBuffers(1, &_vboNormals);
 	glBindBuffer(GL_ARRAY_BUFFER, _vboNormals);
 	glBufferData(GL_ARRAY_BUFFER, data.normals.size() * sizeof(glm::vec3), data.normals.data(), GL_STATIC_DRAW);
-	// bind normals to location 1
+	// Bind normals to location 1
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-	// create uvs VBO
+	// Create uvs VBO
 	glGenBuffers(1, &_vboUV);
 	glBindBuffer(GL_ARRAY_BUFFER, _vboUV);
 	glBufferData(GL_ARRAY_BUFFER, data.uv.size() * sizeof(glm::vec2), data.uv.data(), GL_STATIC_DRAW);
-	// bind uvs to location 2
+	// Bind uvs to location 2
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
-	// create and bind indices VBO
+	// Create and bind indices VBO
 	glGenBuffers(1, &_vboIndices);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _vboIndices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, data.indices.size() * sizeof(unsigned int), data.indices.data(), GL_STATIC_DRAW);
@@ -70,6 +70,7 @@ void Mesh::render()
 	shader->setUniform("modelMatrix", accumModel);
 	_material->setUniforms();
 	
+	// Bind _vao
 	glBindVertexArray(_vao);
 	glDrawElements(GL_TRIANGLES, _elementCount, GL_UNSIGNED_INT, NULL);
 	glBindVertexArray(0);

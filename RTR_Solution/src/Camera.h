@@ -18,7 +18,8 @@ public:
 	~Camera();
 
 	glm::vec3 getPosition();
-	glm::mat4 getViewProjectionMatrix();
+	glm::mat4 getViewMatrix();
+	glm::mat4 getProjMatrix();
 
 	void update(int x, int y, float zoom, bool dragging, bool strafing);
 	float clamp(float n, float lower, float upper);

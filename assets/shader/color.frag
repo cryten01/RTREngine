@@ -1,9 +1,5 @@
 #version 430 core
-/*
-* Copyright 2010 Vienna University of Technology.
-* Institute of Computer Graphics and Algorithms.
-* This file is part of the ECG Lab Framework and must not be redistributed.
-*/
+
 
 in VertexData {
 	vec3 position_world;

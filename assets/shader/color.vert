@@ -17,6 +17,12 @@ uniform vec3 camera_world;
 
 void main() {
 	
+	// Set position vector
+	vert.position_world = vec3(modelMatrix * vec4(position, 1.0));
+	
+	// Set normal vector
+	vert.normal_world = mat3(transpose(inverse(modelMatrix))) * normal;
+
 	// Set uv coordinates
 	vert.uv = uv;
 

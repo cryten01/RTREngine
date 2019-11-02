@@ -67,9 +67,12 @@ void Camera::update(int x, int y, float zoom, bool dragging, bool strafing)
 	_viewMatrix = glm::rotate(_viewMatrix, glm::radians(_pitch), glm::vec3(1.0, 0.0, 0.0));
 	
 	// set distance based on radius 
-	float radius = 20.0f;
-	_viewMatrix = glm::translate(_viewMatrix, glm::vec3(0, 8, radius)); // (y axis for debugging purposes!)
-	
+	float radius = 2.0f;
+	_viewMatrix = glm::translate(_viewMatrix, glm::vec3(0, 0, radius)); // (y axis for debugging purposes!)
+
+	// Receive camera position by getting translation vector (first 3 elements of the last column)
+	_position = glm::vec3(_viewMatrix[3].x, _viewMatrix[3].y, _viewMatrix[3].z);
+
 	// invert direction in order to view at origin
 	_viewMatrix = inverse(_viewMatrix);
 

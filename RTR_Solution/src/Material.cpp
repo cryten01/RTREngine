@@ -21,6 +21,8 @@ Shader* Material::getShader()
 
 void Material::setUniforms()
 {
+	_shader->setUniform("param.reflection", true);
+	_shader->setUniform("skybox", 0);
 	_shader->setUniform("diffuseColor", _color);
 }
 

@@ -169,7 +169,7 @@ int main(int argc, char** argv)
 
 		// Render here
 		sphere.render();
-		demoModel.render();
+		//demoModel.render();
 		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render always last!
 
 		// Poll events and swap buffers

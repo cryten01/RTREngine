@@ -21,7 +21,7 @@ Shader* Material::getShader()
 
 void Material::setUniforms()
 {
-	_shader->setUniform("param.type", 1);
+	_shader->setUniform("param.type", 3);
 	_shader->setUniform("skybox", 0);
 	_shader->setUniform("diffuseColor", _color);
 }

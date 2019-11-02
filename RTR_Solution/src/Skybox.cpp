@@ -141,6 +141,15 @@ void Skybox::loadTextures(const char * textures[])
 		// Generate cube map texture
 		if (texData)
 		{
+			/** Send textures to GPU
+			*	Possible because GL_TEXTURE_CUBE_MAP... represents an int. Following internal order:
+			*	GL_TEXTURE_CUBE_MAP_POSITIVE_X 	Right
+			*	GL_TEXTURE_CUBE_MAP_NEGATIVE_X 	Left
+			*	GL_TEXTURE_CUBE_MAP_POSITIVE_Y 	Top
+			*	GL_TEXTURE_CUBE_MAP_NEGATIVE_Y 	Bottom
+			*	GL_TEXTURE_CUBE_MAP_POSITIVE_Z 	Front
+			*	GL_TEXTURE_CUBE_MAP_NEGATIVE_Z 	Back
+			**/
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texData);
 
 			// Set the texture wrapping/filtering options (on the currently bound texture object)

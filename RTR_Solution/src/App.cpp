@@ -168,9 +168,9 @@ int main(int argc, char** argv)
 		setPerFrameUniforms(colorShader.get(), orbitCam);
 
 		// Render here
-		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix());
 		sphere.render();
 		demoModel.render();
+		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render always last!
 
 		// Poll events and swap buffers
 		glfwPollEvents();

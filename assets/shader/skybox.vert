@@ -15,5 +15,8 @@ void main()
     vert.uv = position;
 
 	// Calculate vertex position based on vp matrix
-    gl_Position = viewProjMatrix * vec4(position, 1);
+    vec4 vertPos = viewProjMatrix * vec4(position, 1);
+
+	// Set z of output position to max depth or 1.0 (because perspective division is w/w = 1.0)
+	gl_Position = vertPos.xyww;
 } 

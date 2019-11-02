@@ -42,8 +42,8 @@ void Skybox::render(std::shared_ptr<Shader> shader, glm::mat4 viewMatrix, glm::m
 	viewMatrix = glm::mat4(glm::mat3(viewMatrix));
 
 
-	// Disable depth writing so that the skybox always be drawn at the background of all the other objects
-	glDepthMask(GL_FALSE);
+	// Change depth function so depth test passes when values are <= 1.0 (so all objects are rendered in front of the skybox)
+	glDepthFunc(GL_LEQUAL);
 
 	// Select shader
 	shader->use();
@@ -60,8 +60,8 @@ void Skybox::render(std::shared_ptr<Shader> shader, glm::mat4 viewMatrix, glm::m
 	glDrawElements(GL_TRIANGLES, _elementCount, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 
-	// Enable depth writing 
-	glDepthMask(GL_TRUE);
+	// Set depth test back to default
+	glDepthFunc(GL_LESS);
 }
 
 

@@ -37,6 +37,7 @@ public:
 	void resetModelMatrix();
 
 	static float normalizeUV(float value, float min, float max);
+	static GeometryData createCubeGeometry(float width, float height, float depth);
 	static GeometryData createSphereGeometry(unsigned int longitudeSegments, unsigned int latitudeSegments, float radius);
 
 };

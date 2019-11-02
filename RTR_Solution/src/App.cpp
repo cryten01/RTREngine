@@ -122,6 +122,8 @@ int main(int argc, char** argv)
 	// Create geometry here
 	GeometryData sphereData = Mesh::createSphereGeometry(12, 12, 0.35f);
 	Mesh sphere(glm::mat4(1.0f), sphereData, minionMaterial);
+	GeometryData cubeData = Mesh::createCubeGeometry(0.5f, 0.5f, 0.5f);
+	Mesh cube(glm::mat4(1.0f), cubeData, blueMaterial);
 
 	// Create skybox here
 	const char* skyboxTextures[] = {
@@ -168,7 +170,8 @@ int main(int argc, char** argv)
 		setPerFrameUniforms(colorShader.get(), orbitCam);
 
 		// Render here
-		sphere.render();
+		cube.render();
+		//sphere.render();
 		//demoModel.render();
 		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render always last!
 

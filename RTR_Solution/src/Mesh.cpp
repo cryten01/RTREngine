@@ -81,6 +81,11 @@ void Mesh::transform(glm::mat4 transformation)
 	_modelMatrix = transformation * _modelMatrix;
 }
 
+std::shared_ptr<Material> Mesh::getMaterial()
+{
+	return this->_material;
+}
+
 void Mesh::setTransformMatrix(glm::mat4 transformMatrix)
 {
 	_transformMatrix = transformMatrix;

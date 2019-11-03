@@ -149,6 +149,9 @@ std::shared_ptr<Material> Model::loadMaterial(aiMesh* mesh, const aiScene *scene
 
 		//Texture leatherTexture("../assets/textures/leather.jpg", TEX_DIFFUSE);
 		material = std::make_shared<TextureMaterial>(_shader, glm::vec3(1.0f, 0.0f, 1.0f), allMaps);
+
+		// Set material state
+		material->_state = REFRACTIVE;
 	}
 
 	return material;

@@ -8,6 +8,8 @@
 Material::Material(std::shared_ptr<Shader> shader, glm::vec3 color)
 	: _shader(shader), _color(color)
 {
+	// Initial values
+	_state = DIFFUSE;
 }
 
 Material::~Material()
@@ -21,7 +23,7 @@ Shader* Material::getShader()
 
 void Material::setUniforms()
 {
-	_shader->setUniform("param.type", 0);
+	_shader->setUniform("param.state", _state);
 	_shader->setUniform("skybox", 0);
 	_shader->setUniform("diffuseColor", _color);
 }

@@ -170,9 +170,9 @@ int main(int argc, char** argv)
 		setPerFrameUniforms(colorShader.get(), orbitCam);
 
 		// Render here
-		cube.render();
+		//cube.render();
 		//sphere.render();
-		//demoModel.render();
+		demoModel.render();
 		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render always last!
 
 		// Poll events and swap buffers

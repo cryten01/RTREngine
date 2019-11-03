@@ -33,8 +33,10 @@ public:
 
 	void render();
 	void transform(glm::mat4 transformation);
-	void setTransformMatrix(glm::mat4 transformMatrix);
 	void resetModelMatrix();
+
+	std::shared_ptr<Material> getMaterial();
+	void setTransformMatrix(glm::mat4 transformMatrix);
 
 	static float normalizeUV(float value, float min, float max);
 	static GeometryData createCubeGeometry(float width, float height, float depth);

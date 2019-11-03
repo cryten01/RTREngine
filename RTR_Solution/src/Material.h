@@ -9,6 +9,15 @@
 * Base material
 **/
 
+
+enum MaterialState	// Reference to param.state in color.frag
+{
+	REFLECTIVE = 0,
+	REFRACTIVE = 1,
+	TEXTURE = 2,
+	DIFFUSE = 3		// Default state
+};
+
 class Material
 {
 protected:
@@ -16,6 +25,8 @@ protected:
 	glm::vec3 _color;
 
 public:
+	MaterialState _state;
+
 	Material(std::shared_ptr<Shader> shader, glm::vec3 color);
 	virtual ~Material();
 

@@ -11,8 +11,8 @@ in VertexData {
 uniform vec3 camera_world;
 uniform samplerCube skybox;
 
-uniform struct ControlParams {
-	int type; // 0 reflective, 1 refractive, 2 matte, 3 diffuse
+uniform struct Parameters {
+	int state;
 } param;
 
 uniform struct Material {
@@ -29,27 +29,27 @@ void main() {
 
 	vec3 I,R;
 
-	if (param.type == 0) 
+	if (param.state == 0) 
 	{
 		vec3 I = normalize(vert.position_world - camera_world);
 		vec3 R = reflect(I, normalize(vert.normal_world));
 		color = vec4(texture(skybox, R).rgb, 1.0);
 	} 
 	
-	if (param.type == 1)
+	if (param.state == 1)
 	{
-		float ratio = 1.00 / 1.52;
+		float ratio = 1.00 / 1.309;
 		vec3 I = normalize(vert.position_world - camera_world);
 		vec3 R = refract(I, normalize(vert.normal_world), ratio);
 		color = vec4(texture(skybox, R).rgb, 1.0);
 	} 
 	
-	if (param.type == 2)
+	if (param.state == 2)
 	{
 		color = texture2D(material.texture_diffuse1, vert.uv);
 	}
 
-	if (param.type == 3)
+	if (param.state == 3)
 	{
 		color = vec4(diffuseColor, 1);
 	}

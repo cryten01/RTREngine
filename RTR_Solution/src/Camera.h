@@ -12,6 +12,8 @@ private:
 	glm::vec3 _position;
 	glm::vec3 _strafe;
 
+	void processMouseMovement(int x, int y);
+
 
 public:
 	 Camera(float fov, float aspect, float near, float far);

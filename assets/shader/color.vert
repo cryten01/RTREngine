@@ -13,7 +13,6 @@ out VertexData {
 
 uniform mat4 modelMatrix;
 uniform mat4 viewProjMatrix;
-uniform vec3 camera_world;
 
 void main() {
 	

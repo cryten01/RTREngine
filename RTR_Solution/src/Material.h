@@ -21,20 +21,22 @@ class Material
 {
 protected:
 	std::shared_ptr<Shader> _shader;
+
 	glm::vec3 _color;
+	glm::vec3 _lightCoefficients; // x = ambient, y = diffuse, z = specular
+	float _shininess;
+
 
 public:
-	glm::vec3 _materialCoefficients; // x = ambient, y = diffuse, z = specular
-	float _shininess;
+
 	MaterialState _state;
 
-	Material(std::shared_ptr<Shader> shader, glm::vec3 color, glm::vec3 materialCoefficients, float specularCoefficient);
+	Material(std::shared_ptr<Shader> shader, glm::vec3 lightCoefficients, float specularCoefficient, glm::vec3 color);
 	virtual ~Material();
 
 	Shader* getShader();
 	virtual void setUniforms();
 };
-
 
 class TextureMaterial : public Material
 {
@@ -42,8 +44,8 @@ protected:
 	std::vector<Texture> _textures;
 
 public:
-	TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 color, glm::vec3 materialCoefficients, float specularCoefficient, Texture texture);
-	TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 color, glm::vec3 materialCoefficients, float specularCoefficient, std::vector<Texture> textures);
+	TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 lightCoefficients, float specularCoefficient, Texture texture);
+	TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 lightCoefficients, float specularCoefficient, std::vector<Texture> textures);
 	virtual ~TextureMaterial();
 
 	virtual void setUniforms();

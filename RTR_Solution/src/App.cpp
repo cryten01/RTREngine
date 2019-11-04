@@ -113,9 +113,9 @@ int main(int argc, char** argv)
 	Texture minionTexture("../assets/textures/minion.jpg", TEX_DIFFUSE);
 
 	// Create materials here
-	std::shared_ptr<Material> blueMaterial = std::make_shared<Material>(colorShader, glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f), 1.0f);
-	std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(colorShader, glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, leatherTexture);
-	std::shared_ptr<Material> minionMaterial = std::make_shared<TextureMaterial>(colorShader, glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, minionTexture);
+	std::shared_ptr<Material> blueMaterial = std::make_shared<Material>(colorShader, glm::vec3(1.0f, 1.0f, 1.0f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+	std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(colorShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, leatherTexture);
+	std::shared_ptr<Material> minionMaterial = std::make_shared<TextureMaterial>(colorShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, minionTexture);
 
 	// Create geometry here
 	GeometryData sphereData = Mesh::createSphereGeometry(24, 24, 0.35f);
@@ -127,7 +127,7 @@ int main(int argc, char** argv)
 	Model demoModel("../assets/models/nanosuit/nanosuit.obj", colorShader);
 
 	// Create lights here
-	DirectionalLight dirLight(glm::vec3(1, 1, 1), glm::vec3(0.0f, -1.0f, 0.0f));
+	DirectionalLight dirLight(glm::vec3(1, 1, 1), glm::vec3(1.0f, 0.0f, 0.0f));
 
 	// Create skybox here
 	const char* skyboxTextures[] = {

@@ -5,8 +5,8 @@
 /* --------------------------------------------- */
 
 
-Material::Material(std::shared_ptr<Shader> shader, glm::vec3 color, glm::vec3 materialCoefficients, float specularCoefficient)
-	: _shader(shader), _color(color), _materialCoefficients(materialCoefficients), _shininess(specularCoefficient)
+Material::Material(std::shared_ptr<Shader> shader, glm::vec3 lightCoefficients, float specularCoefficient, glm::vec3 color)
+	: _shader(shader), _lightCoefficients(lightCoefficients), _shininess(specularCoefficient), _color(color)
 {
 	// Initial values
 	_state = DIFFUSE;
@@ -23,7 +23,7 @@ Shader* Material::getShader()
 
 void Material::setUniforms()
 {
-	_shader->setUniform("material.materialCoefficients", _materialCoefficients);
+	_shader->setUniform("material.materialCoefficients", _lightCoefficients);
 	_shader->setUniform("material.shininess", _shininess);
 	_shader->setUniform("param.state", _state);
 	_shader->setUniform("skybox", 0);
@@ -35,14 +35,14 @@ void Material::setUniforms()
 // Texture material
 /* --------------------------------------------- */
 
-TextureMaterial::TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 color, glm::vec3 materialCoefficients, float specularCoefficient, Texture texture)
-	: Material(shader, color, materialCoefficients, specularCoefficient)
+TextureMaterial::TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 lightCoefficients, float specularCoefficient, Texture texture)
+	: Material(shader, lightCoefficients, specularCoefficient, glm::vec3(1.0f, 0.0f, 1.0f))
 {
 	_textures.push_back(texture);
 }
 
-TextureMaterial::TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 color, glm::vec3 materialCoefficients, float specularCoefficient, std::vector<Texture> textures)
-	: Material(shader, color, materialCoefficients, specularCoefficient), _textures(textures)
+TextureMaterial::TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 lightCoefficients, float specularCoefficient, std::vector<Texture> textures)
+	: Material(shader, lightCoefficients, specularCoefficient, glm::vec3(1.0f, 0.0f, 1.0f)), _textures(textures)
 {
 }
 

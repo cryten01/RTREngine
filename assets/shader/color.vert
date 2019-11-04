@@ -13,18 +13,20 @@ out VertexData {
 
 uniform mat4 modelMatrix;
 uniform mat4 viewProjMatrix;
+uniform mat3 normalMatrix;
 
 void main() {
 	
 	// Set position vector
-	vert.position_world = vec3(modelMatrix * vec4(position, 1.0));
+	vec4 position_world = modelMatrix * vec4(position, 1.0);
+	vert.position_world = position_world.xyz;
 	
 	// Set normal vector
-	vert.normal_world = mat3(transpose(inverse(modelMatrix))) * normal;
+	vert.normal_world = normalMatrix * normal;
 
 	// Set uv coordinates
 	vert.uv = uv;
 
 	// Calculate vertex position based on mvp matrix
-	gl_Position = viewProjMatrix * modelMatrix * vec4(position, 1);
+	gl_Position = viewProjMatrix * position_world;
 }

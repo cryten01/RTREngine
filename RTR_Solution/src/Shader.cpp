@@ -120,13 +120,18 @@ void Shader::setUniform(std::string uniform, const glm::vec3& vec)
 {
 	GLuint location = glGetUniformLocation(_programID, uniform.c_str());
 	glUniform3fv(location, 1, &vec[0]);
-};
+}
+void Shader::setUniform(std::string uniform, const glm::mat3& mat)
+{
+	GLuint location = glGetUniformLocation(_programID, uniform.c_str());
+	glUniformMatrix3fv(location, 1, GL_FALSE, &mat[0][0]);
+}
 
 void Shader::setUniform(std::string uniform, const glm::mat4& mat)
 {
 	GLuint location = glGetUniformLocation(_programID, uniform.c_str());
 	glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);
-};
+}
 
 
 Shader::~Shader()

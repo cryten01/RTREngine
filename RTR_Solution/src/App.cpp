@@ -6,6 +6,7 @@
 #include "Mesh.h"
 #include "Model.h"
 #include "Skybox.h"
+#include "Light.h"
 
 
 /* --------------------------------------------- */
@@ -35,7 +36,7 @@ static std::string FormatDebugOutput(GLenum source, GLenum textype, GLuint id, G
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
-void setPerFrameUniforms(Shader* shader, Camera& camera);
+void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight& dirL);
 
 
 int main(int argc, char** argv)
@@ -112,18 +113,21 @@ int main(int argc, char** argv)
 	Texture minionTexture("../assets/textures/minion.jpg", TEX_DIFFUSE);
 
 	// Create materials here
-	std::shared_ptr<Material> blueMaterial = std::make_shared<Material>(colorShader, glm::vec3(0.0f, 0.0f, 1.0f));
-	std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(colorShader, glm::vec3(1.0f, 0.0f, 0.0f), leatherTexture);
-	std::shared_ptr<Material> minionMaterial = std::make_shared<TextureMaterial>(colorShader, glm::vec3(1.0f, 0.0f, 0.0f), minionTexture);
+	std::shared_ptr<Material> blueMaterial = std::make_shared<Material>(colorShader, glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f), 1.0f);
+	std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(colorShader, glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, leatherTexture);
+	std::shared_ptr<Material> minionMaterial = std::make_shared<TextureMaterial>(colorShader, glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, minionTexture);
+
+	// Create geometry here
+	GeometryData sphereData = Mesh::createSphereGeometry(24, 24, 0.35f);
+	Mesh sphere(glm::mat4(1.0f), sphereData, minionMaterial);
+	GeometryData cubeData = Mesh::createCubeGeometry(0.5f, 0.5f, 0.5f);
+	Mesh cube(glm::mat4(1.0f), cubeData, blueMaterial);
 
 	// Create models here (object files must be in separate directory)
 	Model demoModel("../assets/models/nanosuit/nanosuit.obj", colorShader);
 
-	// Create geometry here
-	GeometryData sphereData = Mesh::createSphereGeometry(12, 12, 0.35f);
-	Mesh sphere(glm::mat4(1.0f), sphereData, minionMaterial);
-	GeometryData cubeData = Mesh::createCubeGeometry(0.5f, 0.5f, 0.5f);
-	Mesh cube(glm::mat4(1.0f), cubeData, blueMaterial);
+	// Create lights here
+	DirectionalLight dirLight(glm::vec3(1, 1, 1), glm::vec3(0.0f, -1.0f, 0.0f));
 
 	// Create skybox here
 	const char* skyboxTextures[] = {
@@ -135,7 +139,6 @@ int main(int argc, char** argv)
 		"../assets/textures/skybox/front.jpg"
 	};
 	Skybox skybox(60.0f, skyboxTextures);
-
 
 	// Initialize camera here
 	Camera orbitCam(fov, WIDTH/HEIGHT, nearZ, farZ);
@@ -167,10 +170,10 @@ int main(int argc, char** argv)
 		orbitCam.update(int(mouse_x), int(mouse_y), _zoom, _dragging, _strafing);
 
 		// Set per-frame uniforms
-		setPerFrameUniforms(colorShader.get(), orbitCam);
+		setPerFrameUniforms(colorShader.get(), orbitCam, dirLight);
 
 		// Render here
-		//cube.render();
+		cube.render();
 		//sphere.render();
 		demoModel.render();
 		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render always last!
@@ -190,11 +193,14 @@ int main(int argc, char** argv)
 }
 
 
-void setPerFrameUniforms(Shader* shader, Camera& camera)
+void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight& dirL)
 {
 	shader->use();
 	shader->setUniform("viewProjMatrix", camera.getProjMatrix() * camera.getViewMatrix());
 	shader->setUniform("camera_world", camera.getPosition());
+
+	shader->setUniform("dirL.color", dirL.color);
+	shader->setUniform("dirL.direction", dirL.direction);
 }
 
 

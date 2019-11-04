@@ -68,6 +68,7 @@ void Mesh::render()
 
 	// Set uniforms
 	shader->setUniform("modelMatrix", accumModel);
+	shader->setUniform("normalMatrix", glm::mat3(glm::transpose(glm::inverse(accumModel)))); // Fixes non uniform scaling issues, done on CPU for performance reasons
 	_material->setUniforms();
 	
 	// Bind _vao

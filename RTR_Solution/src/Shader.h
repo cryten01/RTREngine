@@ -25,6 +25,7 @@ public:
 	void setUniform(std::string uniform, const unsigned int i);
 	void setUniform(std::string uniform, const float f);
 	void setUniform(std::string uniform, const glm::vec3& vec);
+	void setUniform(std::string uniform, const glm::mat3& mat);
 	void setUniform(std::string uniform, const glm::mat4& mat);
 };
 

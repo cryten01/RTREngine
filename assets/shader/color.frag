@@ -13,10 +13,12 @@ in VertexData {
 	vec2 uv;
 } vert;
 
+/** OUTPUTS */
+out vec4 color;
+
 /** UNIFORMS */
 uniform vec3 camera_world;
 uniform samplerCube skybox;
-uniform vec3 diffuseColor;
 
 uniform struct ControlParameters {
 	int state;
@@ -25,6 +27,7 @@ uniform struct ControlParameters {
 uniform struct Material {
 	sampler2D texture_diffuse1;
 	vec3 material_coefficients; // x = ambient, y = diffuse, z = specular 
+	vec3 color;
 	float shininess;
 } material;
 
@@ -33,8 +36,6 @@ uniform struct DirectionalLight {
 	vec3 direction;
 } dirL;
 
-/** OUTPUTS */
-out vec4 color;
 
 
 /**
@@ -58,7 +59,7 @@ vec3 phong(vec3 nNormal, vec3 lightDirection, vec3 viewDirection, vec3 lightColo
 	vec3 specular = lightColor * specularStrength * spec; 
 
 
-	// Must be multiplied with diffuseColor because phong is splitted
+	// Must be multiplied with objectColor because phong is splitted
 	return (diffuse + specular) * objectColor;
 }
 
@@ -85,7 +86,7 @@ void main() {
 	if (param.state == TEXTURE || param.state == DIFFUSE)
 	{
 		// Define objectColor
-		vec3 objectColor = (param.state == TEXTURE) ? texture2D(material.texture_diffuse1, vert.uv).rgb : diffuseColor;
+		vec3 objectColor = (param.state == TEXTURE) ? texture2D(material.texture_diffuse1, vert.uv).rgb : material.color;
 		// Normalize normal vector
 		vec3 nNormal = normalize(vert.normal_world);
 		// Calculate view direction

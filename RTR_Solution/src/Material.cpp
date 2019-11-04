@@ -27,7 +27,7 @@ void Material::setUniforms()
 	_shader->setUniform("material.shininess", _shininess);
 	_shader->setUniform("param.state", _state);
 	_shader->setUniform("skybox", 0);
-	_shader->setUniform("diffuseColor", _color);
+	_shader->setUniform("material.color", _color);
 }
 
 

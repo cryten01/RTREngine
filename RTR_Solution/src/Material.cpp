@@ -6,10 +6,11 @@
 
 
 Material::Material(std::shared_ptr<Shader> shader, glm::vec3 lightCoefficients, float specularCoefficient, glm::vec3 color)
-	: _shader(shader), _lightCoefficients(lightCoefficients), _shininess(specularCoefficient), _color(color)
+	: _shader(shader), _lightCoefficients(lightCoefficients), _alpha(specularCoefficient), _color(color)
 {
 	// Initial values
 	_state = DIFFUSE;
+	_alpha = 296.0f;
 }
 
 Material::~Material()
@@ -23,8 +24,8 @@ Shader* Material::getShader()
 
 void Material::setUniforms()
 {
-	_shader->setUniform("material.materialCoefficients", _lightCoefficients);
-	_shader->setUniform("material.shininess", _shininess);
+	_shader->setUniform("material.light", _lightCoefficients);
+	_shader->setUniform("material.alpha", _alpha);
 	_shader->setUniform("param.state", _state);
 	_shader->setUniform("skybox", 0);
 	_shader->setUniform("material.color", _color);

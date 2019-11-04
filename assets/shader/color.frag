@@ -25,10 +25,10 @@ uniform struct ControlParameters {
 } param;
 
 uniform struct Material {
-	sampler2D texture_diffuse1;
-	vec3 material_coefficients; // x = ambient, y = diffuse, z = specular 
+	sampler2D texture_diffuse1;		// don't change naming. requires consinstent naming scheme for loading
+	vec3 light;						// x = ambient, y = diffuse, z = specular 
 	vec3 color;
-	float shininess;
+	float alpha;
 } material;
 
 uniform struct DirectionalLight {
@@ -41,26 +41,29 @@ uniform struct DirectionalLight {
 /**
 *	Adds diffuse and specular values to fragment color (phong lighting model)
 **/
-vec3 phong(vec3 nNormal, vec3 lightDirection, vec3 viewDirection, vec3 lightColor, vec3 objectColor, float diffuseStrength, float specularStrength, float shininess)
+vec3 phongDiffuseSpecular(vec3 nNormal, vec3 viewDirection, vec3 lightDirection, vec3 lightColor, vec3 objectColor, float diffuseConstant, float specularConstant, float alpha)
 {
-	// Calculate diffuse impact based on dot-product/angle (max prevents negative values)
-	float diffuseLightAngle = max(dot(nNormal, lightDirection), 0.0);
-	// Calculate final diffuse
-	vec3 diffuse = lightColor * diffuseLightAngle;
+	// Calculate diffuse impact based on dot-product/angle (cosTheta, lightDirection must be inverted because vector from normal is required)
+	float diffuseLightAngle = dot(nNormal, -lightDirection);
+	// Max prevents negative values 
+	diffuseLightAngle = max(diffuseLightAngle, 0.0);
+	// Calculate final diffuse (I * kd * cosTheta)
+	float diffuse = diffuseConstant * diffuseLightAngle;
 
 
-	// Calculate reflect direction (-dirL.direction because vector is pointing from the light to fragment)
-	vec3 reflectDirection = reflect(-dirL.direction, nNormal);
+	// Calculate reflect direction
+	vec3 reflectDirection = reflect(lightDirection, nNormal);
 	// Calculate dot product/angle between viewDir and reflectDir (max prevents negative values)
-	float specularLightAngle = max(dot(viewDirection, reflectDirection), 0.0);
-	// Raise power based on shininess
-	float spec = pow(specularLightAngle, shininess);
+	float specularLightAngle = dot(viewDirection, reflectDirection);
+	// Max prevents negative values 
+	specularLightAngle = max(specularLightAngle, 0.0);
+	// Raise power based on shininess (cos alpha)
+	float shininess = pow(specularLightAngle, alpha);
 	// Calculate final specular
-	vec3 specular = lightColor * specularStrength * spec; 
+	float specular = specularConstant * shininess; 
 
-
-	// Must be multiplied with objectColor because phong is splitted
-	return (diffuse + specular) * objectColor;
+	// lightColor includes also intensity of the light
+	return lightColor * (diffuse + specular);
 }
 
 void main() {	
@@ -93,13 +96,23 @@ void main() {
 		vec3 viewDir = normalize(camera_world - vert.position_world);
 
 		
-		// Calculate ambient color (outside phong() because calculation only once needed)
-		vec3 ambient = material.material_coefficients.x * objectColor;
-		color = vec4(ambient, 1);
-
+		// Calculate ambient impact (outside phong() because calculation only once needed. Mimics ambient reflexions by emitting light)
+		float ambientConstant = material.light.x;
+		vec3 ambient = dirL.color * ambientConstant;
+		
 
 		// Add directional light contribution
-		vec3 diffuseAndSpecular = phong(nNormal, -dirL.direction, viewDir, dirL.color, objectColor, material.material_coefficients.y, material.material_coefficients.z, material.shininess);
-		color.rgb += diffuseAndSpecular;
+		vec3 diffuseSpecular = phongDiffuseSpecular(
+			nNormal, 
+			viewDir, 
+			dirL.direction, 
+			dirL.color, 
+			objectColor, 
+			material.light.y,
+			material.light.z,
+			material.alpha
+		);
+
+		color = vec4((ambient + diffuseSpecular) * objectColor, 1);
 	}
 }

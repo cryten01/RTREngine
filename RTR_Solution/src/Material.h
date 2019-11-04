@@ -23,12 +23,11 @@ protected:
 	std::shared_ptr<Shader> _shader;
 
 	glm::vec3 _color;
-	glm::vec3 _lightCoefficients; // x = ambient, y = diffuse, z = specular
-	float _shininess;
+	glm::vec3 _lightCoefficients; // Reflection constants x = ambient, y = diffuse, z = specular
+	float _alpha;
 
 
 public:
-
 	MaterialState _state;
 
 	Material(std::shared_ptr<Shader> shader, glm::vec3 lightCoefficients, float specularCoefficient, glm::vec3 color);

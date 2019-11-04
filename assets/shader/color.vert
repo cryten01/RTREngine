@@ -17,8 +17,9 @@ uniform mat3 normalMatrix;
 
 void main() {
 	
-	// Set position vector
+	// Calculate position vector
 	vec4 position_world = modelMatrix * vec4(position, 1.0);
+	// Set position vector
 	vert.position_world = position_world.xyz;
 	
 	// Set normal vector

@@ -36,7 +36,7 @@ static std::string FormatDebugOutput(GLenum source, GLenum textype, GLuint id, G
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
-void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight& dirL);
+void setPerFrameUniforms(Shader* shader, Camera& camera, std::vector<DirectionalLight>& dirL);
 
 
 int main(int argc, char** argv)
@@ -127,7 +127,11 @@ int main(int argc, char** argv)
 	Model demoModel("../assets/models/nanosuit/nanosuit.obj", colorShader);
 
 	// Create lights here
-	DirectionalLight dirLight(glm::vec3(0.8f), glm::vec3(0, -1, 0));
+	std::vector<DirectionalLight> dirLights;
+	dirLights.push_back(DirectionalLight(glm::vec3(0.6f), glm::vec3(0, -1, 0)));
+	dirLights.push_back(DirectionalLight(glm::vec3(0.6f), glm::vec3(0, -1, 0)));
+
+	std::vector<DirectionalLight>& x = dirLights;
 
 	// Create skybox here
 	const char* skyboxTextures[] = {
@@ -170,7 +174,7 @@ int main(int argc, char** argv)
 		orbitCam.update(int(mouse_x), int(mouse_y), _zoom, _dragging, _strafing);
 
 		// Set per-frame uniforms
-		setPerFrameUniforms(colorShader.get(), orbitCam, dirLight);
+		setPerFrameUniforms(colorShader.get(), orbitCam, dirLights);
 
 		// Render here
 		cube.render();
@@ -193,14 +197,14 @@ int main(int argc, char** argv)
 }
 
 
-void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight& dirL)
+void setPerFrameUniforms(Shader* shader, Camera& camera, std::vector<DirectionalLight>& dirLights)
 {
 	shader->use();
 	shader->setUniform("viewProjMatrix", camera.getProjMatrix() * camera.getViewMatrix());
 	shader->setUniform("camera_world", camera.getPosition());
 
-	shader->setUniform("dirL.color", dirL.color);
-	shader->setUniform("dirL.direction", dirL.direction);
+	shader->setUniform("dirL[0].color", dirLights[0].color);
+	shader->setUniform("dirL[0].direction", dirLights[0].direction);
 }
 
 

@@ -31,40 +31,64 @@ uniform struct Material {
 	float alpha;
 } material;
 
-uniform struct DirectionalLight {
+
+struct DirLight {
 	vec3 color;
 	vec3 direction;
-} dirL;
+};
+
+uniform DirLight dirL[1];
 
 
 
-/**
-*	Adds diffuse and specular values to fragment color (phong lighting model)
-**/
-vec3 phongDiffuseSpecular(vec3 nNormal, vec3 viewDirection, vec3 lightDirection, vec3 lightColor, vec3 objectColor, float diffuseConstant, float specularConstant, float alpha)
+
+/* ---------------------------------- */
+// Diffuse, Specular, Attenuation
+/* ---------------------------------- */
+
+float calcDiffuse(float diffConstant, vec3 lightDir, vec3 normal)
 {
-	// Calculate diffuse impact based on dot-product/angle (cosTheta, lightDirection must be inverted because vector from normal is required)
-	float diffuseLightAngle = dot(nNormal, -lightDirection);
-	// Max prevents negative values 
-	diffuseLightAngle = max(diffuseLightAngle, 0.0);
-	// Calculate final diffuse (I * kd * cosTheta)
-	float diffuse = diffuseConstant * diffuseLightAngle;
+	// diffuse = lightIntensity * kd * Lambert's law
+	float diffLightAngle = max(dot(normal, -lightDir), 0.0); 
+	return (diffConstant * diffLightAngle);
+};
 
 
-	// Calculate reflect direction
-	vec3 reflectDirection = reflect(lightDirection, nNormal);
-	// Calculate dot product/angle between viewDir and reflectDir (max prevents negative values)
-	float specularLightAngle = dot(viewDirection, reflectDirection);
-	// Max prevents negative values 
-	specularLightAngle = max(specularLightAngle, 0.0);
-	// Raise power based on shininess (cos alpha)
-	float shininess = pow(specularLightAngle, alpha);
-	// Calculate final specular
-	float specular = specularConstant * shininess; 
+float calcSpecular(float specConstant, float alpha, vec3 lightDir, vec3 eyeDir, vec3 normal)
+{	
+	// specular = lightIntensity * ks * shininess constant     
+	vec3 reflection = reflect(lightDir, normal); 
+	float specLightAngle = max(dot(eyeDir, reflection), 0.0);
+	float shininess = pow(specLightAngle, alpha);
+	return specConstant * shininess;
+};
 
-	// lightColor includes also intensity of the light
-	return lightColor * (diffuse + specular);
+
+vec3 calcAttenuation(vec3 attenuation, vec3 lightPosition, vec3 fragPosition)
+{
+	// attenuation
+	float distance = length(lightPosition - fragPosition); 
+	return (1.0f / (attenuation.x + attenuation.y * distance + attenuation.z * (distance * distance)));
 }
+
+
+/* ---------------------------- */
+// Directional Lightsource
+/* ---------------------------- */
+
+vec3 calcDirLight(DirLight light, vec3 normal, vec3 eyeDir, Material material)
+{	
+	float diffConstant = material.light.y;
+	float specConstant = material.light.z;
+
+	float diffuse = calcDiffuse(diffConstant, normalize(light.direction), normal);
+	float specular = calcSpecular(specConstant, material.alpha, normalize(light.direction), eyeDir, normal);
+	
+	// final
+	return light.color * (diffuse + specular);
+}
+
+
 
 void main() {	
 
@@ -90,29 +114,21 @@ void main() {
 	{
 		// Define objectColor
 		vec3 objectColor = (param.state == TEXTURE) ? texture2D(material.texture_diffuse1, vert.uv).rgb : material.color;
+		
 		// Normalize normal vector
-		vec3 nNormal = normalize(vert.normal_world);
-		// Calculate view direction
-		vec3 viewDir = normalize(camera_world - vert.position_world);
-
+		vec3 normal = normalize(vert.normal_world);
 		
-		// Calculate ambient impact (outside phong() because calculation only once needed. Mimics ambient reflexions by emitting light)
-		float ambientConstant = material.light.x;
-		vec3 ambient = dirL.color * ambientConstant;
-		
+		// Calculate eye direction
+		vec3 eyeDir = normalize(camera_world - vert.position_world);
 
-		// Add directional light contribution
-		vec3 diffuseSpecular = phongDiffuseSpecular(
-			nNormal, 
-			viewDir, 
-			dirL.direction, 
-			dirL.color, 
-			objectColor, 
-			material.light.y,
-			material.light.z,
-			material.alpha
-		);
+		// Calculate ambient
+		color = vec4(material.light.x * objectColor, 1);
 
-		color = vec4((ambient + diffuseSpecular) * objectColor, 1);
+		// Add lights to color
+		for (int i = 0; i < dirL.length(); i++)
+		{
+			vec3 dirLight = calcDirLight(dirL[i], normal, eyeDir, material);
+			color.rgb += dirLight * objectColor;
+		}
 	}
 }

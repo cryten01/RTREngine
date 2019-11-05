@@ -35,6 +35,7 @@ static void APIENTRY DebugCallbackDefault(GLenum source, GLenum textype, GLuint 
 static std::string FormatDebugOutput(GLenum source, GLenum textype, GLuint id, GLenum severity, const char* msg);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<PointLight>& pointLights, std::vector<SpotLight>& spotLights);
 
@@ -91,6 +92,7 @@ int main(int argc, char** argv)
 	// Set callbacks here
 	glfwSetKeyCallback(window, key_callback);
 	glfwSetMouseButtonCallback(window, mouse_button_callback);
+	glfwSetScrollCallback(window, scroll_callback);
 
 #if _DEBUG
 	// Register your callback function.
@@ -118,9 +120,15 @@ int main(int argc, char** argv)
 	std::shared_ptr<Material> minionMaterial = std::make_shared<TextureMaterial>(colorShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, minionTexture);
 
 	// Create geometry here
-	Mesh sphere = Mesh(
-		glm::mat4(1.0f), 
-		Mesh::createSphereGeometry(24, 24, 1.5f), 
+	Mesh sphere1 = Mesh(
+		glm::translate(glm::mat4(1), glm::vec3(-1.0f, 2.0, 0.0)),
+		Mesh::createSphereGeometry(24, 24, 0.7f), 
+		blueMaterial
+	);
+
+	Mesh sphere2 = Mesh(
+		glm::translate(glm::mat4(1), glm::vec3( 1.0f, 2.0, 0.0)),
+		Mesh::createSphereGeometry(24, 24, 0.7f),
 		blueMaterial
 	);
 
@@ -140,30 +148,30 @@ int main(int argc, char** argv)
 	Model demoModel("../assets/models/nanosuit/nanosuit.obj", colorShader);
 
 	// Create directional light here
-	DirectionalLight dirLight(glm::vec3(0,0,1), glm::vec3(0, -1, 0));
+	DirectionalLight dirLight(glm::vec3(1.0f), glm::vec3(0, -1, 0));
 
 	// Create point lights here
 	std::vector<PointLight> pointLights;
 	pointLights.push_back(PointLight(
 		glm::vec3(1.0f), 
-		glm::vec3(0.0f), 
+		glm::vec3(0.0f, 1.0f, 0.0f), 
 		glm::vec3(1.0f, 0.4f, 0.1f)
 	));
 	pointLights.push_back(PointLight(
 		glm::vec3(0.6f), 
-		glm::vec3(0,-3, 0), 
-		glm::vec3(1, 0, 0)
+		glm::vec3(0.0f, -1.0f, 0.0f),
+		glm::vec3(1.0f,  0.4f, 0.1f)
 	));
 
 	// Create spot lights here
 	std::vector<SpotLight> spotLights;
 	spotLights.push_back(SpotLight(
 		glm::vec3(1.0f), 
-		glm::vec3(1.0f, 0.0f, 4.0f), 
+		glm::vec3(0.0f, 11.0f, 4.0f), 
 		glm::vec3(1.0f, 0.4f, 0.1f),
 		glm::vec3(0.0f, 0.0f, -1.0f),
 		glm::cos(glm::radians(10.5f)),
-		glm::cos(glm::radians(12.5f))
+		glm::cos(glm::radians(18.5f))
 	));
 
 	// Create skybox here
@@ -200,7 +208,7 @@ int main(int argc, char** argv)
 		runTime += deltaTime;
 
 		// Update sphere (Rotation for debugging purposes only!)
-		sphere.transform(glm::rotate(glm::mat4(1.0f), glm::radians(10.0f * deltaTime), glm::vec3(0, 1, 0)));
+		//sphere1.transform(glm::rotate(glm::mat4(1.0f), glm::radians(10.0f * deltaTime), glm::vec3(0, 1, 0)));
 
 		// Update camera
 		glfwGetCursorPos(window, &mouse_x, &mouse_y);
@@ -209,10 +217,12 @@ int main(int argc, char** argv)
 		// Set per-frame uniforms
 		setPerFrameUniforms(colorShader.get(), orbitCam, dirLight, pointLights, spotLights);
 
+	
 		// Render here
 		cube1.render();
 		cube2.render();
-		//sphere.render();
+		sphere1.render();
+		sphere2.render();
 		//demoModel.render();
 		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render always last!
 
@@ -240,6 +250,7 @@ void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLig
 	shader->setUniform("dirL.color", dirLight.color);
 	shader->setUniform("dirL.direction", dirLight.direction);
 
+	shader->setUniform("NR_POINT_LIGHTS", pointLights.size());
 	for (int i = 0; i < pointLights.size(); i++)
 	{
 		shader->setUniform("pointL[" + std::to_string(i) + "].color", pointLights[i].color);
@@ -247,6 +258,7 @@ void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLig
 		shader->setUniform("pointL[" + std::to_string(i) + "].attenuation", pointLights[i].attenuation);
 	}
 
+	shader->setUniform("NR_SPOT_LIGHTS", spotLights.size());
 	for (int i = 0; i < spotLights.size(); i++)
 	{
 		shader->setUniform("spotL[" + std::to_string(i) + "].color", spotLights[i].color);
@@ -275,6 +287,13 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 		_strafing = false;
 	}
 }
+
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	_zoom -= float(yoffset) * 0.5f;
+}
+
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) 
 {	

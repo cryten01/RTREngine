@@ -49,6 +49,7 @@ struct PointLight {
 	vec3 attenuation;
 };
 uniform PointLight pointL[10];
+uniform uint NR_POINT_LIGHTS;
 
 
 struct SpotLight {
@@ -60,6 +61,7 @@ struct SpotLight {
 	float outerAngle;
 };
 uniform SpotLight spotL[10];
+uniform uint NR_SPOT_LIGHTS;
 
 
 
@@ -191,13 +193,19 @@ void main() {
 
 		// Calculate ambient (Ia * ka)
 		fragColor = vec4((objectColor * material.light.x), 1); // ambient
+		
 		// Add directional light
 		fragColor.rgb += calcDirLight(dirL, material, objectColor, normal, eyeDir);
+		
 		// Add point lights
-		fragColor.rgb += calcPointLight(pointL[0], material, objectColor, normal, eyeDir);
-		fragColor.rgb += calcPointLight(pointL[1], material, objectColor, normal, eyeDir);
-		// Add spot lights
-		fragColor.rgb += calcSpotLight(spotL[0], material, objectColor, normal, eyeDir);
+		for (int i = 0; i < NR_POINT_LIGHTS; i++) {
+			fragColor.rgb += calcPointLight(pointL[i], material, objectColor, normal, eyeDir);
+		}
+
+		// Add spot lights		
+		for (int i = 0; i < NR_SPOT_LIGHTS; i++) {
+			fragColor.rgb += calcSpotLight(spotL[i], material, objectColor, normal, eyeDir);
+		}
 
 	}
 }

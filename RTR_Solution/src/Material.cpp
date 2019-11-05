@@ -5,10 +5,9 @@
 /* --------------------------------------------- */
 
 
-Material::Material(std::shared_ptr<Shader> shader, glm::vec3 lightCoefficients, float specularCoefficient, glm::vec3 color)
-	: _shader(shader), _lightCoefficients(lightCoefficients), _alpha(specularCoefficient), _color(color)
+Material::Material(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, glm::vec3 color)
+	: _shader(shader), _reflectionConstants(reflectionConstants), _alpha(alpha), _color(color)
 {
-	// Initial values
 	_state = DIFFUSE;
 	_alpha = 296.0f;
 }
@@ -22,9 +21,14 @@ Shader* Material::getShader()
 	return _shader.get();
 }
 
+MaterialState& Material::getState()
+{
+	return this->_state;
+}
+
 void Material::setUniforms()
 {
-	_shader->setUniform("material.light", _lightCoefficients);
+	_shader->setUniform("material.light", _reflectionConstants);
 	_shader->setUniform("material.alpha", _alpha);
 	_shader->setUniform("param.state", _state);
 	_shader->setUniform("skybox", 0);
@@ -36,14 +40,14 @@ void Material::setUniforms()
 // Texture material
 /* --------------------------------------------- */
 
-TextureMaterial::TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 lightCoefficients, float specularCoefficient, Texture texture)
-	: Material(shader, lightCoefficients, specularCoefficient, glm::vec3(1.0f, 0.0f, 1.0f))
+TextureMaterial::TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, Texture texture)
+	: Material(shader, reflectionConstants, alpha, glm::vec3(1.0f, 0.0f, 1.0f))
 {
 	_textures.push_back(texture);
 }
 
-TextureMaterial::TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 lightCoefficients, float specularCoefficient, std::vector<Texture> textures)
-	: Material(shader, lightCoefficients, specularCoefficient, glm::vec3(1.0f, 0.0f, 1.0f)), _textures(textures)
+TextureMaterial::TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, std::vector<Texture> textures)
+	: Material(shader, reflectionConstants, alpha, glm::vec3(1.0f, 0.0f, 1.0f)), _textures(textures)
 {
 }
 

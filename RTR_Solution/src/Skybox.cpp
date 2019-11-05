@@ -4,7 +4,7 @@
 Skybox::Skybox(float size, const char* textures[])
 {
 	// Create Mesh with material that contains cubemap textures
-	GeometryData data = loadGeometry(60.0f);
+	MeshData data = loadGeometry(60.0f);
 	_elementCount = data.indices.size();
 
 	// Create VAO
@@ -65,9 +65,9 @@ void Skybox::render(std::shared_ptr<Shader> shader, glm::mat4 viewMatrix, glm::m
 }
 
 
-GeometryData Skybox::loadGeometry(float size)
+MeshData Skybox::loadGeometry(float size)
 {
-	GeometryData data;
+	MeshData data;
 
 	data.positions = {
 		// front

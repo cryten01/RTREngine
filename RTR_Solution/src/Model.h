@@ -17,7 +17,7 @@ private:
 	void processNode(aiNode* node, const aiScene* scene);
 	Mesh processMesh(aiMesh* mesh, const aiScene* scene);
 
-	GeometryData loadGeometry(aiMesh* mesh);
+	MeshData loadGeometry(aiMesh* mesh);
 	std::shared_ptr<Material> loadMaterial(aiMesh* mesh, const aiScene *scene);
 	std::vector<Texture> loadTextures(aiMaterial *mat, aiTextureType aType, TextureType type);
 

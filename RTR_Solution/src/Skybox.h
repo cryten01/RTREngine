@@ -13,7 +13,7 @@ protected:
 	GLuint _texturesID;
 	unsigned int _elementCount;
 
-	GeometryData loadGeometry(float size);
+	MeshData loadGeometry(float size);
 	void loadTextures(const char* textures[]);
 
 public:

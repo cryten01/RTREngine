@@ -36,7 +36,7 @@ static std::string FormatDebugOutput(GLenum source, GLenum textype, GLuint id, G
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
-void setPerFrameUniforms(Shader* shader, Camera& camera, std::vector<DirectionalLight>& dirL);
+void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<PointLight>& pointLights);
 
 
 int main(int argc, char** argv)
@@ -118,20 +118,34 @@ int main(int argc, char** argv)
 	std::shared_ptr<Material> minionMaterial = std::make_shared<TextureMaterial>(colorShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, minionTexture);
 
 	// Create geometry here
-	GeometryData sphereData = Mesh::createSphereGeometry(24, 24, 1.5f);
-	Mesh sphere(glm::mat4(1.0f), sphereData, blueMaterial);
-	GeometryData cubeData = Mesh::createCubeGeometry(1.5f, 1.5f, 1.5f);
-	Mesh cube(glm::mat4(1.0f), cubeData, blueMaterial);
+	Mesh sphere = Mesh(
+		glm::mat4(1.0f), 
+		Mesh::createSphereGeometry(24, 24, 1.5f), 
+		blueMaterial
+	);
+
+	Mesh cube1(
+		glm::translate(glm::mat4(1), glm::vec3(-1.2f, 1.0, 0.0)),
+		Mesh::createCubeGeometry(1.5f, 1.5f, 1.5f),
+		blueMaterial
+	);
+
+	Mesh cube2(
+		glm::translate(glm::mat4(1), glm::vec3( 1.2f, 1.0, 0.0)),
+		Mesh::createCubeGeometry(1.5f, 1.5f, 1.5f),
+		blueMaterial
+	);
 
 	// Create models here (object files must be in separate directory)
 	Model demoModel("../assets/models/nanosuit/nanosuit.obj", colorShader);
 
-	// Create lights here
-	std::vector<DirectionalLight> dirLights;
-	dirLights.push_back(DirectionalLight(glm::vec3(0.6f), glm::vec3(0, -1, 0)));
-	dirLights.push_back(DirectionalLight(glm::vec3(0.6f), glm::vec3(0, -1, 0)));
+	// Create directional light here
+	DirectionalLight dirLight(glm::vec3(0,0,1), glm::vec3(0, -1, 0));
 
-	std::vector<DirectionalLight>& x = dirLights;
+	// Create point lights here
+	std::vector<PointLight> pointLights;
+	pointLights.push_back(PointLight(glm::vec3(1.0f), glm::vec3(0.0f), glm::vec3(1.0f, 0.4f, 0.1f)));
+	pointLights.push_back(PointLight(glm::vec3(0.6f), glm::vec3(0,-3, 0), glm::vec3(1, 0, 0)));
 
 	// Create skybox here
 	const char* skyboxTextures[] = {
@@ -174,10 +188,11 @@ int main(int argc, char** argv)
 		orbitCam.update(int(mouse_x), int(mouse_y), _zoom, _dragging, _strafing);
 
 		// Set per-frame uniforms
-		setPerFrameUniforms(colorShader.get(), orbitCam, dirLights);
+		setPerFrameUniforms(colorShader.get(), orbitCam, dirLight, pointLights);
 
 		// Render here
-		cube.render();
+		cube1.render();
+		cube2.render();
 		//sphere.render();
 		//demoModel.render();
 		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render always last!
@@ -197,14 +212,21 @@ int main(int argc, char** argv)
 }
 
 
-void setPerFrameUniforms(Shader* shader, Camera& camera, std::vector<DirectionalLight>& dirLights)
+void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<PointLight>& pointLights)
 {
 	shader->use();
 	shader->setUniform("viewProjMatrix", camera.getProjMatrix() * camera.getViewMatrix());
 	shader->setUniform("camera_world", camera.getPosition());
 
-	shader->setUniform("dirL[0].color", dirLights[0].color);
-	shader->setUniform("dirL[0].direction", dirLights[0].direction);
+	shader->setUniform("dirL.color", dirLight.color);
+	shader->setUniform("dirL.direction", dirLight.direction);
+
+	for (int i = 0; i < pointLights.size(); i++)
+	{
+		shader->setUniform("pointL[" + std::to_string(i) + "].color", pointLights[i].color);
+		shader->setUniform("pointL[" + std::to_string(i) + "].position", pointLights[i].position);
+		shader->setUniform("pointL[" + std::to_string(i) + "].attenuation", pointLights[i].attenuation);
+	}
 }
 
 

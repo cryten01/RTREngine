@@ -1,7 +1,7 @@
 #include "Mesh.h"
 
 
-Mesh::Mesh(glm::mat4 modelMatrix, GeometryData& data, std::shared_ptr<Material> material)
+Mesh::Mesh(glm::mat4 modelMatrix, MeshData data, std::shared_ptr<Material> material)
 	: _elementCount(data.indices.size()), _modelMatrix(modelMatrix), _material(material)
 {
 	// create VAO
@@ -102,9 +102,9 @@ float Mesh::normalizeUV(float value, float min, float max)
 	return (value - min) / (max - min);
 }
 
-GeometryData Mesh::createCubeGeometry(float width, float height, float depth)
+MeshData Mesh::createCubeGeometry(float width, float height, float depth)
 {
-	GeometryData data;
+	MeshData data;
 
 
 	data.positions = {
@@ -232,9 +232,9 @@ GeometryData Mesh::createCubeGeometry(float width, float height, float depth)
 }
 
 
-GeometryData Mesh::createSphereGeometry(unsigned int longitudeSegments, unsigned int latitudeSegments, float radius)
+MeshData Mesh::createSphereGeometry(unsigned int longitudeSegments, unsigned int latitudeSegments, float radius)
 {
-	GeometryData data;
+	MeshData data;
 
 	// Constant (2 replaced by 2n)
 	int poles = 2 * longitudeSegments;

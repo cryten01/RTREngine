@@ -5,7 +5,7 @@
 
 /** Represents a mesh containing vertex positions, normal vectors, texture coordinates and material*/
 
-struct GeometryData {
+struct MeshData {
 	std::vector<glm::vec3> positions;
 	std::vector<glm::vec2> uv;
 	std::vector<glm::vec3> normals;
@@ -28,7 +28,7 @@ protected:
 	glm::mat4 _transformMatrix;
 
 public:
-	 Mesh(glm::mat4 modelMatrix, GeometryData& data, std::shared_ptr<Material> material);
+	 Mesh(glm::mat4 modelMatrix, MeshData data, std::shared_ptr<Material> material);
 	~Mesh();
 
 	void render();
@@ -39,8 +39,8 @@ public:
 	void setTransformMatrix(glm::mat4 transformMatrix);
 
 	static float normalizeUV(float value, float min, float max);
-	static GeometryData createCubeGeometry(float width, float height, float depth);
-	static GeometryData createSphereGeometry(unsigned int longitudeSegments, unsigned int latitudeSegments, float radius);
+	static MeshData createCubeGeometry(float width, float height, float depth);
+	static MeshData createSphereGeometry(unsigned int longitudeSegments, unsigned int latitudeSegments, float radius);
 
 };
 

@@ -75,7 +75,7 @@ Model::~Model()
 **/
 Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 {
-	GeometryData geometry = loadGeometry(mesh);
+	MeshData geometry = loadGeometry(mesh);
 	std::shared_ptr<Material> material = loadMaterial(mesh, scene);
 
 	return Mesh(glm::mat4(1.0f), geometry, material);
@@ -85,9 +85,9 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
 /**
 *	Loads the specified geometry (similar to Mesh::createSphereGeometry())
 **/
-GeometryData Model::loadGeometry(aiMesh* mesh)
+MeshData Model::loadGeometry(aiMesh* mesh)
 {
-	GeometryData data;
+	MeshData data;
 
 	if (mesh->HasPositions() && mesh->HasNormals() && mesh->HasTextureCoords(0))
 	{
@@ -151,7 +151,7 @@ std::shared_ptr<Material> Model::loadMaterial(aiMesh* mesh, const aiScene *scene
 		material = std::make_shared<TextureMaterial>(_shader, glm::vec3(0.0f, 0.7f, 0.0f), 1.0f, allMaps);
 
 		// Set material state
-		material->_state = DIFFUSE;
+		material->getState() = DIFFUSE;
 	}
 
 	return material;

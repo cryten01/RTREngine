@@ -132,15 +132,15 @@ int main(int argc, char** argv)
 		blueMaterial
 	);
 
-	Mesh cube1(
-		glm::translate(glm::mat4(1), glm::vec3(-1.0f, 0.0, 0.0)),
+	Mesh cube(
+		glm::translate(glm::mat4(1), glm::vec3(1.0f, 0.0, 0.0)),
 		Mesh::createCubeGeometry(1.5f, 1.5f, 1.5f),
 		blueMaterial
 	);
 
-	Mesh cube2(
-		glm::translate(glm::mat4(1), glm::vec3( 1.0f, 0.0, 0.0)),
-		Mesh::createCubeGeometry(1.5f, 1.5f, 1.5f),
+	Mesh cylinder(
+		glm::translate(glm::mat4(1), glm::vec3(-1.0f, 0.0, 0.0)),
+		Mesh::createCylinderGeometry(24.0f, 1.5f, 0.7f),
 		blueMaterial
 	);
 
@@ -167,11 +167,11 @@ int main(int argc, char** argv)
 	std::vector<SpotLight> spotLights;
 	spotLights.push_back(SpotLight(
 		glm::vec3(1.0f), 
-		glm::vec3(0.0f, 11.0f, 4.0f), 
+		glm::vec3(1.0f, 0.0f, 4.0f), 
 		glm::vec3(1.0f, 0.4f, 0.1f),
 		glm::vec3(0.0f, 0.0f, -1.0f),
 		glm::cos(glm::radians(10.5f)),
-		glm::cos(glm::radians(18.5f))
+		glm::cos(glm::radians(12.5f))
 	));
 
 	// Create skybox here
@@ -219,8 +219,8 @@ int main(int argc, char** argv)
 
 	
 		// Render here
-		cube1.render();
-		cube2.render();
+		cube.render();
+		cylinder.render();
 		sphere1.render();
 		sphere2.render();
 		//demoModel.render();

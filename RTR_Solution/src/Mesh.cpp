@@ -232,6 +232,74 @@ MeshData Mesh::createCubeGeometry(float width, float height, float depth)
 }
 
 
+MeshData Mesh::createCylinderGeometry(unsigned int segments, float height, float radius)
+{
+	MeshData data;
+
+
+	// center vertices
+	data.positions.push_back(glm::vec3(0, -height / 2.0f, 0));
+	data.normals.push_back(glm::vec3(0, -1, 0));
+	data.uv.push_back(glm::vec2(0.5f, 0.5f));
+	data.positions.push_back(glm::vec3(0, height / 2.0f, 0));
+	data.normals.push_back(glm::vec3(0, 1, 0));
+	data.uv.push_back(glm::vec2(0.5f, 0.5f));
+
+	// circle segments
+	float angle_step = 2.0f * glm::pi<float>() / float(segments);
+	for (unsigned int i = 0; i < segments; i++) {
+		glm::vec3 circlePos = glm::vec3(
+			glm::cos(i * angle_step) * radius,
+			-height / 2.0f,
+			glm::sin(i * angle_step) * radius
+		);
+
+		glm::vec2 squareToCirlceUV = glm::vec2(
+			(circlePos.x / radius) * 0.5f + 0.5f,
+			(circlePos.z / radius) * 0.5f + 0.5f
+		);
+
+		// bottom ring vertex
+		data.positions.push_back(circlePos);
+		data.positions.push_back(circlePos);
+		data.normals.push_back(glm::vec3(0, -1, 0));
+		data.normals.push_back(glm::normalize(circlePos - glm::vec3(0, -height / 2.0f, 0)));
+		data.uv.push_back(squareToCirlceUV);
+		data.uv.push_back(glm::vec2(i * angle_step / (2.0f * glm::pi<float>()), 0));
+
+		// top ring vertex
+		circlePos.y = height / 2.0f;
+		data.positions.push_back(circlePos);
+		data.positions.push_back(circlePos);
+		data.normals.push_back(glm::vec3(0, 1, 0));
+		data.normals.push_back(glm::normalize(circlePos - glm::vec3(0, height / 2.0f, 0)));
+		data.uv.push_back(squareToCirlceUV);
+		data.uv.push_back(glm::vec2(i * angle_step / (2.0f * glm::pi<float>()), 1));
+
+		// bottom face
+		data.indices.push_back(0);
+		data.indices.push_back(2 + i * 4);
+		data.indices.push_back(i == segments - 1 ? 2 : 2 + (i + 1) * 4);
+
+		// top face
+		data.indices.push_back(1);
+		data.indices.push_back(i == segments - 1 ? 4 : (i + 2) * 4);
+		data.indices.push_back((i + 1) * 4);
+
+		// side faces
+		data.indices.push_back(3 + i * 4);
+		data.indices.push_back(i == segments - 1 ? 5 : 5 + (i + 1) * 4);
+		data.indices.push_back(i == segments - 1 ? 3 : 3 + (i + 1) * 4);
+
+		data.indices.push_back(i == segments - 1 ? 5 : 5 + (i + 1) * 4);
+		data.indices.push_back(3 + i * 4);
+		data.indices.push_back(5 + i * 4);
+	}
+
+
+	return std::move(data);
+}
+
 MeshData Mesh::createSphereGeometry(unsigned int longitudeSegments, unsigned int latitudeSegments, float radius)
 {
 	MeshData data;

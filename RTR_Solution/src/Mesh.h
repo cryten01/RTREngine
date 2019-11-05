@@ -40,6 +40,7 @@ public:
 
 	static float normalizeUV(float value, float min, float max);
 	static MeshData createCubeGeometry(float width, float height, float depth);
+	static MeshData createCylinderGeometry(unsigned int segments, float height, float radius);
 	static MeshData createSphereGeometry(unsigned int longitudeSegments, unsigned int latitudeSegments, float radius);
 
 };

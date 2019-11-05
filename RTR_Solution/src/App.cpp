@@ -36,7 +36,7 @@ static std::string FormatDebugOutput(GLenum source, GLenum textype, GLuint id, G
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
-void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<PointLight>& pointLights);
+void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<PointLight>& pointLights, std::vector<SpotLight>& spotLights);
 
 
 int main(int argc, char** argv)
@@ -125,13 +125,13 @@ int main(int argc, char** argv)
 	);
 
 	Mesh cube1(
-		glm::translate(glm::mat4(1), glm::vec3(-1.2f, 1.0, 0.0)),
+		glm::translate(glm::mat4(1), glm::vec3(-1.0f, 0.0, 0.0)),
 		Mesh::createCubeGeometry(1.5f, 1.5f, 1.5f),
 		blueMaterial
 	);
 
 	Mesh cube2(
-		glm::translate(glm::mat4(1), glm::vec3( 1.2f, 1.0, 0.0)),
+		glm::translate(glm::mat4(1), glm::vec3( 1.0f, 0.0, 0.0)),
 		Mesh::createCubeGeometry(1.5f, 1.5f, 1.5f),
 		blueMaterial
 	);
@@ -144,8 +144,27 @@ int main(int argc, char** argv)
 
 	// Create point lights here
 	std::vector<PointLight> pointLights;
-	pointLights.push_back(PointLight(glm::vec3(1.0f), glm::vec3(0.0f), glm::vec3(1.0f, 0.4f, 0.1f)));
-	pointLights.push_back(PointLight(glm::vec3(0.6f), glm::vec3(0,-3, 0), glm::vec3(1, 0, 0)));
+	pointLights.push_back(PointLight(
+		glm::vec3(1.0f), 
+		glm::vec3(0.0f), 
+		glm::vec3(1.0f, 0.4f, 0.1f)
+	));
+	pointLights.push_back(PointLight(
+		glm::vec3(0.6f), 
+		glm::vec3(0,-3, 0), 
+		glm::vec3(1, 0, 0)
+	));
+
+	// Create spot lights here
+	std::vector<SpotLight> spotLights;
+	spotLights.push_back(SpotLight(
+		glm::vec3(1.0f), 
+		glm::vec3(1.0f, 0.0f, 4.0f), 
+		glm::vec3(1.0f, 0.4f, 0.1f),
+		glm::vec3(0.0f, 0.0f, -1.0f),
+		glm::cos(glm::radians(10.5f)),
+		glm::cos(glm::radians(12.5f))
+	));
 
 	// Create skybox here
 	const char* skyboxTextures[] = {
@@ -188,7 +207,7 @@ int main(int argc, char** argv)
 		orbitCam.update(int(mouse_x), int(mouse_y), _zoom, _dragging, _strafing);
 
 		// Set per-frame uniforms
-		setPerFrameUniforms(colorShader.get(), orbitCam, dirLight, pointLights);
+		setPerFrameUniforms(colorShader.get(), orbitCam, dirLight, pointLights, spotLights);
 
 		// Render here
 		cube1.render();
@@ -212,7 +231,7 @@ int main(int argc, char** argv)
 }
 
 
-void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<PointLight>& pointLights)
+void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<PointLight>& pointLights, std::vector<SpotLight>& spotLights)
 {
 	shader->use();
 	shader->setUniform("viewProjMatrix", camera.getProjMatrix() * camera.getViewMatrix());
@@ -226,6 +245,16 @@ void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLig
 		shader->setUniform("pointL[" + std::to_string(i) + "].color", pointLights[i].color);
 		shader->setUniform("pointL[" + std::to_string(i) + "].position", pointLights[i].position);
 		shader->setUniform("pointL[" + std::to_string(i) + "].attenuation", pointLights[i].attenuation);
+	}
+
+	for (int i = 0; i < spotLights.size(); i++)
+	{
+		shader->setUniform("spotL[" + std::to_string(i) + "].color", spotLights[i].color);
+		shader->setUniform("spotL[" + std::to_string(i) + "].position", spotLights[i].position);
+		shader->setUniform("spotL[" + std::to_string(i) + "].attenuation", spotLights[i].attenuation);
+		shader->setUniform("spotL[" + std::to_string(i) + "].direction", spotLights[i].direction);
+		shader->setUniform("spotL[" + std::to_string(i) + "].innerAngle", spotLights[i].innerAngle);
+		shader->setUniform("spotL[" + std::to_string(i) + "].outerAngle", spotLights[i].outerAngle);
 	}
 }
 

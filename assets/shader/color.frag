@@ -51,11 +51,24 @@ struct PointLight {
 uniform PointLight pointL[10];
 
 
+struct SpotLight {
+	vec3 color;
+	vec3 position;
+	vec3 direction;
+	vec3 attenuation;
+	float innerAngle;
+	float outerAngle;
+};
+uniform SpotLight spotL[10];
+
 
 
 /* ---------------------------------- */
 // Diffuse, Specular, Attenuation
 /* ---------------------------------- */
+
+// Diffuse color = objectColor * light.color
+// Specular color = light.Color
 
 vec3 calcDiffuse(vec3 diffCol, float kd, vec3 lightDir, vec3 normal)
 {
@@ -121,6 +134,32 @@ vec3 calcPointLight(PointLight light, Material material, vec3 objectColor, vec3 
 }
 
 
+/* ---------------------------- */
+// Spot Lightsource
+/* ---------------------------- */
+
+vec3 calcSpotLight(SpotLight light, Material material, vec3 objectColor, vec3 normal, vec3 eyeDir)
+{
+	// Normalize
+	vec3 lightDir = normalize(light.position - vert.position_world);
+
+	vec3 diffuse = calcDiffuse(light.color * objectColor, material.light.y, lightDir, normal);
+	vec3 specular = calcSpecular(light.color, material.light.z, material.alpha, lightDir, eyeDir, normal);
+	float attenuation = calcAttenuation(light.attenuation, lightDir);
+
+
+	// SpotLight part
+	float theta = dot(lightDir, normalize(-light.direction));				 // the angle between the LightDir and the SpotDir
+	float epsilon = light.innerAngle - light.outerAngle;                     // the difference between inner - outerCutoff ==> (theta - outerCutoff) / epsilon
+	float intensity = clamp((theta - light.outerAngle) / epsilon, 0.0, 1.0); // clamping avoids if/else statments
+
+
+	// final
+	return (diffuse + specular) * attenuation * intensity;
+}
+
+
+
 void main() {	
 
 	vec3 I,R;
@@ -157,6 +196,8 @@ void main() {
 		// Add point lights
 		fragColor.rgb += calcPointLight(pointL[0], material, objectColor, normal, eyeDir);
 		fragColor.rgb += calcPointLight(pointL[1], material, objectColor, normal, eyeDir);
+		// Add spot lights
+		fragColor.rgb += calcSpotLight(spotL[0], material, objectColor, normal, eyeDir);
 
 	}
 }

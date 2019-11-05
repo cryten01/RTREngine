@@ -26,6 +26,7 @@ uniform samplerCube skybox;
 
 uniform struct ControlParameters {
 	int state;
+	bool illuminated;
 } param;
 
 
@@ -164,33 +165,33 @@ vec3 calcSpotLight(SpotLight light, Material material, vec3 objectColor, vec3 no
 
 void main() {	
 
-	vec3 I,R;
+	vec3 objectColor,R;
 
+	// Normalize normal vector
+	vec3 normal = normalize(vert.normal_world);
+	// Calculate eye direction
+	vec3 eyeDir = normalize(camera_world - vert.position_world);
+
+
+	// Define objectColor
 	if (param.state == REFLECTIVE) {
-		vec3 I = normalize(vert.position_world - camera_world);
-		vec3 R = reflect(I, normalize(vert.normal_world));
-		fragColor = vec4(texture(skybox, R).rgb, 1.0);
+		vec3 R = reflect(-eyeDir, normal);
+		objectColor = texture(skybox, R).rgb;
 	} 
-	
 	if (param.state == REFRACTIVE) {
 		float ratio = 1.00 / 1.309;
-		vec3 I = normalize(vert.position_world - camera_world);
-		vec3 R = refract(I, normalize(vert.normal_world), ratio);
-		fragColor = vec4(texture(skybox, R).rgb, 1.0);
+		vec3 R = refract(-eyeDir, normal, ratio);
+		objectColor = texture(skybox, R).rgb;
 	} 
+	if (param.state == TEXTURE) {
+		objectColor = texture2D(material.texture_diffuse1, vert.uv).rgb; 
+	} 
+	if (param.state == DIFFUSE) {
+		objectColor = material.color;
+	}
 	
 
-	if (param.state == TEXTURE || param.state == DIFFUSE) {
-		// Define objectColor
-		vec3 objectColor = (param.state == TEXTURE) ? texture2D(material.texture_diffuse1, vert.uv).rgb : material.color;
-		
-
-		// Normalize normal vector
-		vec3 normal = normalize(vert.normal_world);
-		// Calculate eye direction
-		vec3 eyeDir = normalize(camera_world - vert.position_world);
-
-
+	if (param.illuminated) {
 		// Calculate ambient (Ia * ka)
 		fragColor = vec4((objectColor * material.light.x), 1); // ambient
 		
@@ -206,6 +207,7 @@ void main() {
 		for (int i = 0; i < NR_SPOT_LIGHTS; i++) {
 			fragColor.rgb += calcSpotLight(spotL[i], material, objectColor, normal, eyeDir);
 		}
-
+	} else {
+		fragColor = vec4(objectColor, 1);
 	}
 }

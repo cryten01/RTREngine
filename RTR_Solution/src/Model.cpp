@@ -151,7 +151,7 @@ std::shared_ptr<Material> Model::loadMaterial(aiMesh* mesh, const aiScene *scene
 		material = std::make_shared<TextureMaterial>(_shader, glm::vec3(0.0f, 0.7f, 0.0f), 1.0f, allMaps);
 
 		// Set material state
-		material->getState() = DIFFUSE;
+		material->getState() = REFLECTIVE;
 	}
 
 	return material;

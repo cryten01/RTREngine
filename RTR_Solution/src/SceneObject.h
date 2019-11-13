@@ -7,14 +7,13 @@
 class SceneObject
 {
 private:
-	// Attributes
 	std::shared_ptr<Shader> _shader;
 	std::list<SceneObject> _children;
 	std::list<SceneComponent> _components;
 	Transform _transform;
 
 public:
-	 SceneObject();
+	 SceneObject(std::shared_ptr<Shader> shader);
 	~SceneObject();
 
 	// Getter

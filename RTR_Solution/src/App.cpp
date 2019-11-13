@@ -112,7 +112,7 @@ int main(int argc, char** argv)
 	/* --------------------------------------------- */
 
 	// Load shaders here (location starts at solution folder)
-	std::shared_ptr<Shader> colorShader = std::make_shared<Shader>("../assets/shader/color.vert", "../assets/shader/color.frag");
+	std::shared_ptr<Shader> defaultShader = std::make_shared<Shader>("../assets/shader/color.vert", "../assets/shader/color.frag");
 	std::shared_ptr<Shader> skyboxShader = std::make_shared<Shader>("../assets/shader/skybox.vert", "../assets/shader/skybox.frag");
 
 	// Create textures here
@@ -120,9 +120,9 @@ int main(int argc, char** argv)
 	Texture minionTexture("../assets/textures/minion.jpg", TEX_DIFFUSE);
 
 	// Create materials here
-	std::shared_ptr<Material> blueMaterial = std::make_shared<Material>(colorShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-	std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(colorShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, leatherTexture);
-	std::shared_ptr<Material> minionMaterial = std::make_shared<TextureMaterial>(colorShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, minionTexture);
+	std::shared_ptr<Material> blueMaterial = std::make_shared<Material>(defaultShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+	std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(defaultShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, leatherTexture);
+	std::shared_ptr<Material> minionMaterial = std::make_shared<TextureMaterial>(defaultShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, minionTexture);
 
 	// Create geometry here
 	Mesh sphere1 = Mesh(
@@ -150,15 +150,12 @@ int main(int argc, char** argv)
 	);
 
 	// Create models here (object files must be in separate directory)
-	Model demoModel("../assets/models/nanosuit/nanosuit.obj", colorShader);
+	Model demoModel("../assets/models/nanosuit/nanosuit.obj", defaultShader);
 
 
 	// Create scene objects here
-	SceneObject testObjParent;
-	SceneObject testObjChild;
-	testObjParent.setShader(colorShader);
-	testObjParent.addChild(testObjChild);
-	testObjParent.addComponent(cylinder);
+	SceneObject sphereObj1(defaultShader);
+	sphereObj1.addComponent(cylinder);
 
 
 	// Create directional light here
@@ -245,7 +242,7 @@ int main(int argc, char** argv)
 		orbitCam.update(int(mouse_x), int(mouse_y), _zoom, _dragging, _strafing);
 
 		// Set per-frame uniforms
-		setPerFrameUniforms(colorShader.get(), orbitCam, dirLight, pointLights, spotLights);
+		setPerFrameUniforms(defaultShader.get(), orbitCam, dirLight, pointLights, spotLights);
 	
 		// Render here
 		//cube.render();

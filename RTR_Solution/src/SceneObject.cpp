@@ -1,7 +1,8 @@
 #include "SceneObject.h"
 
 
-SceneObject::SceneObject()
+SceneObject::SceneObject(std::shared_ptr<Shader> shader)
+	: _shader(shader)
 {
 	// Defaults
 	_transform = Transform();

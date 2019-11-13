@@ -9,6 +9,9 @@
 #include "Light.h"
 
 
+
+
+
 /* --------------------------------------------- */
 // Global variables
 /* --------------------------------------------- */
@@ -191,9 +194,15 @@ int main(int argc, char** argv)
 
 	// Render loop variables
 	float currentTime = float(glfwGetTime());
+	float lastTime = float(glfwGetTime());
 	float deltaTime = 0.0f;
 	float runTime = 0.0f;
+	int frames = 0;
+	int fps = 0;
 	double mouse_x, mouse_y;
+
+
+
 
 	// Loop until the user closes the window
 	while (!glfwWindowShouldClose(window))
@@ -207,6 +216,16 @@ int main(int argc, char** argv)
 		deltaTime = currentTime - deltaTime;
 		runTime += deltaTime;
 
+		// FPS counter
+		frames++;
+		if (currentTime - lastTime >= 1.0) {
+			fps = frames;
+			frames = 0;
+			lastTime += 1.0;
+
+			std::cout << fps << std::endl;
+		}
+
 		// Update sphere (Rotation for debugging purposes only!)
 		//sphere1.transform(glm::rotate(glm::mat4(1.0f), glm::radians(10.0f * deltaTime), glm::vec3(0, 1, 0)));
 
@@ -216,7 +235,6 @@ int main(int argc, char** argv)
 
 		// Set per-frame uniforms
 		setPerFrameUniforms(colorShader.get(), orbitCam, dirLight, pointLights, spotLights);
-
 	
 		// Render here
 		cube.render();

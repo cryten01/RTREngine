@@ -1,5 +1,9 @@
 #version 430 core
 
+/* ---------------------------------- */
+// DataType declarations
+/* ---------------------------------- */
+
 /** STATE ENUMS */
 const uint REFLECTIVE = 0;
 const uint REFRACTIVE = 1;
@@ -56,8 +60,8 @@ uniform uint NR_POINT_LIGHTS;
 struct SpotLight {
 	vec3 color;
 	vec3 position;
-	vec3 direction;
 	vec3 attenuation;
+	vec3 direction;
 	float innerAngle;
 	float outerAngle;
 };
@@ -73,16 +77,14 @@ uniform uint NR_SPOT_LIGHTS;
 // Diffuse color = objectColor * light.color
 // Specular color = light.Color
 
-vec3 calcDiffuse(vec3 diffCol, float kd, vec3 lightDir, vec3 normal)
-{
+vec3 calcDiffuse(vec3 diffCol, float kd, vec3 lightDir, vec3 normal) {
 	float cosTheta = max(0, dot(normal, lightDir));
 
 	return diffCol * kd * cosTheta;
 };
 
 
-vec3 calcSpecular(vec3 specCol, float ks, float alpha, vec3 lightDir, vec3 eyeDir, vec3 normal)
-{	
+vec3 calcSpecular(vec3 specCol, float ks, float alpha, vec3 lightDir, vec3 eyeDir, vec3 normal) {	
 	vec3 reflectDir = reflect(-lightDir, normal);
 	float cosAlpha = max(dot(eyeDir, reflectDir), 0.0);
 	float shininess = pow(cosAlpha, alpha);
@@ -91,8 +93,7 @@ vec3 calcSpecular(vec3 specCol, float ks, float alpha, vec3 lightDir, vec3 eyeDi
 };
 
 
-float calcAttenuation(vec3 attenuation, vec3 lightDir)
-{
+float calcAttenuation(vec3 attenuation, vec3 lightDir) {
 	float distance = length(lightDir);
 
 	return 1.0f / (attenuation.x + distance * attenuation.y + distance * distance * attenuation.z);
@@ -103,8 +104,7 @@ float calcAttenuation(vec3 attenuation, vec3 lightDir)
 // Directional Lightsource
 /* ---------------------------- */
 
-vec3 calcDirLight(DirLight light, Material material, vec3 objectColor, vec3 normal, vec3 eyeDir)
-{
+vec3 calcDirLight(DirLight light, Material material, vec3 objectColor, vec3 normal, vec3 eyeDir) {
 	// Normalize
 	vec3 lightDir = normalize(light.direction);
 
@@ -123,8 +123,7 @@ vec3 calcDirLight(DirLight light, Material material, vec3 objectColor, vec3 norm
 // Point Lightsource
 /* ---------------------------- */
 
-vec3 calcPointLight(PointLight light, Material material, vec3 objectColor, vec3 normal, vec3 eyeDir)
-{	
+vec3 calcPointLight(PointLight light, Material material, vec3 objectColor, vec3 normal, vec3 eyeDir) {	
 	// Normalize
 	vec3 lightDir = normalize(light.position - vert.position_world);
 
@@ -141,8 +140,7 @@ vec3 calcPointLight(PointLight light, Material material, vec3 objectColor, vec3 
 // Spot Lightsource
 /* ---------------------------- */
 
-vec3 calcSpotLight(SpotLight light, Material material, vec3 objectColor, vec3 normal, vec3 eyeDir)
-{
+vec3 calcSpotLight(SpotLight light, Material material, vec3 objectColor, vec3 normal, vec3 eyeDir) {
 	// Normalize
 	vec3 lightDir = normalize(light.position - vert.position_world);
 

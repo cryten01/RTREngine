@@ -35,3 +35,28 @@
 	std::cout << "ERROR: " << err << std::endl; \
 	system("PAUSE"); \
 	return EXIT_FAILURE;
+
+
+
+/* --------------------------------------------- */
+// Meta programming
+/* --------------------------------------------- */
+
+/** GOAL for identical types (tunneling): 
+	shader->setUniform(pointLights[i].color)	// Array
+	shader->setUniform(material.alpha)			// Single variable
+
+	GOAL for non-identical types (location based tunneling):
+	shader->setUniform(location = 0)			// GPU only dataTypes
+*/
+
+
+// Gets variable name
+
+// Check if uniform does exist (once at compile time, debug only)
+
+// Check if declaration/definition name is identical  (once at compile time, debug only)
+
+// Check if structure is identical (once at compile time, debug only)
+
+// Set all struct attributes (ensures access to all attributes on GPU side)

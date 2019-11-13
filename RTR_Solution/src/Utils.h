@@ -8,6 +8,7 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
+#include <list>
 
 // GLEW
 #define GLEW_STATIC

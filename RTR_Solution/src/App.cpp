@@ -8,7 +8,9 @@
 #include "Skybox.h"
 #include "Light.h"
 
-
+#include "SceneObject.h"
+#include "Transform.h"
+#include "SceneComponent.h"
 
 
 
@@ -150,6 +152,15 @@ int main(int argc, char** argv)
 	// Create models here (object files must be in separate directory)
 	Model demoModel("../assets/models/nanosuit/nanosuit.obj", colorShader);
 
+
+	// Create scene objects here
+	SceneObject testObjParent;
+	SceneObject testObjChild;
+	testObjParent.setShader(colorShader);
+	testObjParent.addChild(testObjChild);
+	testObjParent.addComponent(cylinder);
+
+
 	// Create directional light here
 	DirectionalLight dirLight(glm::vec3(1.0f), glm::vec3(0, -1, 0));
 
@@ -237,11 +248,11 @@ int main(int argc, char** argv)
 		setPerFrameUniforms(colorShader.get(), orbitCam, dirLight, pointLights, spotLights);
 	
 		// Render here
-		cube.render();
-		cylinder.render();
-		sphere1.render();
-		sphere2.render();
-		//demoModel.render();
+		//cube.render();
+		//cylinder.render();
+		//sphere1.render();
+		//sphere2.render();
+		demoModel.render();
 		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render always last!
 
 		// Poll events and swap buffers

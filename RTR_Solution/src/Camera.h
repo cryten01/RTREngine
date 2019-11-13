@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Utils.h"
+#include "SceneComponent.h"
 
-class Camera
+class Camera : public SceneComponent
 {
 private:
 	glm::mat4 _viewMatrix;

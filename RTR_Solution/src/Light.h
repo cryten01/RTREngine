@@ -4,11 +4,10 @@
 * This file is part of the ECG Lab Framework and must not be redistributed.
 */
 #pragma once
+#include "Utils.h"
+#include "SceneComponent.h"
 
-
-#include <glm\glm.hpp>
-
-struct DirectionalLight {
+struct DirectionalLight : public SceneComponent {
 	DirectionalLight() {
 		enabled = false;
 	}
@@ -23,7 +22,7 @@ struct DirectionalLight {
 };
 
 
-struct PointLight {
+struct PointLight : public SceneComponent {
 	PointLight() {
 		enabled = false;
 	}
@@ -39,7 +38,7 @@ struct PointLight {
 };
 
 
-struct SpotLight {
+struct SpotLight : public SceneComponent {
 	SpotLight() {
 		enabled = false;
 	}

@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\SceneObject.cpp" />
     <ClCompile Include="src\Skybox.cpp" />
     <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\App.cpp" />
@@ -154,15 +155,19 @@
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\SceneComponent.h" />
     <ClInclude Include="src\Light.h" />
+    <ClInclude Include="src\SceneObject.h" />
     <ClInclude Include="src\Skybox.h" />
     <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\Mesh.h" />
     <ClInclude Include="src\Material.h" />
     <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\Transform.h" />
     <ClInclude Include="src\Utils.h" />
     <ClInclude Include="src\Texture.h" />
   </ItemGroup>

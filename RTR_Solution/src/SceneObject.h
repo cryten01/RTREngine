@@ -1,15 +1,14 @@
 #pragma once
 #include "Utils.h"
 #include "Shader.h"
-#include "SceneComponent.h"
 #include "Transform.h"
+#include "Mesh.h"
 
 class SceneObject
 {
 private:
 	std::shared_ptr<Shader> _shader;
 	std::list<SceneObject> _children;
-	std::list<SceneComponent> _components;
 	Transform _transform;
 
 public:
@@ -24,6 +23,5 @@ public:
 
 	// Methods
 	void addChild(SceneObject child);
-	void addComponent(SceneComponent component);
 };
 

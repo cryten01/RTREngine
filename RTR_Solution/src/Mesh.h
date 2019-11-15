@@ -1,6 +1,5 @@
 #pragma once
 #include "Utils.h"
-#include "SceneComponent.h"
 #include "Material.h"
 
 /** Represents a mesh containing vertex positions, normal vectors, texture coordinates and material*/
@@ -12,7 +11,7 @@ struct MeshData {
 	std::vector<GLuint> indices;
 };
 
-class Mesh : public SceneComponent
+class Mesh
 {
 protected:
 	GLuint _vao;

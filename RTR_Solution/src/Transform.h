@@ -1,9 +1,8 @@
 #pragma once
 #include "Utils.h"
-#include "SceneComponent.h"
 #include "Shader.h"
 
-class Transform : public SceneComponent
+class Transform
 {
 private: 
 	glm::mat4 _modelMatrix;			// permanent position in local space

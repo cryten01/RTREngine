@@ -155,7 +155,6 @@ int main(int argc, char** argv)
 
 	// Create scene objects here
 	SceneObject sphereObj1(defaultShader);
-	sphereObj1.addComponent(cylinder);
 
 
 	// Create directional light here

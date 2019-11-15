@@ -31,9 +31,4 @@ void SceneObject::addChild(SceneObject child)
 	this->_children.push_back(child);
 }
 
-void SceneObject::addComponent(SceneComponent component)
-{
-	this->_components.push_back(component);
-}
-
 

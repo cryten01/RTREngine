@@ -5,9 +5,8 @@
 */
 #pragma once
 #include "Utils.h"
-#include "SceneComponent.h"
 
-struct DirectionalLight : public SceneComponent {
+struct DirectionalLight {
 	DirectionalLight() {
 		enabled = false;
 	}
@@ -22,7 +21,7 @@ struct DirectionalLight : public SceneComponent {
 };
 
 
-struct PointLight : public SceneComponent {
+struct PointLight {
 	PointLight() {
 		enabled = false;
 	}
@@ -38,7 +37,7 @@ struct PointLight : public SceneComponent {
 };
 
 
-struct SpotLight : public SceneComponent {
+struct SpotLight {
 	SpotLight() {
 		enabled = false;
 	}

@@ -44,10 +44,10 @@ void Model::processNode(aiNode *node, const aiScene *scene)
 		aiMesh* aMesh = scene->mMeshes[node->mMeshes[i]];
 
 		// Create the actual mesh object from processMesh()
-		Mesh* mesh = new Mesh(processMesh(aMesh, scene));
+		SceneObject* mesh = new SceneObject(processSceneObj(aMesh, scene));
 
 		// Create an entry reference for the mesh
-		_meshEntries.push_back(mesh);
+		_sceneObjEntries.push_back(mesh);
 	}
 
 	// Once all meshes are processed recursively do the same for each children
@@ -63,29 +63,34 @@ void Model::processNode(aiNode *node, const aiScene *scene)
 **/
 Model::~Model()
 {
-	for (int i = 0; i < _meshEntries.size(); ++i) {
-		delete _meshEntries.at(i);
+	for (int i = 0; i < _sceneObjEntries.size(); ++i) {
+		delete _sceneObjEntries.at(i);
 	}
-	_meshEntries.clear();
+	_sceneObjEntries.clear();
 }
 
 
 /**
 *	Loads the specified aiMesh
 **/
-Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
+SceneObject Model::processSceneObj(aiMesh *mesh, const aiScene *scene)
 {
-	MeshData geometry = loadGeometry(mesh);
-	std::shared_ptr<Material> material = loadMaterial(mesh, scene);
+	SceneObject sceneObj(_shader, glm::mat4(1));
 
-	return Mesh(glm::mat4(1.0f), geometry, material);
+	MeshData meshData = loadMesh(mesh);
+	std::shared_ptr<Material> material = loadMaterial(mesh, scene);
+	std::shared_ptr<Mesh> meshObj = std::make_shared<Mesh>(meshData, material);
+
+	sceneObj.setMesh(meshObj);
+
+	return sceneObj;
 }
 
 
 /**
 *	Loads the specified geometry (similar to Mesh::createSphereGeometry())
 **/
-MeshData Model::loadGeometry(aiMesh* mesh)
+MeshData Model::loadMesh(aiMesh* mesh)
 {
 	MeshData data;
 
@@ -209,7 +214,8 @@ std::vector<Texture> Model::loadTextures(aiMaterial* mat, aiTextureType aType, T
 *	Renders all loaded meshes
 **/
 void Model::render() {
-	for (GLuint i = 0; i < _meshEntries.size(); i++) {
-		_meshEntries.at(i)->render();
+	for (GLuint i = 0; i < _sceneObjEntries.size(); i++) {
+
+		_sceneObjEntries.at(i)->render();
 	}
 }

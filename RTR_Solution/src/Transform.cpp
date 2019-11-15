@@ -1,7 +1,8 @@
 #include "Transform.h"
 
 
-Transform::Transform()
+Transform::Transform(glm::mat4 modelMatrix, glm::mat4 transformMatrix)
+	: _modelMatrix(modelMatrix), _transformMatrix(transformMatrix)
 {
 	// Defaults
 	this->_modelMatrix = glm::mat4(1.0f); // in origin
@@ -33,7 +34,7 @@ void Transform::resetModelMatrix()
 	this->_modelMatrix = glm::mat4(1);
 }
 
-void Transform::render(Shader* shader)
+void Transform::setUniforms(std::shared_ptr<Shader> shader)
 {
 	// Apply transformations
 	glm::mat4 accumModel = _transformMatrix * _modelMatrix;

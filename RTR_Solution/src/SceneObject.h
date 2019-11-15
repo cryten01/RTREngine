@@ -4,24 +4,33 @@
 #include "Transform.h"
 #include "Mesh.h"
 
+/**
+* 
+**/
 class SceneObject
 {
 private:
-	std::shared_ptr<Shader> _shader;
 	std::list<SceneObject> _children;
-	Transform _transform;
+
+	std::shared_ptr<Shader> _shader;
+	std::shared_ptr<Transform> _transform;
+	std::shared_ptr<Mesh> _mesh;
 
 public:
-	 SceneObject(std::shared_ptr<Shader> shader);
+	 SceneObject(std::shared_ptr<Shader> shader, glm::mat4 transformMatrix);
 	~SceneObject();
 
 	// Getter
-	Transform& getTransform();
+	std::shared_ptr<Transform> getTransform();
+	std::shared_ptr<Mesh> getMesh();
 
 	// Setter
 	void setShader(std::shared_ptr<Shader> shader);
+	void setTransform(std::shared_ptr<Transform> transform);
+	void setMesh(std::shared_ptr<Mesh> mesh);
 
 	// Methods
 	void addChild(SceneObject child);
+	void render();
 };
 

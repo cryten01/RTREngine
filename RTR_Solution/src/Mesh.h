@@ -23,19 +23,12 @@ protected:
 
 	std::shared_ptr<Material> _material;
 
-	glm::mat4 _modelMatrix;
-	glm::mat4 _transformMatrix;
-
 public:
-	 Mesh(glm::mat4 modelMatrix, MeshData data, std::shared_ptr<Material> material);
+	 Mesh(MeshData data, std::shared_ptr<Material> material);
 	~Mesh();
 
 	void render();
-	void transform(glm::mat4 transformation);
-	void resetModelMatrix();
-
 	std::shared_ptr<Material> getMaterial();
-	void setTransformMatrix(glm::mat4 transformMatrix);
 
 	static float normalizeUV(float value, float min, float max);
 	static MeshData createCubeGeometry(float width, float height, float depth);

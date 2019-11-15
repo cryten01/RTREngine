@@ -9,7 +9,7 @@ private:
 	glm::mat4 _transformMatrix;
 
 public:
-	 Transform();
+	 Transform(glm::mat4 modelMatrix, glm::mat4 transformMatrix);
 	~Transform();
 
 	// Setter
@@ -19,6 +19,6 @@ public:
 	// Methods
 	void transform(glm::mat4 transformation);
 	void resetModelMatrix();
-	void render(Shader* shader);
+	void setUniforms(std::shared_ptr<Shader> shader);
 };
 

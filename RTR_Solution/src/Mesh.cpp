@@ -1,8 +1,8 @@
 #include "Mesh.h"
 
 
-Mesh::Mesh(glm::mat4 modelMatrix, MeshData data, std::shared_ptr<Material> material)
-	: _elementCount(data.indices.size()), _modelMatrix(modelMatrix), _material(material)
+Mesh::Mesh(MeshData data, std::shared_ptr<Material> material)
+	: _elementCount(data.indices.size()), _material(material)
 {
 	// create VAO
 	glGenVertexArrays(1, &_vao);
@@ -41,10 +41,6 @@ Mesh::Mesh(glm::mat4 modelMatrix, MeshData data, std::shared_ptr<Material> mater
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-
-	// TODO: why transformMatrix can't be empty?
-	_transformMatrix = glm::mat4(1.0f);
 }
 
 
@@ -59,16 +55,11 @@ Mesh::~Mesh()
 
 void Mesh::render()
 {
-	// Apply transformations
-	glm::mat4 accumModel = _transformMatrix * _modelMatrix;
-
 	// Select shader
 	Shader* shader = _material->getShader();
 	shader->use();
 
 	// Set uniforms
-	shader->setUniform("modelMatrix", accumModel);
-	shader->setUniform("normalMatrix", glm::mat3(glm::transpose(glm::inverse(accumModel)))); // Fixes non uniform scaling issues, done on CPU for performance reasons
 	_material->setUniforms();
 	
 	// Bind _vao
@@ -77,25 +68,13 @@ void Mesh::render()
 	glBindVertexArray(0);
 }
 
-void Mesh::transform(glm::mat4 transformation)
-{
-	_modelMatrix = transformation * _modelMatrix;
-}
 
 std::shared_ptr<Material> Mesh::getMaterial()
 {
 	return this->_material;
 }
 
-void Mesh::setTransformMatrix(glm::mat4 transformMatrix)
-{
-	_transformMatrix = transformMatrix;
-}
 
-void Mesh::resetModelMatrix()
-{
-	_modelMatrix = glm::mat4(1);
-}
 
 float Mesh::normalizeUV(float value, float min, float max)
 {

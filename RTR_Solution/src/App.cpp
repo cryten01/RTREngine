@@ -125,26 +125,26 @@ int main(int argc, char** argv)
 	std::shared_ptr<Material> minionMaterial = std::make_shared<TextureMaterial>(defaultShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, minionTexture);
 
 	// Create geometry here
-	Mesh sphere1 = Mesh(
-		glm::translate(glm::mat4(1), glm::vec3(-1.0f, 2.0, 0.0)),
+	std::shared_ptr<Mesh> sphere1 = std::make_shared<Mesh>(
+		//glm::translate(glm::mat4(1), glm::vec3(-1.0f, 2.0, 0.0)),
 		Mesh::createSphereGeometry(24, 24, 0.7f), 
 		blueMaterial
 	);
 
-	Mesh sphere2 = Mesh(
-		glm::translate(glm::mat4(1), glm::vec3( 1.0f, 2.0, 0.0)),
+	std::shared_ptr<Mesh> sphere2 = std::make_shared<Mesh>(
+		//glm::translate(glm::mat4(1), glm::vec3( 1.0f, 2.0, 0.0)),
 		Mesh::createSphereGeometry(24, 24, 0.7f),
 		blueMaterial
 	);
 
-	Mesh cube(
-		glm::translate(glm::mat4(1), glm::vec3(1.0f, 0.0, 0.0)),
+	std::shared_ptr<Mesh> cube = std::make_shared<Mesh>(
+		//glm::translate(glm::mat4(1), glm::vec3(1.0f, 0.0, 0.0)),
 		Mesh::createCubeGeometry(1.5f, 1.5f, 1.5f),
 		blueMaterial
 	);
 
-	Mesh cylinder(
-		glm::translate(glm::mat4(1), glm::vec3(-1.0f, 0.0, 0.0)),
+	std::shared_ptr<Mesh> cylinder = std::make_shared<Mesh>(
+		//glm::translate(glm::mat4(1), glm::vec3(-1.0f, 0.0, 0.0)),
 		Mesh::createCylinderGeometry(24.0f, 1.5f, 0.7f),
 		blueMaterial
 	);
@@ -154,8 +154,23 @@ int main(int argc, char** argv)
 
 
 	// Create scene objects here
-	SceneObject sphereObj1(defaultShader);
+	SceneObject nanoManObj(defaultShader, glm::mat4(1));
 
+	SceneObject sphere1Obj(defaultShader, glm::mat4(1));
+	sphere1Obj.setMesh(sphere1);
+	sphere1Obj.getTransform()->setTransformMatrix(glm::translate(glm::mat4(1), glm::vec3(-1.0f, 2.0, 0.0)));
+	
+	SceneObject sphere2Obj(defaultShader, glm::mat4(1));
+	sphere2Obj.setMesh(sphere2);
+	sphere2Obj.getTransform()->setTransformMatrix(glm::translate(glm::mat4(1), glm::vec3(1.0f, 2.0, 0.0)));
+
+	SceneObject cubeObj(defaultShader, glm::mat4(1));
+	cubeObj.setMesh(cube);
+	cubeObj.getTransform()->setTransformMatrix(glm::translate(glm::mat4(1), glm::vec3(1.0f, 0.0, 0.0)));
+	
+	SceneObject cylinderObj(defaultShader, glm::mat4(1));
+	cylinderObj.setMesh(cylinder);
+	cylinderObj.getTransform()->setTransformMatrix(glm::translate(glm::mat4(1), glm::vec3(-1.0f, 0.0, 0.0)));
 
 	// Create directional light here
 	DirectionalLight dirLight(glm::vec3(1.0f), glm::vec3(0, -1, 0));
@@ -244,11 +259,11 @@ int main(int argc, char** argv)
 		setPerFrameUniforms(defaultShader.get(), orbitCam, dirLight, pointLights, spotLights);
 	
 		// Render here
-		//cube.render();
-		//cylinder.render();
-		//sphere1.render();
-		//sphere2.render();
-		demoModel.render();
+		cubeObj.render();
+		cylinderObj.render();
+		sphere1Obj.render();
+		sphere2Obj.render();
+		//demoModel.render();
 		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render always last!
 
 		// Poll events and swap buffers

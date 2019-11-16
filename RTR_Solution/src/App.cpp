@@ -42,7 +42,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
-void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<PointLight>& pointLights, std::vector<SpotLight>& spotLights);
+void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<std::shared_ptr<PointLight>> pointLights, std::vector<SpotLight>& spotLights);
 
 
 int main(int argc, char** argv)
@@ -179,13 +179,15 @@ int main(int argc, char** argv)
 	DirectionalLight dirLight(glm::vec3(1.0f), glm::vec3(0, -1, 0));
 
 	// Create point lights here
-	std::vector<PointLight> pointLights;
-	pointLights.push_back(PointLight(
+	std::vector<std::shared_ptr<PointLight>> pointLights;
+
+	pointLights.push_back(std::make_shared<PointLight>(
 		glm::vec3(1.0f), 
 		glm::vec3(0.0f, 1.0f, 0.0f), 
 		glm::vec3(1.0f, 0.4f, 0.1f)
 	));
-	pointLights.push_back(PointLight(
+
+	pointLights.push_back(std::make_shared<PointLight>(
 		glm::vec3(0.6f), 
 		glm::vec3(0.0f, -1.0f, 0.0f),
 		glm::vec3(1.0f,  0.4f, 0.1f)
@@ -284,7 +286,7 @@ int main(int argc, char** argv)
 }
 
 
-void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<PointLight>& pointLights, std::vector<SpotLight>& spotLights)
+void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<std::shared_ptr<PointLight>> pointLights, std::vector<SpotLight>& spotLights)
 {
 	shader->use();
 	shader->setUniform("viewProjMatrix", camera.getProjMatrix() * camera.getViewMatrix());
@@ -296,9 +298,9 @@ void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLig
 	shader->setUniform("NR_POINT_LIGHTS", pointLights.size());
 	for (int i = 0; i < pointLights.size(); i++)
 	{
-		shader->setUniform("pointL[" + std::to_string(i) + "].color", pointLights[i].color);
-		shader->setUniform("pointL[" + std::to_string(i) + "].position", pointLights[i].position);
-		shader->setUniform("pointL[" + std::to_string(i) + "].attenuation", pointLights[i].attenuation);
+		shader->setUniform("pointL[" + std::to_string(i) + "].color", pointLights.at(i)->color);
+		shader->setUniform("pointL[" + std::to_string(i) + "].position", pointLights.at(i)->position);
+		shader->setUniform("pointL[" + std::to_string(i) + "].attenuation", pointLights.at(i)->attenuation);
 	}
 
 	shader->setUniform("NR_SPOT_LIGHTS", spotLights.size());

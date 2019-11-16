@@ -79,8 +79,6 @@ void Transform::resetModelMatrix()
 
 void Transform::setUniforms(std::shared_ptr<Shader> shader)
 {
-	glm::mat4 accumModel;
-
 	// Apply transformations
 	if (_parent != nullptr)
 	{

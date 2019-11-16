@@ -156,16 +156,16 @@ int main(int argc, char** argv)
 	std::shared_ptr <SceneObject> nanoMan = std::make_shared<SceneObject>(defaultShader, glm::mat4(1));
 
 	sphere1->addMesh(sphere1Mesh);
-	sphere1->getTransform()->setPosition(glm::vec3(-4.0f, 4.0, 0.0));
+	sphere1->getTransform()->setLocalPos(glm::vec3(-4.0f, 4.0, 0.0));
 
 	sphere2->addMesh(sphere2Mesh);
-	sphere2->getTransform()->setPosition(glm::vec3( 4.0f, 4.0, 0.0));
+	sphere2->getTransform()->setLocalPos(glm::vec3( 4.0f, 4.0, 0.0));
 
 	cube->addMesh(cubeMesh);
-	cube->getTransform()->setPosition(glm::vec3(0.0f, 4.0, 4.0));
+	cube->getTransform()->setLocalPos(glm::vec3(0.0f, 4.0, 4.0));
 
 	cylinder->addMesh(cylinderMesh);
-	cylinder->getTransform()->setPosition(glm::vec3(0.0f, -0.5, 0.0));
+	cylinder->getTransform()->setLocalPos(glm::vec3(0.0f, -0.5, 0.0));
 	cylinder->addChild(sphere1);
 	cylinder->addChild(sphere2);
 	cylinder->addChild(cube);
@@ -249,13 +249,13 @@ int main(int argc, char** argv)
 			frames = 0;
 			lastTime += 1.0;
 
-			std::cout << fps << std::endl;
+			//std::cout << fps << std::endl;
 		}
 
 		// Update sphere (Rotation for debugging purposes only!)
 		test += 10.0f * deltaTime;
-		nanoMan->getTransform()->setRotation(glm::vec3(0, test * 2, 0));
-		cube->getTransform()->setRotation(glm::vec3(test * 2, 0, 0));
+		nanoMan->getTransform()->setLocalRot(glm::vec3(0, test * 2, 0));
+		cube->getTransform()->setLocalRot(glm::vec3(test * 2, 0, 0));
 		nanoMan->updateAll();
 
 		// Update camera

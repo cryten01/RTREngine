@@ -57,7 +57,6 @@ void SceneObject::addChild(std::shared_ptr<SceneObject> child)
 
 void SceneObject::update()
 {
-	// Update transform modelMatrix
 	this->_transform->updateModelMatrix();
 }
 

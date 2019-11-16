@@ -41,18 +41,50 @@ void SceneObject::setMesh(std::shared_ptr<Mesh> mesh)
 }
 
 
-void SceneObject::addChild(SceneObject child)
+void SceneObject::addChild(std::shared_ptr<SceneObject> child)
 {
+	// Adds child to list (owned by this)
 	this->_children.push_back(child);
+
+	// Sets parent transform (owned by this->_transform)
+	child->getTransform()->setParent(this->_transform);
+}
+
+void SceneObject::update()
+{
+	// Update transform modelMatrix
+	this->_transform->updateModelMatrix();
+}
+
+void SceneObject::updateAll()
+{
+	update();
+
+	// Update children
+	for (size_t i = 0; i < _children.size(); i++)
+	{
+		_children.at(i)->updateAll();
+	}
 }
 
 void SceneObject::render()
 {
 	// Set transform uniforms
-	getTransform()->setUniforms(_shader);
+	this->_transform->setUniforms(_shader);
 
 	// Render mesh
 	getMesh()->render();
+}
+
+void SceneObject::renderAll()
+{
+	this->render();
+
+	// Render children
+	for (size_t i = 0; i < _children.size(); i++)
+	{
+		_children.at(i)->renderAll();
+	}
 }
 
 

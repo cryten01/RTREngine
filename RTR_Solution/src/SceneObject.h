@@ -10,8 +10,7 @@
 class SceneObject
 {
 private:
-	std::list<SceneObject> _children;
-
+	std::vector<std::shared_ptr<SceneObject>> _children;
 	std::shared_ptr<Shader> _shader;
 	std::shared_ptr<Transform> _transform;
 	std::shared_ptr<Mesh> _mesh;
@@ -30,7 +29,10 @@ public:
 	void setMesh(std::shared_ptr<Mesh> mesh);
 
 	// Methods
-	void addChild(SceneObject child);
+	void addChild(std::shared_ptr<SceneObject> child);
+	void update();
+	void updateAll();
 	void render();
+	void renderAll();
 };
 

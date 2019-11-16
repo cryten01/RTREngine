@@ -174,9 +174,6 @@ int main(int argc, char** argv)
 		glm::cos(glm::radians(12.5f))
 	));
 
-	// Create model loader here (object files must be in separate directory)
-	Model modelLoader;
-
 	// Create scene objects here
 	std::shared_ptr <SceneObject> sphere1 = std::make_shared<SceneObject>(defaultShader, glm::mat4(1));
 	std::shared_ptr <SceneObject> sphere2 = std::make_shared<SceneObject>(defaultShader, glm::mat4(1));
@@ -184,25 +181,29 @@ int main(int argc, char** argv)
 	std::shared_ptr <SceneObject> cylinder = std::make_shared<SceneObject>(defaultShader, glm::mat4(1));
 	std::shared_ptr <SceneObject> nanoMan = std::make_shared<SceneObject>(defaultShader, glm::mat4(1));
 
+	// Add meshes here
 	sphere1->addMesh(sphere1Mesh);
-	sphere1->getTransform()->setLocalPos(glm::vec3(-4.0f, 4.0, 0.0));
-
 	sphere2->addMesh(sphere2Mesh);
-	sphere2->getTransform()->setLocalPos(glm::vec3( 4.0f, 4.0, 0.0));
-
 	cube->addMesh(cubeMesh);
-	cube->getTransform()->setLocalPos(glm::vec3(0.0f, 4.0, 4.0));
-	cube->setPointLight(pointLights.at(0));
-
 	cylinder->addMesh(cylinderMesh);
-	cylinder->getTransform()->setLocalPos(glm::vec3(0.0f, -0.5, 0.0));
+
+	// Add children here
 	cylinder->addChild(sphere1);
 	cylinder->addChild(sphere2);
-	cylinder->addChild(cube);
-
-	modelLoader.load(nanoMan, "../assets/models/nanosuit/nanosuit.obj");
 	nanoMan->addChild(cylinder);
 
+	// Add transformations here
+	sphere1->getTransform()->setLocalPos(glm::vec3(-4.0f, 4.0, 0.0));
+	sphere2->getTransform()->setLocalPos(glm::vec3( 4.0f, 4.0, 0.0));
+	cube->getTransform()->setLocalPos(glm::vec3(0.0f, 10.0, 6.0));
+	cylinder->getTransform()->setLocalPos(glm::vec3(0.0f, -0.5, 0.0));
+
+	// Add lights here
+	cube->setLight(spotLights.at(0));
+	
+	// Create model loader here (object files must be in separate directory)
+	Model modelLoader;
+	modelLoader.load(nanoMan, "../assets/models/nanosuit/nanosuit.obj");
 
 	// Create skybox here
 	const char* skyboxTextures[] = {
@@ -218,7 +219,6 @@ int main(int argc, char** argv)
 	// Initialize camera here
 	Camera orbitCam(fov, WIDTH/HEIGHT, nearZ, farZ);
 
-
 	// Render loop variables
 	float currentTime = float(glfwGetTime());
 	float lastTime = float(glfwGetTime());
@@ -230,7 +230,8 @@ int main(int argc, char** argv)
 
 
 	// For debugging only purposes only!
-	float test = 0;
+	float gain = 30;
+	bool up = true;
 
 	// Loop until the user closes the window
 	while (!glfwWindowShouldClose(window))
@@ -254,10 +255,28 @@ int main(int argc, char** argv)
 			//std::cout << fps << std::endl;
 		}
 
-		// Update sphere (Rotation for debugging purposes only!)
-		test += 10.0f * deltaTime;
-		nanoMan->getTransform()->setLocalRot(glm::vec3(0, test * 2, 0));
-		cube->getTransform()->setLocalRot(glm::vec3(test * 2, 0, 0));
+		// Update test (For debugging purposes only!)
+		if (up) 
+		{
+			gain += 20.0f * deltaTime;
+
+			if (gain > 120)
+				up = false;
+		}
+		if (!up)
+		{
+			gain -= 20.0f * deltaTime;
+
+			if (gain < 30)
+				up = true;
+		}
+
+
+		nanoMan->getTransform()->setLocalRot(glm::vec3(0, gain * 2.0, 0));
+		cube->getTransform()->setLocalPos(glm::vec3(0, gain * 0.1, 4));
+		cube->getTransform()->setLocalRot(glm::vec3(gain, 0, 0));
+
+		cube->update();
 		nanoMan->updateAll();
 
 		// Update camera
@@ -268,6 +287,7 @@ int main(int argc, char** argv)
 		setPerFrameUniforms(defaultShader.get(), orbitCam, dirLight, pointLights, spotLights);
 	
 		// Render here
+		cube->render();
 		nanoMan->renderAll();
 		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render always last!
 

@@ -31,7 +31,8 @@ public:
 	void setTransformMatrix(glm::mat4 transformMatrix);
 
 	// Getter
-	glm::vec3& getGlobalPos();
+	glm::vec3& getLocalPos();
+	glm::vec3& getLocalRot();
 
 	// Methods
 	void updateModelMatrix();

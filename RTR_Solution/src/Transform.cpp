@@ -46,9 +46,14 @@ void Transform::setTransformMatrix(glm::mat4 transformMatrix)
 	this->_transformMatrix = transformMatrix;
 }
 
-glm::vec3 & Transform::getGlobalPos()
+glm::vec3& Transform::getLocalPos()
 {
-	return this->_globalPos;
+	return this->_localPos;
+}
+
+glm::vec3 & Transform::getLocalRot()
+{
+	return this->_localRot;
 }
 
 void Transform::setParent(std::shared_ptr<Transform> parent)
@@ -93,7 +98,7 @@ void Transform::setUniforms(std::shared_ptr<Shader> shader)
 		// Extract globalPos
 		_globalPos = glm::vec3(_modelMatrix[3][0], _modelMatrix[3][1], _modelMatrix[3][2]);
 
-		std::cout << _localPos.x << " " << _localPos.y << " " << _localPos.z << " " << std::endl;
+		//std::cout << _localRot.x << " " << _localRot.y << " " << _localRot.z << " " << std::endl;
 	}
 
 	// Set uniforms

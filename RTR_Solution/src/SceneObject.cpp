@@ -30,9 +30,9 @@ std::shared_ptr<Mesh> SceneObject::getMeshAt(int index)
 }
 
 
-void SceneObject::setPointLight(std::shared_ptr<PointLight> pointLight)
+void SceneObject::setLight(std::shared_ptr<SpotLight> pointLight)
 {
-	this->_pointLight = pointLight;
+	this->_light = pointLight;
 }
 
 void SceneObject::setShader(std::shared_ptr<Shader> shader)
@@ -63,6 +63,14 @@ void SceneObject::addChild(std::shared_ptr<SceneObject> child)
 void SceneObject::update()
 {
 	this->_transform->updateModelMatrix();
+
+	if (_light != nullptr) 
+	{
+		// Update light position
+		_light->position = _transform->getLocalPos();
+
+		// TODO: Update light direction here
+	}
 }
 
 void SceneObject::updateAll()
@@ -80,9 +88,6 @@ void SceneObject::render()
 {
 	// Set transform uniforms
 	this->_transform->setUniforms(_shader);
-
-	if (_pointLight != nullptr)
-		_pointLight->position = _transform->getGlobalPos();
 
 	// Render each mesh of this sceneObject
 	for (auto mesh : _meshes)

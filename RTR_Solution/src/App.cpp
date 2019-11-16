@@ -42,7 +42,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
-void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<std::shared_ptr<PointLight>> pointLights, std::vector<SpotLight>& spotLights);
+void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<std::shared_ptr<PointLight>> pointLights, std::vector<std::shared_ptr<SpotLight>> spotLights);
 
 
 int main(int argc, char** argv)
@@ -145,6 +145,35 @@ int main(int argc, char** argv)
 		blueMaterial
 	);
 
+	// Create directional light here
+	DirectionalLight dirLight(glm::vec3(1.0f), glm::vec3(0, -1, 0));
+
+	// Create point lights here
+	std::vector<std::shared_ptr<PointLight>> pointLights;
+
+	pointLights.push_back(std::make_shared<PointLight>(
+		glm::vec3(1.0f),
+		glm::vec3(0.0f, 1.0f, 0.0f),
+		glm::vec3(1.0f, 0.4f, 0.1f)
+		));
+
+	//pointLights.push_back(std::make_shared<PointLight>(
+	//	glm::vec3(0.6f),
+	//	glm::vec3(0.0f, -1.0f, 0.0f),
+	//	glm::vec3(1.0f, 0.4f, 0.1f)
+	//	));
+
+	// Create spot lights here
+	std::vector<std::shared_ptr<SpotLight>> spotLights;
+	spotLights.push_back(std::make_shared<SpotLight>(
+		glm::vec3(1.0f),
+		glm::vec3(0.0f, 8.0f, 4.0f),
+		glm::vec3(1.0f, 0.4f, 0.1f),
+		glm::vec3(0.0f, 0.0f,-1.0f),
+		glm::cos(glm::radians(10.5f)),
+		glm::cos(glm::radians(12.5f))
+	));
+
 	// Create model loader here (object files must be in separate directory)
 	Model modelLoader;
 
@@ -163,6 +192,7 @@ int main(int argc, char** argv)
 
 	cube->addMesh(cubeMesh);
 	cube->getTransform()->setLocalPos(glm::vec3(0.0f, 4.0, 4.0));
+	cube->setPointLight(pointLights.at(0));
 
 	cylinder->addMesh(cylinderMesh);
 	cylinder->getTransform()->setLocalPos(glm::vec3(0.0f, -0.5, 0.0));
@@ -173,36 +203,6 @@ int main(int argc, char** argv)
 	modelLoader.load(nanoMan, "../assets/models/nanosuit/nanosuit.obj");
 	nanoMan->addChild(cylinder);
 
-
-
-	// Create directional light here
-	DirectionalLight dirLight(glm::vec3(1.0f), glm::vec3(0, -1, 0));
-
-	// Create point lights here
-	std::vector<std::shared_ptr<PointLight>> pointLights;
-
-	pointLights.push_back(std::make_shared<PointLight>(
-		glm::vec3(1.0f), 
-		glm::vec3(0.0f, 1.0f, 0.0f), 
-		glm::vec3(1.0f, 0.4f, 0.1f)
-	));
-
-	pointLights.push_back(std::make_shared<PointLight>(
-		glm::vec3(0.6f), 
-		glm::vec3(0.0f, -1.0f, 0.0f),
-		glm::vec3(1.0f,  0.4f, 0.1f)
-	));
-
-	// Create spot lights here
-	std::vector<SpotLight> spotLights;
-	spotLights.push_back(SpotLight(
-		glm::vec3(1.0f), 
-		glm::vec3(1.0f, 0.0f, 4.0f), 
-		glm::vec3(1.0f, 0.4f, 0.1f),
-		glm::vec3(0.0f, 0.0f, -1.0f),
-		glm::cos(glm::radians(10.5f)),
-		glm::cos(glm::radians(12.5f))
-	));
 
 	// Create skybox here
 	const char* skyboxTextures[] = {
@@ -286,7 +286,7 @@ int main(int argc, char** argv)
 }
 
 
-void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<std::shared_ptr<PointLight>> pointLights, std::vector<SpotLight>& spotLights)
+void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<std::shared_ptr<PointLight>> pointLights, std::vector<std::shared_ptr<SpotLight>> spotLights)
 {
 	shader->use();
 	shader->setUniform("viewProjMatrix", camera.getProjMatrix() * camera.getViewMatrix());
@@ -306,12 +306,12 @@ void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLig
 	shader->setUniform("NR_SPOT_LIGHTS", spotLights.size());
 	for (int i = 0; i < spotLights.size(); i++)
 	{
-		shader->setUniform("spotL[" + std::to_string(i) + "].color", spotLights[i].color);
-		shader->setUniform("spotL[" + std::to_string(i) + "].position", spotLights[i].position);
-		shader->setUniform("spotL[" + std::to_string(i) + "].attenuation", spotLights[i].attenuation);
-		shader->setUniform("spotL[" + std::to_string(i) + "].direction", spotLights[i].direction);
-		shader->setUniform("spotL[" + std::to_string(i) + "].innerAngle", spotLights[i].innerAngle);
-		shader->setUniform("spotL[" + std::to_string(i) + "].outerAngle", spotLights[i].outerAngle);
+		shader->setUniform("spotL[" + std::to_string(i) + "].color", spotLights.at(i)->color);
+		shader->setUniform("spotL[" + std::to_string(i) + "].position", spotLights.at(i)->position);
+		shader->setUniform("spotL[" + std::to_string(i) + "].attenuation", spotLights.at(i)->attenuation);
+		shader->setUniform("spotL[" + std::to_string(i) + "].direction", spotLights.at(i)->direction);
+		shader->setUniform("spotL[" + std::to_string(i) + "].innerAngle", spotLights.at(i)->innerAngle);
+		shader->setUniform("spotL[" + std::to_string(i) + "].outerAngle", spotLights.at(i)->outerAngle);
 	}
 }
 

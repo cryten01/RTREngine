@@ -30,6 +30,8 @@ public:
 	void setModelMatrix(glm::mat4 modelMatrix);
 	void setTransformMatrix(glm::mat4 transformMatrix);
 
+	// Getter
+	glm::vec3& getGlobalPos();
 
 	// Methods
 	void updateModelMatrix();

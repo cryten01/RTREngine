@@ -19,9 +19,14 @@ std::shared_ptr<Transform> SceneObject::getTransform()
 	return this->_transform;
 }
 
-std::shared_ptr<Mesh> SceneObject::getMesh()
+std::shared_ptr<Shader> SceneObject::getShader()
 {
-	return this->_mesh;
+	return this->_shader;
+}
+
+std::shared_ptr<Mesh> SceneObject::getMeshAt(int index)
+{
+	return this->_meshes.at(index);
 }
 
 
@@ -35,9 +40,9 @@ void SceneObject::setTransform(std::shared_ptr<Transform> transform)
 	this->_transform = transform;
 }
 
-void SceneObject::setMesh(std::shared_ptr<Mesh> mesh)
+void SceneObject::addMesh(std::shared_ptr<Mesh> mesh)
 {
-	this->_mesh = mesh;
+	this->_meshes.push_back(mesh);
 }
 
 
@@ -72,8 +77,11 @@ void SceneObject::render()
 	// Set transform uniforms
 	this->_transform->setUniforms(_shader);
 
-	// Render mesh
-	getMesh()->render();
+	// Render each mesh of this sceneObject
+	for (auto mesh : _meshes)
+	{
+		mesh->render();
+	}
 }
 
 void SceneObject::renderAll()

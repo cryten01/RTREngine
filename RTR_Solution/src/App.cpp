@@ -148,19 +148,18 @@ int main(int argc, char** argv)
 	// Create models here (object files must be in separate directory)
 	Model demoModel("../assets/models/nanosuit/nanosuit.obj", defaultShader);
 
-
 	// Create scene objects here
-	std::shared_ptr <SceneObject> nanoMan = std::make_shared<SceneObject>(defaultShader, glm::mat4(1));
+	std::shared_ptr <SceneObject> nanoMan = demoModel.loadIntoSceneObj(nanoMan, "../assets/models/nanosuit/nanosuit.obj");
 	std::shared_ptr <SceneObject> sphere1 = std::make_shared<SceneObject>(defaultShader, glm::mat4(1));
 	std::shared_ptr <SceneObject> sphere2 = std::make_shared<SceneObject>(defaultShader, glm::mat4(1));
 	std::shared_ptr <SceneObject> cube = std::make_shared<SceneObject>(defaultShader, glm::mat4(1));
 	std::shared_ptr <SceneObject> cylinder = std::make_shared<SceneObject>(defaultShader, glm::mat4(1));
 
 	// Add Meshes here
-	sphere1->setMesh(sphere1Mesh);
-	sphere2->setMesh(sphere2Mesh);
-	cube->setMesh(cubeMesh);
-	cylinder->setMesh(cylinderMesh);
+	sphere1->addMesh(sphere1Mesh);
+	sphere2->addMesh(sphere2Mesh);
+	cube->addMesh(cubeMesh);
+	cylinder->addMesh(cylinderMesh);
 
 	// Change Position here
 	cube->getTransform()->setPosition(glm::vec3(0.0f, 1.0, 0.0));
@@ -269,7 +268,8 @@ int main(int argc, char** argv)
 		//cylinder->render();
 		//sphere1->render();
 		//sphere2->render();
-		demoModel.render();
+		//demoModel.render();
+		nanoMan->renderAll();
 		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render always last!
 
 		// Poll events and swap buffers

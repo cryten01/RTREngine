@@ -13,7 +13,7 @@ private:
 	std::vector<std::shared_ptr<SceneObject>> _children;
 	std::shared_ptr<Shader> _shader;
 	std::shared_ptr<Transform> _transform;
-	std::shared_ptr<Mesh> _mesh;
+	std::vector<std::shared_ptr<Mesh>> _meshes;	// subMeshes of a scene object node
 
 public:
 	 SceneObject(std::shared_ptr<Shader> shader, glm::mat4 transformMatrix);
@@ -21,15 +21,17 @@ public:
 
 	// Getter
 	std::shared_ptr<Transform> getTransform();
-	std::shared_ptr<Mesh> getMesh();
+	std::shared_ptr<Shader> getShader();
+	std::shared_ptr<Mesh> getMeshAt(int index);
 
 	// Setter
 	void setShader(std::shared_ptr<Shader> shader);
 	void setTransform(std::shared_ptr<Transform> transform);
-	void setMesh(std::shared_ptr<Mesh> mesh);
 
 	// Methods
+	void addMesh(std::shared_ptr<Mesh> mesh);
 	void addChild(std::shared_ptr<SceneObject> child);
+
 	void update();
 	void updateAll();
 	void render();

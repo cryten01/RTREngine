@@ -10,13 +10,11 @@
 class Model
 {
 private:
-	std::string _directory;						// Directory of the model files
-	std::shared_ptr<Shader> _shader;			// The shader thats needed for the material
-	std::vector<std::shared_ptr<SceneObject>> _sceneObjEntries;	// The meshes of the model
+	std::string _directory;						// Directory of the model
+	std::shared_ptr<Shader> _shader;			// The shader thats needed in sceneObjects, meshes, materials, textures
 	std::vector<Texture> _textures_loaded;		// Textures that are already loaded from the model
 
-
-	std::shared_ptr<SceneObject> processNode(aiNode* node, const aiScene* scene);
+	void processNode(std::shared_ptr<SceneObject> target, aiNode* node, const aiScene* scene);
 
 	std::shared_ptr<Mesh> loadMesh(aiMesh* aMesh, const aiScene* aScene);
 	MeshData loadMeshData(aiMesh* aMesh);
@@ -25,10 +23,9 @@ private:
 
 
 public:
-	 Model(const std::string modelFilePath, std::shared_ptr<Shader> materialShader);
+	 Model();
 	~Model();
 
-	std::shared_ptr<SceneObject> loadIntoSceneObj(std::shared_ptr<SceneObject> target, const std::string filePath);
-	void render();
+	void load(std::shared_ptr<SceneObject> target, const std::string filePath);
 };
 

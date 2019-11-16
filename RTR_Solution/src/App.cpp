@@ -126,7 +126,7 @@ int main(int argc, char** argv)
 
 	// Create geometry here
 	std::shared_ptr<Mesh> sphere1Mesh = std::make_shared<Mesh>(
-		Mesh::createSphereGeometry(24, 24, 0.7f), 
+		Mesh::createSphereGeometry(24, 24, 0.7f),
 		blueMaterial
 	);
 
@@ -141,35 +141,38 @@ int main(int argc, char** argv)
 	);
 
 	std::shared_ptr<Mesh> cylinderMesh = std::make_shared<Mesh>(
-		Mesh::createCylinderGeometry(24.0f, 1.5f, 0.7f),
+		Mesh::createCylinderGeometry(24.0f, 1.0f, 3.0f),
 		blueMaterial
 	);
 
-	// Create models here (object files must be in separate directory)
-	Model demoModel("../assets/models/nanosuit/nanosuit.obj", defaultShader);
+	// Create model loader here (object files must be in separate directory)
+	Model modelLoader;
 
 	// Create scene objects here
-	std::shared_ptr <SceneObject> nanoMan = demoModel.loadIntoSceneObj(nanoMan, "../assets/models/nanosuit/nanosuit.obj");
 	std::shared_ptr <SceneObject> sphere1 = std::make_shared<SceneObject>(defaultShader, glm::mat4(1));
 	std::shared_ptr <SceneObject> sphere2 = std::make_shared<SceneObject>(defaultShader, glm::mat4(1));
 	std::shared_ptr <SceneObject> cube = std::make_shared<SceneObject>(defaultShader, glm::mat4(1));
 	std::shared_ptr <SceneObject> cylinder = std::make_shared<SceneObject>(defaultShader, glm::mat4(1));
+	std::shared_ptr <SceneObject> nanoMan = std::make_shared<SceneObject>(defaultShader, glm::mat4(1));
 
-	// Add Meshes here
 	sphere1->addMesh(sphere1Mesh);
+	sphere1->getTransform()->setPosition(glm::vec3(-4.0f, 4.0, 0.0));
+
 	sphere2->addMesh(sphere2Mesh);
+	sphere2->getTransform()->setPosition(glm::vec3( 4.0f, 4.0, 0.0));
+
 	cube->addMesh(cubeMesh);
+	cube->getTransform()->setPosition(glm::vec3(0.0f, 4.0, 4.0));
+
 	cylinder->addMesh(cylinderMesh);
-
-	// Change Position here
-	cube->getTransform()->setPosition(glm::vec3(0.0f, 1.0, 0.0));
-	cylinder->getTransform()->setPosition(glm::vec3(0.0f, 2.0, 0.0));
-	sphere1->getTransform()->setPosition(glm::vec3(0.0f, 2.0, 0.0));
-	sphere2->getTransform()->setPosition(glm::vec3(1.0f, 2.0, 0.0));
-
-
-	cube->addChild(cylinder);
+	cylinder->getTransform()->setPosition(glm::vec3(0.0f, -0.5, 0.0));
 	cylinder->addChild(sphere1);
+	cylinder->addChild(sphere2);
+	cylinder->addChild(cube);
+
+	modelLoader.load(nanoMan, "../assets/models/nanosuit/nanosuit.obj");
+	nanoMan->addChild(cylinder);
+
 
 
 	// Create directional light here
@@ -251,10 +254,9 @@ int main(int argc, char** argv)
 
 		// Update sphere (Rotation for debugging purposes only!)
 		test += 10.0f * deltaTime;
-		cube->getTransform()->setRotation(glm::vec3(test, 0, 0));
-		cylinder->getTransform()->setRotation(glm::vec3(test, 0, 0));
-		sphere1->getTransform()->setRotation(glm::vec3(0, test, 0));
-		cube->updateAll();
+		nanoMan->getTransform()->setRotation(glm::vec3(0, test * 2, 0));
+		cube->getTransform()->setRotation(glm::vec3(test * 2, 0, 0));
+		nanoMan->updateAll();
 
 		// Update camera
 		glfwGetCursorPos(window, &mouse_x, &mouse_y);
@@ -264,11 +266,6 @@ int main(int argc, char** argv)
 		setPerFrameUniforms(defaultShader.get(), orbitCam, dirLight, pointLights, spotLights);
 	
 		// Render here
-		cube->renderAll();
-		//cylinder->render();
-		//sphere1->render();
-		//sphere2->render();
-		//demoModel.render();
 		nanoMan->renderAll();
 		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render always last!
 

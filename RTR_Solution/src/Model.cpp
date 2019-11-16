@@ -1,20 +1,21 @@
 #include "Model.h"
 
 
-/**
-*	Model constructor
-**/
-Model::Model(const std::string filePath, std::shared_ptr<Shader> shader)
-	: _shader(shader)
-{
 
+Model::Model()
+{
+}
+
+
+Model::~Model()
+{
 }
 
 
 /**
 *	Loads the model into the target sceneObject
 **/
-std::shared_ptr<SceneObject> Model::loadIntoSceneObj(std::shared_ptr<SceneObject> target, const std::string filePath)
+void Model::load(std::shared_ptr<SceneObject> target, const std::string filePath)
 {
 	/** Read in object file via Assimp
 	*	aiProcess_Triangulate transforms all primitive shapes into triangles (prevents mesh holes)
@@ -30,29 +31,25 @@ std::shared_ptr<SceneObject> Model::loadIntoSceneObj(std::shared_ptr<SceneObject
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
 		std::cout << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl;
-		return std::make_shared<SceneObject>(_shader, glm::mat4(1));
+		return;
 	}
 
 	// Retrieve the directory path of the given file path
 	_directory = filePath.substr(0, filePath.find_last_of('/'));
 
+	// Set default shader for each sceneObject
+	this->_shader = target->getShader();
+
 	// Recursively process all nodes starting with the root node
-	return processNode(scene->mRootNode, scene);
+	processNode(target, scene->mRootNode, scene);
 }
 
 
 /**
 *	Processes the specified node
 **/
-std::shared_ptr<SceneObject> Model::processNode(aiNode *node, const aiScene *scene)
+void Model::processNode(std::shared_ptr<SceneObject> target, aiNode *node, const aiScene *scene)
 {
-	// Create the sceneObject
-	std::shared_ptr<SceneObject> sceneObj = std::make_shared<SceneObject>(_shader, glm::mat4(1));
-
-	// Create an entry reference for the mesh?
-	_sceneObjEntries.push_back(sceneObj);
-
-
 	// Process all the node's meshes (if any)
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
@@ -63,43 +60,34 @@ std::shared_ptr<SceneObject> Model::processNode(aiNode *node, const aiScene *sce
 		std::shared_ptr<Mesh> mesh = loadMesh(aMesh, scene);
 
 		// Add mesh to sceneObject
-		sceneObj->addMesh(mesh);
+		target->addMesh(mesh);
 	}
 
 	// Once all meshes are processed recursively do the same for each children
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{
-		// Receive child sceneObjects
-		std::shared_ptr<SceneObject> child = processNode(node->mChildren[i], scene);
+		// Create child scene object
+		std::shared_ptr<SceneObject> child = std::make_shared<SceneObject>(_shader, glm::mat4(1));
 
-		// Add child reference to sceneObj
-		sceneObj->addChild(child);
+		// Add child reference to target
+		target->addChild(child);
+
+		// Call for each children
+		processNode(child, node->mChildren[i], scene);
 	}
-
-	return sceneObj;
 }
 
 
 /**
-*	Clears all loaded MeshEntries
-**/
-Model::~Model()
-{
-	//for (int i = 0; i < _sceneObjEntries.size(); ++i) {
-	//	delete _sceneObjEntries.at(i);
-	//}
-	//_sceneObjEntries.clear();
-}
-
-
-/**
-*	Loads the specified aiMesh
+*	Loads the mesh
 **/
 std::shared_ptr<Mesh> Model::loadMesh(aiMesh *aMesh, const aiScene *aScene)
 {
+	std::shared_ptr<Mesh> mesh;
+
 	MeshData meshData = loadMeshData(aMesh);
 	std::shared_ptr<Material> material = loadMaterial(aMesh, aScene);
-	std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>(meshData, material);
+	mesh = std::make_shared<Mesh>(meshData, material);
 
 	return mesh;
 }
@@ -172,9 +160,6 @@ std::shared_ptr<Material> Model::loadMaterial(aiMesh* aMesh, const aiScene *aSce
 
 		//Texture leatherTexture("../assets/textures/leather.jpg", TEX_DIFFUSE);
 		material = std::make_shared<TextureMaterial>(_shader, glm::vec3(0.0f, 0.7f, 0.0f), 1.0f, allMaps);
-
-		// Set material state
-		material->getState() = DIFFUSE;
 	}
 
 	return material;
@@ -225,15 +210,4 @@ std::vector<Texture> Model::loadTextures(aiMaterial* aMat, aiTextureType aType, 
 	}
 
 	return textureEntries;
-}
-
-
-/**
-*	Renders all loaded meshes
-**/
-void Model::render() {
-	for (GLuint i = 0; i < _sceneObjEntries.size(); i++) {
-
-		_sceneObjEntries.at(i)->render();
-	}
 }

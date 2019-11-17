@@ -4,7 +4,7 @@
 Mesh::Mesh(MeshData data, std::shared_ptr<Material> material)
 	: _elementCount(data.indices.size()), _material(material)
 {
-	// create VAO
+	// Create VAO
 	glGenVertexArrays(1, &_vao);
 	glBindVertexArray(_vao);
 
@@ -39,6 +39,7 @@ Mesh::Mesh(MeshData data, std::shared_ptr<Material> material)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, data.indices.size() * sizeof(unsigned int), data.indices.data(), GL_STATIC_DRAW);
 
 
+	// Unbind
 	glBindVertexArray(0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }

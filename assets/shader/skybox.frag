@@ -4,7 +4,6 @@ in VertexData {
 	vec3 uv;
 } vert;
 
-
 out vec4 color;
 
 uniform samplerCube skybox;

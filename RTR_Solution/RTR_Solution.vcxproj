@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\FrameBuffer.cpp" />
     <ClCompile Include="src\SceneObject.cpp" />
     <ClCompile Include="src\Skybox.cpp" />
     <ClCompile Include="src\Model.cpp" />
@@ -158,6 +159,7 @@
     <ClCompile Include="src\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\FrameBuffer.h" />
     <ClInclude Include="src\SceneComponent.h" />
     <ClInclude Include="src\Light.h" />
     <ClInclude Include="src\SceneObject.h" />

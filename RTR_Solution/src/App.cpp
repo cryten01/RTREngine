@@ -7,10 +7,12 @@
 #include "Model.h"
 #include "Skybox.h"
 #include "Light.h"
+#include "FrameBuffer.h"
 
 #include "SceneObject.h"
-#include "Transform.h"
 #include "SceneComponent.h"
+#include "Transform.h"
+
 
 
 
@@ -42,6 +44,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
+void drawScene(std::vector<std::shared_ptr<SceneObject>> drawableObjects);
 void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<std::shared_ptr<PointLight>> pointLights, std::vector<std::shared_ptr<SpotLight>> spotLights);
 
 
@@ -111,11 +114,15 @@ int main(int argc, char** argv)
 	// Initialize scene and render loop
 	/* --------------------------------------------- */
 
+	// Create framebuffers here
+	FrameBuffer screenQuadBuffer(WIDTH, HEIGHT);
+
 	// Load shaders here (location starts at solution folder)
 	std::shared_ptr<Shader> defaultShader = std::make_shared<Shader>("../assets/shader/color.vert", "../assets/shader/color.frag");
 	std::shared_ptr<Shader> skyboxShader = std::make_shared<Shader>("../assets/shader/skybox.vert", "../assets/shader/skybox.frag");
+	std::shared_ptr<Shader> framebufferShader = std::make_shared<Shader>("../assets/shader/framebuffer.vert", "../assets/shader/framebuffer.frag");
 
-	// Create textures here
+	// Load textures here
 	Texture leatherTexture("../assets/textures/leather.jpg", TEX_DIFFUSE);
 	Texture minionTexture("../assets/textures/minion.jpg", TEX_DIFFUSE);
 
@@ -123,6 +130,9 @@ int main(int argc, char** argv)
 	std::shared_ptr<Material> singleColorMaterial = std::make_shared<Material>(defaultShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 	std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(defaultShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, leatherTexture);
 	std::shared_ptr<Material> minionMaterial = std::make_shared<TextureMaterial>(defaultShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, minionTexture);
+
+	// Set initial material states here
+	singleColorMaterial->setState(REFLECTIVE);
 
 	// Create geometry here
 	std::shared_ptr<Mesh> sphere1Mesh = std::make_shared<Mesh>(
@@ -181,6 +191,11 @@ int main(int argc, char** argv)
 	std::shared_ptr <SceneObject> cylinder = std::make_shared<SceneObject>(defaultShader, glm::mat4(1));
 	std::shared_ptr <SceneObject> nanoMan = std::make_shared<SceneObject>(defaultShader, glm::mat4(1));
 
+	// Push back scene objects that should be drawn here
+	std::vector<std::shared_ptr<SceneObject>> drawableObjects;
+	drawableObjects.push_back(cube);
+	drawableObjects.push_back(nanoMan);
+
 	// Add meshes here
 	sphere1->addMesh(sphere1Mesh);
 	sphere2->addMesh(sphere2Mesh);
@@ -203,6 +218,8 @@ int main(int argc, char** argv)
 	
 	// Create model loader here (object files must be in separate directory)
 	Model modelLoader;
+
+	// Load models here
 	modelLoader.load(nanoMan, "../assets/models/nanosuit/nanosuit.obj");
 
 	// Create skybox here
@@ -235,13 +252,13 @@ int main(int argc, char** argv)
 	float step = 20;
 	bool up = true;
 
-	singleColorMaterial->setState(REFLECTIVE);
 
 	// Loop until the user closes the window
 	while (!glfwWindowShouldClose(window))
 	{
-		// Clear buffer
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+		/******************************
+		* Do all update functions here
+		******************************/
 
 		// Compute frame time
 		deltaTime = currentTime;
@@ -260,24 +277,25 @@ int main(int argc, char** argv)
 		}
 
 		// Update test (For debugging purposes only!)
-		if (up) 
-		{
+		if (up)	{
 			range += step * deltaTime;
 
 			if (range > threshold)
 				up = false;
 		}
-		if (!up)
-		{
+
+		if (!up) {
 			range -= step * deltaTime;
 
 			if (range < -threshold)
 				up = true;
 		}
 
+		// Update transformations here
 		nanoMan->getTransform()->setLocalRot(glm::vec3(0, range * 2.0, 0));
 		cube->getTransform()->setLocalPos(glm::vec3(0, 8 + range * 0.3, 6));
 
+		// Update scene objects here
 		cube->update();
 		nanoMan->updateAll();
 
@@ -285,13 +303,32 @@ int main(int argc, char** argv)
 		glfwGetCursorPos(window, &mouse_x, &mouse_y);
 		orbitCam.update(int(mouse_x), int(mouse_y), _zoom, _dragging, _strafing);
 
+
+		/******************************
+		* Do all render functions here
+		******************************/
+	
+		// First render pass (draws scene into screenQuadBuffer)
+
 		// Set per-frame uniforms
 		setPerFrameUniforms(defaultShader.get(), orbitCam, dirLight, pointLights, spotLights);
-	
-		// Render here
-		cube->render();
-		nanoMan->renderAll();
-		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render always last!
+
+		// Switch to screnQuadBuffer
+		screenQuadBuffer.use();
+
+		// Draw scene
+		drawScene(drawableObjects);
+		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render skybox always last!
+		
+		// Switch back to default buffer
+		screenQuadBuffer.unuse();
+
+
+
+		// Second render pass (draws scene on quad)
+		screenQuadBuffer.renderScreenQuad(framebufferShader);
+
+
 
 		// Poll events and swap buffers
 		glfwPollEvents();
@@ -305,6 +342,15 @@ int main(int argc, char** argv)
 	glfwTerminate();
 
 	return EXIT_SUCCESS;
+}
+
+
+void drawScene(std::vector<std::shared_ptr<SceneObject>> drawableObjects)
+{
+	for (std::shared_ptr<SceneObject> obj : drawableObjects)
+	{
+		obj->renderAll();
+	}
 }
 
 

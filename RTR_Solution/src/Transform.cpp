@@ -1,13 +1,13 @@
 #include "Transform.h"
 
 
-Transform::Transform(glm::mat4 modelMatrix, glm::mat4 transformMatrix)
-	: _modelMatrix(modelMatrix), _transformMatrix(transformMatrix)
+Transform::Transform(glm::mat4 modelMatrix)
+	: _modelMatrix(modelMatrix)
 {
 	// Defaults
-	this->_localRot = glm::vec3(0.0f);
-	this->_localPos = glm::vec3(0.0f);
-	this->_localScale = glm::vec3(1.0f);
+	this->_localRot = extractRot(modelMatrix);
+	this->_localPos = extractPos(modelMatrix);
+	this->_localScale = extractScale(modelMatrix);
 }
 
 
@@ -30,12 +30,6 @@ void Transform::setLocalScale(glm::vec3 scale)
 	this->_localScale = scale;
 }
 
-void Transform::setGlobalPos(glm::vec3 position)
-{
-	this->_globalPos = position;
-}
-
-
 void Transform::setModelMatrix(glm::mat4 modelMatrix)
 {
 	this->_modelMatrix = modelMatrix;
@@ -56,25 +50,55 @@ glm::vec3 & Transform::getLocalRot()
 	return this->_localRot;
 }
 
+glm::vec3 & Transform::getDirection()
+{
+	return this->_forward;
+}
+
 void Transform::setParent(std::shared_ptr<Transform> parent)
 {
 	this->_parent = parent;
 }
 
-void Transform::updateModelMatrix()
+glm::vec3 Transform::extractPos(glm::mat4 modelMatrix)
 {
-	// xyz
+	return glm::vec3(modelMatrix[3][0], modelMatrix[3][1], modelMatrix[3][2]);
+}
+
+glm::vec3 Transform::extractRot(glm::mat4 modelMatrix)
+{
+	return glm::vec3();
+}
+
+glm::vec3 Transform::extractScale(glm::mat4 modelMatrix)
+{
+	return glm::vec3(modelMatrix[0][0], modelMatrix[1][1], modelMatrix[2][2]);
+}
+
+void Transform::applyLocalTRS()
+{
+	// Translation
 	_modelMatrix = glm::translate(glm::mat4(1.0f), _localPos);
 
-	// yaw
-	_modelMatrix = glm::rotate(_modelMatrix, glm::radians(_localRot.x), glm::vec3(1, 0, 0));
-	// pitch
+	// Rotation order yzx (see openGL-tutorial.org)
+	// Rotation of y (yaw)
 	_modelMatrix = glm::rotate(_modelMatrix, glm::radians(_localRot.y), glm::vec3(0, 1, 0));
-	// roll
+	// Rotation of z (roll)
 	_modelMatrix = glm::rotate(_modelMatrix, glm::radians(_localRot.z), glm::vec3(0, 0, 1));
+	// Rotation of x (pitch)
+	_modelMatrix = glm::rotate(_modelMatrix, glm::radians(_localRot.x), glm::vec3(1, 0, 0));
 
-	// scale
-	_modelMatrix = glm::scale(_modelMatrix, _localScale);
+	// Scaling
+	glm::mat4 scaling = glm::scale(_modelMatrix, _localScale);
+}
+
+void Transform::applyGlobalTRS()
+{
+	if (_parent != nullptr)
+	{
+		// Hierarchical transformation (Child.world = Parent.world * Child.local)
+		_modelMatrix = _parent->_modelMatrix * _modelMatrix;
+	}
 }
 
 void Transform::transform(glm::mat4 transformation)
@@ -89,19 +113,17 @@ void Transform::resetModelMatrix()
 
 void Transform::setUniforms(std::shared_ptr<Shader> shader)
 {
-	// Apply transformations
-	if (_parent != nullptr)
-	{
-		// Hierarchical transformation
-		_modelMatrix = _parent->_modelMatrix * _modelMatrix;
-
-		// Extract globalPos
-		_globalPos = glm::vec3(_modelMatrix[3][0], _modelMatrix[3][1], _modelMatrix[3][2]);
-
-		//std::cout << _localRot.x << " " << _localRot.y << " " << _localRot.z << " " << std::endl;
-	}
-
 	// Set uniforms
 	shader->setUniform("modelMatrix", _modelMatrix);
 	shader->setUniform("normalMatrix", glm::mat3(glm::transpose(glm::inverse(_modelMatrix)))); // Fixes non uniform scaling issues, done on CPU for performance reasons
+}
+
+void Transform::update()
+{
+	applyLocalTRS();
+	applyGlobalTRS();
+
+	// Extract direction from modelMatrix
+	glm::mat3 invert = glm::mat3(_modelMatrix);
+	_forward = glm::vec3(invert[0][2], invert[1][2], -invert[2][2]);
 }

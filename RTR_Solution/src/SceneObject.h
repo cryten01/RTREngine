@@ -18,7 +18,7 @@ private:
 	std::shared_ptr<SpotLight> _light;
 
 public:
-	 SceneObject(std::shared_ptr<Shader> shader, glm::mat4 transformMatrix);
+	 SceneObject(std::shared_ptr<Shader> shader, glm::mat4 modelMatrix);
 	~SceneObject();
 
 	// Getter

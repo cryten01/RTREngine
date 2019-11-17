@@ -1,11 +1,11 @@
 #include "SceneObject.h"
 
 
-SceneObject::SceneObject(std::shared_ptr<Shader> shader, glm::mat4 transformMatrix)
+SceneObject::SceneObject(std::shared_ptr<Shader> shader, glm::mat4 modelMatrix)
 	: _shader(shader)
 {
 	// Defaults
-	_transform = std::make_shared<Transform>(glm::mat4(1.0f), transformMatrix);
+	_transform = std::make_shared<Transform>(modelMatrix);
 }
 
 
@@ -62,20 +62,23 @@ void SceneObject::addChild(std::shared_ptr<SceneObject> child)
 
 void SceneObject::update()
 {
-	this->_transform->updateModelMatrix();
+	_transform->update();
 
 	if (_light != nullptr) 
 	{
+		std::cout << _transform->getDirection().x << " " << _transform->getDirection().y << " " << _transform->getDirection().z << " " << std::endl;
+
 		// Update light position
 		_light->position = _transform->getLocalPos();
 
-		// TODO: Update light direction here
+		// Update light direction
+		_light->direction = _transform->getDirection();
 	}
 }
 
 void SceneObject::updateAll()
 {
-	update();
+	this->update();
 
 	// Update children
 	for (size_t i = 0; i < _children.size(); i++)

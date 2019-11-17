@@ -136,7 +136,7 @@ int main(int argc, char** argv)
 	);
 
 	std::shared_ptr<Mesh> cubeMesh = std::make_shared<Mesh>(
-		Mesh::createCubeGeometry(1.5f, 1.5f, 1.5f),
+		Mesh::createCubeGeometry(1.0f, 1.0f, 2.5f),
 		blueMaterial
 	);
 
@@ -192,11 +192,11 @@ int main(int argc, char** argv)
 	cylinder->addChild(sphere2);
 	nanoMan->addChild(cylinder);
 
-	// Add transformations here
+	// Add initial transformations here
 	sphere1->getTransform()->setLocalPos(glm::vec3(-4.0f, 4.0, 0.0));
 	sphere2->getTransform()->setLocalPos(glm::vec3( 4.0f, 4.0, 0.0));
-	cube->getTransform()->setLocalPos(glm::vec3(0.0f, 10.0, 6.0));
 	cylinder->getTransform()->setLocalPos(glm::vec3(0.0f, -0.5, 0.0));
+	cube->getTransform()->setLocalPos(glm::vec3(0, 10, 6));
 
 	// Add lights here
 	cube->setLight(spotLights.at(0));
@@ -230,7 +230,9 @@ int main(int argc, char** argv)
 
 
 	// For debugging only purposes only!
-	float gain = 30;
+	float range = 30;
+	float threshold = 30;
+	float step = 20;
 	bool up = true;
 
 	// Loop until the user closes the window
@@ -258,23 +260,22 @@ int main(int argc, char** argv)
 		// Update test (For debugging purposes only!)
 		if (up) 
 		{
-			gain += 20.0f * deltaTime;
+			range += step * deltaTime;
 
-			if (gain > 120)
+			if (range > threshold)
 				up = false;
 		}
 		if (!up)
 		{
-			gain -= 20.0f * deltaTime;
+			range -= step * deltaTime;
 
-			if (gain < 30)
+			if (range < -threshold)
 				up = true;
 		}
 
-
-		nanoMan->getTransform()->setLocalRot(glm::vec3(0, gain * 2.0, 0));
-		cube->getTransform()->setLocalPos(glm::vec3(0, gain * 0.1, 4));
-		cube->getTransform()->setLocalRot(glm::vec3(gain, 0, 0));
+		nanoMan->getTransform()->setLocalRot(glm::vec3(0, range * 2.0, 0));
+		//cube->getTransform()->setLocalPos(glm::vec3(0, range * 0.1, 6));
+		cube->getTransform()->setLocalRot(glm::vec3(range, 0, 0));
 
 		cube->update();
 		nanoMan->updateAll();

@@ -1,7 +1,8 @@
 #include "FrameBuffer.h"
 
 
-FrameBuffer::FrameBuffer(const GLuint WIDTH, const GLuint HEIGHT)
+FrameBuffer::FrameBuffer(const GLuint WIDTH, const GLuint HEIGHT, BufferType type)
+	: _type(type)
 {
 	// Create framebuffer object
 	glGenFramebuffers(1, &_fbo);
@@ -10,12 +11,21 @@ FrameBuffer::FrameBuffer(const GLuint WIDTH, const GLuint HEIGHT)
 	// Create color attachment texture
 	glGenTextures(1, &_textureID);
 	glBindTexture(GL_TEXTURE_2D, _textureID);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, WIDTH, HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);		// Give an empty image to OpenGL (therefore NULL at the end)
+	
+	// Give an empty image to OpenGL (therefore NULL at the end)
+	if (type == DEFAULT) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, WIDTH, HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);		
+	}
+	if (type == FLOAT) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WIDTH, HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+	}
+
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);								// Poor filtering. Needed !
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);								// Poor filtering. Needed !
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, _textureID, 0);						// Attach texture to framebuffer (as colour attachement #0) 
 
-	// Create rbo for depth
+
+	// Create renderBuffer object for depth
 	glGenRenderbuffers(1, &_rbo);
 	glBindRenderbuffer(GL_RENDERBUFFER, _rbo);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, WIDTH, HEIGHT);				// Creates actual RBO
@@ -31,7 +41,7 @@ FrameBuffer::FrameBuffer(const GLuint WIDTH, const GLuint HEIGHT)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);	
 
 	// Loads screen quad
-	loadMeshData();
+	loadScreenQuad();
 }
 
 
@@ -45,7 +55,7 @@ FrameBuffer::~FrameBuffer()
 }
 
 
-void FrameBuffer::loadMeshData()
+void FrameBuffer::loadScreenQuad()
 {
 	// vertex attributes for the screenQuad (fills entire screen in normalized device coordinates)
 	float quadVertices[] = {
@@ -101,8 +111,16 @@ void FrameBuffer::unuse()
 void FrameBuffer::renderScreenQuad(std::shared_ptr<Shader> shader)
 {
 	shader->use();
-	glBindVertexArray(_quadVAO);
+
+	// Set additional uniforms if type is HDR
+	if (_type == FLOAT) 
+	{
+		shader->setUniform("hdr", false);
+		shader->setUniform("exposure", 0.1f);
+	}
+
 	glDisable(GL_DEPTH_TEST); // disable depth test so screen quad isn't discarded
 	glBindTexture(GL_TEXTURE_2D, _textureID);
+	glBindVertexArray(_quadVAO);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }

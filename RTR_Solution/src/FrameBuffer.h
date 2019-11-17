@@ -3,6 +3,13 @@
 #include "Shader.h"
 #include "Mesh.h"
 
+enum BufferType
+{
+	DEFAULT,
+	FLOAT,		// can store floating point values outside the default range of 0.0 and 1.0.
+};
+
+
 class FrameBuffer
 {
 private:
@@ -11,15 +18,17 @@ private:
 	GLuint _quadVAO;
 	GLuint _quadVBO;
 	GLuint _textureID;
+	BufferType _type;
 
-	void loadMeshData();
+	void loadScreenQuad();
 
 public:
-	 FrameBuffer(const GLuint WIDTH, const GLuint HEIGHT);
+	 FrameBuffer(const GLuint WIDTH, const GLuint HEIGHT, BufferType type);
 	~FrameBuffer();
 
 	void use();
 	void unuse();
+
 	void renderScreenQuad(std::shared_ptr<Shader> shader);
 };
 

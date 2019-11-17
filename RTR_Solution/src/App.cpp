@@ -115,12 +115,13 @@ int main(int argc, char** argv)
 	/* --------------------------------------------- */
 
 	// Create framebuffers here
-	FrameBuffer screenQuadBuffer(WIDTH, HEIGHT);
+	FrameBuffer screenQuadBuffer(WIDTH, HEIGHT, DEFAULT);
+	FrameBuffer hdrBuffer(WIDTH, HEIGHT, FLOAT);
 
 	// Load shaders here (location starts at solution folder)
 	std::shared_ptr<Shader> defaultShader = std::make_shared<Shader>("../assets/shader/color.vert", "../assets/shader/color.frag");
 	std::shared_ptr<Shader> skyboxShader = std::make_shared<Shader>("../assets/shader/skybox.vert", "../assets/shader/skybox.frag");
-	std::shared_ptr<Shader> framebufferShader = std::make_shared<Shader>("../assets/shader/framebuffer.vert", "../assets/shader/framebuffer.frag");
+	std::shared_ptr<Shader> postProcessShader = std::make_shared<Shader>("../assets/shader/framebuffer.vert", "../assets/shader/framebuffer.frag");
 
 	// Load textures here
 	Texture leatherTexture("../assets/textures/leather.jpg", TEX_DIFFUSE);
@@ -308,25 +309,25 @@ int main(int argc, char** argv)
 		* Do all render functions here
 		******************************/
 	
-		// First render pass (draws scene into screenQuadBuffer)
+		// First render pass (render scene into screenQuadBuffer)
 
 		// Set per-frame uniforms
 		setPerFrameUniforms(defaultShader.get(), orbitCam, dirLight, pointLights, spotLights);
 
 		// Switch to screnQuadBuffer
-		screenQuadBuffer.use();
+		hdrBuffer.use();
 
 		// Draw scene
 		drawScene(drawableObjects);
 		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render skybox always last!
 		
 		// Switch back to default buffer
-		screenQuadBuffer.unuse();
+		hdrBuffer.unuse();
 
 
 
-		// Second render pass (draws scene on quad)
-		screenQuadBuffer.renderScreenQuad(framebufferShader);
+		// Second render pass (render buffer to quad)
+		hdrBuffer.renderScreenQuad(postProcessShader);
 
 
 

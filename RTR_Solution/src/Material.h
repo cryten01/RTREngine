@@ -4,8 +4,6 @@
 #include "Shader.h"
 #include "Texture.h"
 
-
-
 enum MaterialState
 {
 	REFLECTIVE = 0,
@@ -13,7 +11,6 @@ enum MaterialState
 	TEXTURE = 2,
 	DIFFUSE = 3		// Default state
 };
-
 
 
 class Material

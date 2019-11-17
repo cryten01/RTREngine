@@ -26,6 +26,11 @@ MaterialState& Material::getState()
 	return this->_state;
 }
 
+void Material::setState(MaterialState state)
+{
+	this->_state = state;
+}
+
 void Material::setUniforms()
 {
 	_shader->setUniform("material.light", _reflectionConstants);

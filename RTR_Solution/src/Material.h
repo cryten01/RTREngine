@@ -32,6 +32,7 @@ public:
 
 	Shader* getShader();
 	MaterialState& getState();
+	void setState(MaterialState state);
 
 	virtual void setUniforms();
 };

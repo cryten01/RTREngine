@@ -120,29 +120,29 @@ int main(int argc, char** argv)
 	Texture minionTexture("../assets/textures/minion.jpg", TEX_DIFFUSE);
 
 	// Create materials here
-	std::shared_ptr<Material> blueMaterial = std::make_shared<Material>(defaultShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+	std::shared_ptr<Material> singleColorMaterial = std::make_shared<Material>(defaultShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 	std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(defaultShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, leatherTexture);
 	std::shared_ptr<Material> minionMaterial = std::make_shared<TextureMaterial>(defaultShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, minionTexture);
 
 	// Create geometry here
 	std::shared_ptr<Mesh> sphere1Mesh = std::make_shared<Mesh>(
 		Mesh::createSphereGeometry(24, 24, 0.7f),
-		blueMaterial
+		singleColorMaterial
 	);
 
 	std::shared_ptr<Mesh> sphere2Mesh = std::make_shared<Mesh>(
 		Mesh::createSphereGeometry(24, 24, 0.7f),
-		blueMaterial
+		singleColorMaterial
 	);
 
 	std::shared_ptr<Mesh> cubeMesh = std::make_shared<Mesh>(
 		Mesh::createCubeGeometry(1.0f, 1.0f, 2.5f),
-		blueMaterial
+		singleColorMaterial
 	);
 
 	std::shared_ptr<Mesh> cylinderMesh = std::make_shared<Mesh>(
 		Mesh::createCylinderGeometry(24.0f, 1.0f, 3.0f),
-		blueMaterial
+		singleColorMaterial
 	);
 
 	// Create directional light here
@@ -167,7 +167,7 @@ int main(int argc, char** argv)
 	std::vector<std::shared_ptr<SpotLight>> spotLights;
 	spotLights.push_back(std::make_shared<SpotLight>(
 		glm::vec3(1.0f),
-		glm::vec3(0.0f, 8.0f, 4.0f),
+		glm::vec3(0.0f, 12.0f, 4.0f),
 		glm::vec3(1.0f, 0.4f, 0.1f),
 		glm::vec3(0.0f, 0.0f,-1.0f),
 		glm::cos(glm::radians(10.5f)),
@@ -199,7 +199,7 @@ int main(int argc, char** argv)
 	cube->getTransform()->setLocalPos(glm::vec3(0, 10, 6));
 
 	// Add lights here
-	cube->setLight(spotLights.at(0));
+	cube->setLight(pointLights.at(0));
 	
 	// Create model loader here (object files must be in separate directory)
 	Model modelLoader;
@@ -234,6 +234,8 @@ int main(int argc, char** argv)
 	float threshold = 30;
 	float step = 20;
 	bool up = true;
+
+	singleColorMaterial->setState(REFLECTIVE);
 
 	// Loop until the user closes the window
 	while (!glfwWindowShouldClose(window))
@@ -274,8 +276,7 @@ int main(int argc, char** argv)
 		}
 
 		nanoMan->getTransform()->setLocalRot(glm::vec3(0, range * 2.0, 0));
-		//cube->getTransform()->setLocalPos(glm::vec3(0, range * 0.1, 6));
-		cube->getTransform()->setLocalRot(glm::vec3(range, 0, 0));
+		cube->getTransform()->setLocalPos(glm::vec3(0, 8 + range * 0.3, 6));
 
 		cube->update();
 		nanoMan->updateAll();

@@ -15,7 +15,7 @@ private:
 	std::shared_ptr<Shader> _shader;
 	std::shared_ptr<Transform> _transform;
 	std::vector<std::shared_ptr<Mesh>> _meshes;	// subMeshes of a scene object node
-	std::shared_ptr<SpotLight> _light;
+	std::shared_ptr<PointLight> _light;
 
 public:
 	 SceneObject(std::shared_ptr<Shader> shader, glm::mat4 modelMatrix);
@@ -27,7 +27,7 @@ public:
 	std::shared_ptr<Mesh> getMeshAt(int index);
 
 	// Setter
-	void setLight(std::shared_ptr<SpotLight> pointLight);
+	void setLight(std::shared_ptr<PointLight> pointLight);
 	void setShader(std::shared_ptr<Shader> shader);
 	void setTransform(std::shared_ptr<Transform> transform);
 

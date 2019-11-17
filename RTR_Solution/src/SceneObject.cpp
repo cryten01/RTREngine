@@ -30,7 +30,7 @@ std::shared_ptr<Mesh> SceneObject::getMeshAt(int index)
 }
 
 
-void SceneObject::setLight(std::shared_ptr<SpotLight> pointLight)
+void SceneObject::setLight(std::shared_ptr<PointLight> pointLight)
 {
 	this->_light = pointLight;
 }
@@ -66,13 +66,13 @@ void SceneObject::update()
 
 	if (_light != nullptr) 
 	{
-		std::cout << _transform->getDirection().x << " " << _transform->getDirection().y << " " << _transform->getDirection().z << " " << std::endl;
+		std::cout << _transform->getLocalPos().x << " " << _transform->getLocalPos().y << " " << _transform->getLocalPos().z << " " << std::endl;
 
 		// Update light position
 		_light->position = _transform->getLocalPos();
 
 		// Update light direction
-		_light->direction = _transform->getDirection();
+		//_light->direction = _transform->getDirection();
 	}
 }
 

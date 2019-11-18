@@ -34,6 +34,11 @@ static bool _dragging = false;
 static bool _strafing = false;
 static float _zoom = 6.0f;
 
+// Post processing effects
+static bool _hdr = false;
+static float _exposure = 1.0f;
+
+
 
 /* --------------------------------------------- */
 // Prototypes
@@ -134,16 +139,17 @@ int main(int argc, char** argv)
 
 	// Set initial material states here
 	singleColorMaterial->setState(REFLECTIVE);
+	minionMaterial->setState(TEXTURE);
 
 	// Create geometry here
 	std::shared_ptr<Mesh> sphere1Mesh = std::make_shared<Mesh>(
 		Mesh::createSphereGeometry(24, 24, 0.7f),
-		singleColorMaterial
+		minionMaterial
 	);
 
 	std::shared_ptr<Mesh> sphere2Mesh = std::make_shared<Mesh>(
 		Mesh::createSphereGeometry(24, 24, 0.7f),
-		singleColorMaterial
+		minionMaterial
 	);
 
 	std::shared_ptr<Mesh> cubeMesh = std::make_shared<Mesh>(
@@ -327,7 +333,7 @@ int main(int argc, char** argv)
 
 
 		// Second render pass (render buffer to quad)
-		hdrBuffer.renderScreenQuad(postProcessShader);
+		hdrBuffer.renderScreenQuad(postProcessShader, _hdr, _exposure);
 
 
 
@@ -430,6 +436,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		_culling = !_culling;
 		if (_culling) glEnable(GL_CULL_FACE);
 		else glDisable(GL_CULL_FACE);
+		break;
+	case GLFW_KEY_F3:
+		_hdr = !_hdr;
 		break;
 	}
 }

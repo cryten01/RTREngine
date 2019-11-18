@@ -12,25 +12,27 @@ uniform float exposure;
 
 void main()
 { 
+	// Average gamma of most displays
 	const float gamma = 2.2;
+
+	// The color from the HDR buffer
     vec3 hdrColor = texture(screenTexture, vert.uv).rgb;
 
     if(hdr)
     {
-        // reinhard
-        // vec3 result = hdrColor / (hdrColor + vec3(1.0));
-        // exposure
+        // Exposure tone mapping (default at 1.0)
         vec3 result = vec3(1.0) - exp(-hdrColor * exposure);
-        // also gamma correct while we're at it       
+
+		// Gamma correction (tone mapped color from buffer is raised to the power of the gamma correction)
         result = pow(result, vec3(1.0 / gamma));
         color = vec4(result, 1.0);
     }
     else
     {
+		// Gamma correction (color from buffer is raised to the power of the gamma correction)
         vec3 result = pow(hdrColor, vec3(1.0 / gamma));
         color = vec4(result, 1.0);
     }
 
-
-//    color = texture(screenTexture, vert.uv);
+//	color = texture(screenTexture, vert.uv);
 }

@@ -11,13 +11,13 @@ Texture::Texture(const char* texFilePath, TextureType type)
 
 	// Load texture
 	int width, height, nrChannels;
-	unsigned char *texData = stbi_load(texFilePath, &width, &height, &nrChannels, STBI_rgb);
+	unsigned char *texData = stbi_load(texFilePath, &width, &height, &nrChannels, STBI_rgb_alpha);
 
 	// Generate texture
 	if (texData)
 	{
 		// Upload texData to GPU
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texData);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
 		glGenerateMipmap(GL_TEXTURE_2D);
 
 		// Set the texture wrapping/filtering options (on the currently bound texture object)

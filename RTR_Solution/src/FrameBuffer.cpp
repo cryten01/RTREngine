@@ -96,7 +96,7 @@ void FrameBuffer::loadScreenQuad()
 void FrameBuffer::use()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // we're not using the stencil buffer now
 	glEnable(GL_DEPTH_TEST);
 }
@@ -104,20 +104,17 @@ void FrameBuffer::use()
 void FrameBuffer::unuse()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void FrameBuffer::renderScreenQuad(std::shared_ptr<Shader> shader)
+void FrameBuffer::renderScreenQuad(std::shared_ptr<Shader> shader, bool hdr, float exposure)
 {
 	shader->use();
 
-	// Set additional uniforms if type is HDR
-	if (_type == FLOAT) 
-	{
-		shader->setUniform("hdr", false);
-		shader->setUniform("exposure", 0.1f);
-	}
+	// Set additional uniforms (note buffer must be of type FLOAT for HDR!)
+	shader->setUniform("hdr", hdr);
+	shader->setUniform("exposure", exposure);
 
 	glDisable(GL_DEPTH_TEST); // disable depth test so screen quad isn't discarded
 	glBindTexture(GL_TEXTURE_2D, _textureID);

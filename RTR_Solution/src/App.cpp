@@ -12,6 +12,7 @@
 #include "SceneObject.h"
 #include "SceneComponent.h"
 #include "Transform.h"
+#include "Testing.h"
 
 
 
@@ -127,6 +128,7 @@ int main(int argc, char** argv)
 	std::shared_ptr<Shader> defaultShader = std::make_shared<Shader>("../assets/shader/color.vert", "../assets/shader/color.frag");
 	std::shared_ptr<Shader> skyboxShader = std::make_shared<Shader>("../assets/shader/skybox.vert", "../assets/shader/skybox.frag");
 	std::shared_ptr<Shader> postProcessShader = std::make_shared<Shader>("../assets/shader/framebuffer.vert", "../assets/shader/framebuffer.frag");
+	std::shared_ptr<Shader> geometryShader = std::make_shared<Shader>("../assets/shader/geometry.vert", "../assets/shader/geometry.frag", "../assets/shader/geometry.geom");
 
 	// Load textures here
 	Texture leatherTexture("../assets/textures/leather.jpg", TEX_DIFFUSE);
@@ -253,7 +255,13 @@ int main(int argc, char** argv)
 	double mouse_x, mouse_y;
 
 
-	// For debugging only purposes only!
+	/******************************
+	* Define all testing variables here
+	******************************/
+
+	// Create testing class here
+	Testing test;
+
 	float range = 30;
 	float threshold = 30;
 	float step = 20;
@@ -314,26 +322,30 @@ int main(int argc, char** argv)
 		/******************************
 		* Do all render functions here
 		******************************/
-	
+
+		// Enable if default buffer is used only!
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 		// First render pass (render scene into screenQuadBuffer)
 
 		// Set per-frame uniforms
 		setPerFrameUniforms(defaultShader.get(), orbitCam, dirLight, pointLights, spotLights);
 
 		// Switch to screnQuadBuffer
-		hdrBuffer.use();
+		//hdrBuffer.use();
 
 		// Draw scene
 		drawScene(drawableObjects);
 		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render skybox always last!
 		
 		// Switch back to default buffer
-		hdrBuffer.unuse();
+		//hdrBuffer.unuse();
 
 
 
 		// Second render pass (render buffer to quad)
-		hdrBuffer.renderScreenQuad(postProcessShader, _hdr, _exposure);
+		//hdrBuffer.renderScreenQuad(postProcessShader, _hdr, _exposure);
 
 
 

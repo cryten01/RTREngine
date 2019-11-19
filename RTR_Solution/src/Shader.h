@@ -12,7 +12,7 @@ private:
 	GLuint compileShader(const std::string& filePath, GLuint type);
 
 public:
-	 Shader(const std::string& vertexFilePath, const std::string& fragmentFilePath);
+	 Shader(const std::string& vertexFilePath, const std::string& fragmentFilePath, const std::string& geometryFilePath = "");
 	~Shader();
 
 	void use() const;

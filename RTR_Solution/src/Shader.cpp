@@ -1,22 +1,49 @@
 #include "Shader.h"
 
-Shader::Shader(const std::string& vertexFilePath, const std::string& fragmentFilePath)
+Shader::Shader(const std::string& vertexFilePath, const std::string& fragmentFilePath, const std::string& geometryFilePath)
 {
-	std::string vertexShaderSource = readInFile(vertexFilePath);
-	std::string fragmentShaderSource = readInFile(fragmentFilePath);
-	
-	GLuint vertexID = compileShader(vertexShaderSource, GL_VERTEX_SHADER);
-	GLuint fragmentID = compileShader(fragmentShaderSource, GL_FRAGMENT_SHADER);
+	GLuint vertexID;
+	GLuint geometryID;
+	GLuint fragmentID;
 
+
+	// Compiling shaders
+	std::string vertexShaderSource = readInFile(vertexFilePath);
+	vertexID = compileShader(vertexShaderSource, GL_VERTEX_SHADER);
+	
+	std::string fragmentShaderSource = readInFile(fragmentFilePath);
+	fragmentID = compileShader(fragmentShaderSource, GL_FRAGMENT_SHADER);
+
+	if (geometryFilePath != "")
+	{
+		std::string geometryShaderSource = readInFile(geometryFilePath);
+		geometryID = compileShader(geometryShaderSource, GL_GEOMETRY_SHADER);
+	}
+	
+
+	// Attaching shaders
 	_programID = glCreateProgram();
-	glAttachShader(_programID, vertexID);
+	glAttachShader(_programID, vertexID);	
 	glAttachShader(_programID, fragmentID);
+
+	if (geometryFilePath != "")
+	{
+		glAttachShader(_programID, geometryID);
+	}
+
+
+	// Linking and validation
 	glLinkProgram(_programID);
 	glValidateProgram(_programID);
 
 	// Delete shaders as they are linked to our program and no longer necessary
-	glDeleteShader(vertexID);
+	glDeleteShader(vertexID);	
 	glDeleteShader(fragmentID);
+
+	if (geometryFilePath != "")
+	{
+		glDeleteShader(geometryID);
+	}
 }
 
 /** Reads in a shader file in order to provide the source code for OpenGL */
@@ -74,7 +101,7 @@ GLuint Shader::compileShader(const std::string& source, GLuint type)
 	}
 
 	return shaderID;
-};
+}
 
 void Shader::use() const
 {

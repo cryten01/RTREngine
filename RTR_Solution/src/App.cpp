@@ -262,6 +262,8 @@ int main(int argc, char** argv)
 	// Create testing class here
 	Testing test;
 
+	test.createGeometryTest();
+
 	float range = 30;
 	float threshold = 30;
 	float step = 20;
@@ -336,8 +338,9 @@ int main(int argc, char** argv)
 		//hdrBuffer.use();
 
 		// Draw scene
-		drawScene(drawableObjects);
-		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render skybox always last!
+		//drawScene(drawableObjects);
+		//skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render skybox always last!
+		test.drawGeometryTest(geometryShader);
 		
 		// Switch back to default buffer
 		//hdrBuffer.unuse();

@@ -9,6 +9,7 @@ class Testing
 {
 public:
 	GLuint VAO;
+	GLuint VBO;
 
 	 Testing();
 	~Testing();

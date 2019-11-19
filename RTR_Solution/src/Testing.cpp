@@ -45,7 +45,7 @@ void Testing::createGeometryTest()
 	glBindVertexArray(0);
 }
 
-void Testing::drawGeometryTest(std::shared_ptr<Shader> shader)
+void Testing::renderGeometry(std::shared_ptr<Shader> shader)
 {
 	shader->use();
 	glBindVertexArray(VAO);

@@ -15,6 +15,6 @@ public:
 	~Testing();
 
 	void createGeometryTest();
-	void drawGeometryTest(std::shared_ptr<Shader> shader);
+	void renderGeometry(std::shared_ptr<Shader> shader);
 };
 

@@ -50,7 +50,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
-void drawScene(std::vector<std::shared_ptr<SceneObject>> drawableObjects);
+void renderScene(std::vector<std::shared_ptr<SceneObject>> renderableObjects);
 void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<std::shared_ptr<PointLight>> pointLights, std::vector<std::shared_ptr<SpotLight>> spotLights);
 
 
@@ -125,7 +125,7 @@ int main(int argc, char** argv)
 	FrameBuffer hdrBuffer(WIDTH, HEIGHT, FLOAT);
 
 	// Load shaders here (location starts at solution folder)
-	std::shared_ptr<Shader> standardShader = std::make_shared<Shader>("../assets/shader/standard.vert", "../assets/shader/standard.frag");
+	std::shared_ptr<Shader> standardShader = std::make_shared<Shader>("../assets/shader/standard.vert", "../assets/shader/standard.frag", "../assets/shader/standard.geom");
 	std::shared_ptr<Shader> skyboxShader = std::make_shared<Shader>("../assets/shader/skybox.vert", "../assets/shader/skybox.frag");
 	std::shared_ptr<Shader> postProcessShader = std::make_shared<Shader>("../assets/shader/framebuffer.vert", "../assets/shader/framebuffer.frag");
 	std::shared_ptr<Shader> geometryShader = std::make_shared<Shader>("../assets/shader/geometry.vert", "../assets/shader/geometry.frag", "../assets/shader/geometry.geom");
@@ -200,10 +200,10 @@ int main(int argc, char** argv)
 	std::shared_ptr <SceneObject> cylinder = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
 	std::shared_ptr <SceneObject> nanoMan = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
 
-	// Push back scene objects that should be drawn here
-	std::vector<std::shared_ptr<SceneObject>> drawableObjects;
-	drawableObjects.push_back(cube);
-	drawableObjects.push_back(nanoMan);
+	// Push back scene objects that should be rendered here
+	std::vector<std::shared_ptr<SceneObject>> renderableObjects;
+	renderableObjects.push_back(cube);
+	renderableObjects.push_back(nanoMan);
 
 	// Add meshes here
 	sphere1->addMesh(sphere1Mesh);
@@ -321,9 +321,9 @@ int main(int argc, char** argv)
 		orbitCam.update(int(mouse_x), int(mouse_y), _zoom, _dragging, _strafing);
 
 
-		/******************************
-		* Do all render functions here
-		******************************/
+		//********************************//
+		// Do all render functions here
+		//********************************//
 
 		// Enable if default buffer is used only!
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -337,10 +337,10 @@ int main(int argc, char** argv)
 		// Switch to screnQuadBuffer
 		//hdrBuffer.use();
 
-		// Draw scene
-		//drawScene(drawableObjects);
-		//skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render skybox always last!
-		test.drawGeometryTest(geometryShader);
+		// Render scene
+		renderScene(renderableObjects);
+		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render skybox always last!
+		//test.renderGeometry(geometryShader);
 		
 		// Switch back to default buffer
 		//hdrBuffer.unuse();
@@ -367,7 +367,7 @@ int main(int argc, char** argv)
 }
 
 
-void drawScene(std::vector<std::shared_ptr<SceneObject>> drawableObjects)
+void renderScene(std::vector<std::shared_ptr<SceneObject>> drawableObjects)
 {
 	for (std::shared_ptr<SceneObject> obj : drawableObjects)
 	{
@@ -379,8 +379,26 @@ void drawScene(std::vector<std::shared_ptr<SceneObject>> drawableObjects)
 void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<std::shared_ptr<PointLight>> pointLights, std::vector<std::shared_ptr<SpotLight>> spotLights)
 {
 	shader->use();
+
+	//***********//
+	//	Camera
+	//***********//
+
 	shader->setUniform("viewProjMatrix", camera.getProjMatrix() * camera.getViewMatrix());
 	shader->setUniform("camera_world", camera.getPosition());
+
+
+	//*******************//
+	//	Geometry Shader
+	//*******************//
+
+	shader->setUniform("time", (float) glfwGetTime()); 
+	shader->setUniform("enableGeometryShader", true);
+
+
+	//***********//
+	//	Lights
+	//***********//
 
 	shader->setUniform("dirL.color", dirLight.color);
 	shader->setUniform("dirL.direction", dirLight.direction);

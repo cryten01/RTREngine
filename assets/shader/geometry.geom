@@ -1,15 +1,16 @@
 #version 430 core
 
 /** 
-*	Pass through shader that takes a point as input and passes it to the fragment shader
+*	This shader dynamically creates geometry on the GPU 
 **/
-layout (points) in;
-layout (triangle_strip, max_vertices = 5) out;
+
+layout (points) in;								// the points that represent the geometry location in space
+layout (triangle_strip, max_vertices = 5) out;	// the generated geometry
 
 
 in VertexData {
     vec3 color;
-} gs_in[]; // represents an interface block (better because shader inputs can get quite large)
+} gs_in[];		// represents an interface block (better because shader inputs can get quite large)
 
 
 out vec3 geoColor;
@@ -29,9 +30,7 @@ void build_quad(vec4 position)
     gl_Position = position + vec4(-0.2,  0.2, 0.0, 0.0); // 3:top-left
     EmitVertex();
     gl_Position = position + vec4( 0.2,  0.2, 0.0, 0.0); // 4:top-right
-    EmitVertex();
-    gl_Position = position + vec4( 0.0,  0.4, 0.0, 0.0); // 5:top
-    geoColor = vec3(1.0, 1.0, 1.0);
+	geoColor = vec3(1.0, 1.0, 1.0); // color can be changed before vertex emission
     EmitVertex();
     EndPrimitive();
 }

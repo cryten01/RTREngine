@@ -125,7 +125,7 @@ int main(int argc, char** argv)
 	FrameBuffer hdrBuffer(WIDTH, HEIGHT, FLOAT);
 
 	// Load shaders here (location starts at solution folder)
-	std::shared_ptr<Shader> defaultShader = std::make_shared<Shader>("../assets/shader/color.vert", "../assets/shader/color.frag");
+	std::shared_ptr<Shader> standardShader = std::make_shared<Shader>("../assets/shader/standard.vert", "../assets/shader/standard.frag");
 	std::shared_ptr<Shader> skyboxShader = std::make_shared<Shader>("../assets/shader/skybox.vert", "../assets/shader/skybox.frag");
 	std::shared_ptr<Shader> postProcessShader = std::make_shared<Shader>("../assets/shader/framebuffer.vert", "../assets/shader/framebuffer.frag");
 	std::shared_ptr<Shader> geometryShader = std::make_shared<Shader>("../assets/shader/geometry.vert", "../assets/shader/geometry.frag", "../assets/shader/geometry.geom");
@@ -135,9 +135,9 @@ int main(int argc, char** argv)
 	Texture minionTexture("../assets/textures/minion.jpg", TEX_DIFFUSE);
 
 	// Create materials here
-	std::shared_ptr<Material> singleColorMaterial = std::make_shared<Material>(defaultShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-	std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(defaultShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, leatherTexture);
-	std::shared_ptr<Material> minionMaterial = std::make_shared<TextureMaterial>(defaultShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, minionTexture);
+	std::shared_ptr<Material> singleColorMaterial = std::make_shared<Material>(standardShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+	std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, leatherTexture);
+	std::shared_ptr<Material> minionMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, minionTexture);
 
 	// Set initial material states here
 	singleColorMaterial->setState(REFLECTIVE);
@@ -194,11 +194,11 @@ int main(int argc, char** argv)
 	));
 
 	// Create scene objects here
-	std::shared_ptr <SceneObject> sphere1 = std::make_shared<SceneObject>(defaultShader, glm::mat4(1));
-	std::shared_ptr <SceneObject> sphere2 = std::make_shared<SceneObject>(defaultShader, glm::mat4(1));
-	std::shared_ptr <SceneObject> cube = std::make_shared<SceneObject>(defaultShader, glm::mat4(1));
-	std::shared_ptr <SceneObject> cylinder = std::make_shared<SceneObject>(defaultShader, glm::mat4(1));
-	std::shared_ptr <SceneObject> nanoMan = std::make_shared<SceneObject>(defaultShader, glm::mat4(1));
+	std::shared_ptr <SceneObject> sphere1 = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
+	std::shared_ptr <SceneObject> sphere2 = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
+	std::shared_ptr <SceneObject> cube = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
+	std::shared_ptr <SceneObject> cylinder = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
+	std::shared_ptr <SceneObject> nanoMan = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
 
 	// Push back scene objects that should be drawn here
 	std::vector<std::shared_ptr<SceneObject>> drawableObjects;
@@ -332,7 +332,7 @@ int main(int argc, char** argv)
 		// First render pass (render scene into screenQuadBuffer)
 
 		// Set per-frame uniforms
-		setPerFrameUniforms(defaultShader.get(), orbitCam, dirLight, pointLights, spotLights);
+		setPerFrameUniforms(standardShader.get(), orbitCam, dirLight, pointLights, spotLights);
 
 		// Switch to screnQuadBuffer
 		//hdrBuffer.use();

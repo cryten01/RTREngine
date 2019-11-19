@@ -1,8 +1,10 @@
 #version 430 core
 
-out vec4 color;
+in vec3 geoColor;
+
+out vec4 fragColor;
 
 void main()
 {
-    color = vec4(0.0, 1.0, 0.0, 1.0);   
+    fragColor = vec4(geoColor, 1.0);   
 } 

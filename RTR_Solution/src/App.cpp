@@ -8,6 +8,7 @@
 #include "Skybox.h"
 #include "Light.h"
 #include "FrameBuffer.h"
+#include "Particles.h"
 
 #include "SceneObject.h"
 #include "SceneComponent.h"
@@ -192,6 +193,9 @@ int main(int argc, char** argv)
 		glm::cos(glm::radians(10.5f)),
 		glm::cos(glm::radians(12.5f))
 	));
+
+	// Create Particle systems here
+	Particles snow(Particles::createSnow(10.0f));
 
 	// Create scene objects here
 	std::shared_ptr <SceneObject> sphere1 = std::make_shared<SceneObject>(standardShader, glm::mat4(1));

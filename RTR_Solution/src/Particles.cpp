@@ -2,8 +2,8 @@
 
 
 
-Particles::Particles(ParticleData data, std::shared_ptr<Shader> computeShader)
-	: _computeShader(computeShader)
+Particles::Particles(ParticleData data, std::shared_ptr<Shader> computeShader, std::shared_ptr<Shader> renderShader)
+	: _computeShader(computeShader), _renderShader(renderShader)
 {
 	// HELP
 	// create 2x2 SSBOs		(2x position-read/write, 2x velocity-read/write) - see PingPonging
@@ -122,8 +122,6 @@ void Particles::update(float deltaTime)
 	GLuint groups = (_particleCount / (16 * 16)) + 1;		// determines how many particles for each workgroup (min 1)
 	glDispatchCompute(groups, 1, 1);						// launches compute work groups
 
-
-
 	// Memory barrier ensures that atomicCounter gets updated first
 	glMemoryBarrier(GL_ATOMIC_COUNTER_BARRIER_BIT); 	
 
@@ -151,6 +149,23 @@ void Particles::update(float deltaTime)
 
 	// Memory barrier ensures that everything from computeShader is written
 	glMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT); 
+}
+
+void Particles::render(glm::mat4 viewMatrix, glm::mat4 projMatrix)
+{
+	// enableBlendMode()
+
+	_renderShader->use();
+	_renderShader->setUniform("ModelViewMatrix", viewMatrix * glm::mat4(1.0f));
+	_renderShader->setUniform("ProjectionMatrix", projMatrix);
+
+	glBindVertexArray(_vaos[_bufferIndex]);			// bind current VAO
+	glDrawArrays(GL_POINTS, 0, _particleCount);		// draw particles (points are necessary for generating quads
+	glBindVertexArray(0);							// stop binding
+	
+	_renderShader->unuse();
+
+	// diableBlendMode()
 }
 
 

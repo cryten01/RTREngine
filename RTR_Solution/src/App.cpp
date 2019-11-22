@@ -130,6 +130,7 @@ int main(int argc, char** argv)
 	std::shared_ptr<Shader> skyboxShader = std::make_shared<Shader>("../assets/shader/skybox.vert", "../assets/shader/skybox.frag");
 	std::shared_ptr<Shader> postProcessShader = std::make_shared<Shader>("../assets/shader/framebuffer.vert", "../assets/shader/framebuffer.frag");
 	std::shared_ptr<Shader> geometryShader = std::make_shared<Shader>("../assets/shader/geometry.vert", "../assets/shader/geometry.frag", "../assets/shader/geometry.geom");
+	std::shared_ptr<Shader> particleRenderShader = std::make_shared<Shader>("../assets/shader/particles.vert", "../assets/shader/particles.frag", "../assets/shader/particles.geom");
 	std::shared_ptr<Shader> particleComputeShader = std::make_shared<Shader>("../assets/shader/particles.comp");
 
 	// Load textures here
@@ -196,7 +197,7 @@ int main(int argc, char** argv)
 	));
 
 	// Create Particle systems here
-	std::shared_ptr<Particles> snow = std::make_shared<Particles>(Particles::emit(10.0f), particleComputeShader);
+	std::shared_ptr<Particles> snow = std::make_shared<Particles>(Particles::emit(10.0f), particleComputeShader, particleRenderShader);
 
 	// Create scene objects here
 	std::shared_ptr<SceneObject> sphere1 = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
@@ -345,6 +346,7 @@ int main(int argc, char** argv)
 
 		// Render scene
 		renderScene(renderableObjects);
+		snow->render(orbitCam.getViewMatrix(), orbitCam.getProjMatrix());
 		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render skybox always last!
 		//test.renderGeometry(geometryShader);
 		

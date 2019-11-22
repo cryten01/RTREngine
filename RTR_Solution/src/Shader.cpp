@@ -115,6 +115,11 @@ void Shader::use() const
 	glUseProgram(_programID);
 }
 
+void Shader::unuse() const
+{
+	glUseProgram(0);
+}
+
 
 
 GLint Shader::getUniformLocation(const std::string &name) {

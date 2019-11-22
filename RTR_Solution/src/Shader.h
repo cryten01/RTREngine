@@ -17,6 +17,7 @@ public:
 	~Shader();
 
 	void use() const;
+	void unuse() const;
 	GLint getUniformLocation(const std::string& name);
 
 	void setUniform(GLint location, const glm::vec3& vec);

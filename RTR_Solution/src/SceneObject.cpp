@@ -66,7 +66,7 @@ void SceneObject::update()
 
 	if (_light != nullptr) 
 	{
-		std::cout << _transform->getLocalPos().x << " " << _transform->getLocalPos().y << " " << _transform->getLocalPos().z << " " << std::endl;
+		//std::cout << _transform->getLocalPos().x << " " << _transform->getLocalPos().y << " " << _transform->getLocalPos().z << " " << std::endl;
 
 		// Update light position
 		_light->position = _transform->getLocalPos();

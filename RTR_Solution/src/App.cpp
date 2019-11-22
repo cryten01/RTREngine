@@ -130,6 +130,7 @@ int main(int argc, char** argv)
 	std::shared_ptr<Shader> skyboxShader = std::make_shared<Shader>("../assets/shader/skybox.vert", "../assets/shader/skybox.frag");
 	std::shared_ptr<Shader> postProcessShader = std::make_shared<Shader>("../assets/shader/framebuffer.vert", "../assets/shader/framebuffer.frag");
 	std::shared_ptr<Shader> geometryShader = std::make_shared<Shader>("../assets/shader/geometry.vert", "../assets/shader/geometry.frag", "../assets/shader/geometry.geom");
+	std::shared_ptr<Shader> particleComputeShader = std::make_shared<Shader>("../assets/shader/particles.comp");
 
 	// Load textures here
 	Texture leatherTexture("../assets/textures/leather.jpg", TEX_DIFFUSE);
@@ -195,14 +196,14 @@ int main(int argc, char** argv)
 	));
 
 	// Create Particle systems here
-	Particles snow(Particles::createSnow(10.0f));
+	std::shared_ptr<Particles> snow = std::make_shared<Particles>(Particles::emit(10.0f), particleComputeShader);
 
 	// Create scene objects here
-	std::shared_ptr <SceneObject> sphere1 = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
-	std::shared_ptr <SceneObject> sphere2 = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
-	std::shared_ptr <SceneObject> cube = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
-	std::shared_ptr <SceneObject> cylinder = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
-	std::shared_ptr <SceneObject> nanoMan = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
+	std::shared_ptr<SceneObject> sphere1 = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
+	std::shared_ptr<SceneObject> sphere2 = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
+	std::shared_ptr<SceneObject> cube = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
+	std::shared_ptr<SceneObject> cylinder = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
+	std::shared_ptr<SceneObject> nanoMan = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
 
 	// Push back scene objects that should be rendered here
 	std::vector<std::shared_ptr<SceneObject>> renderableObjects;
@@ -319,6 +320,7 @@ int main(int argc, char** argv)
 		// Update scene objects here
 		cube->update();
 		nanoMan->updateAll();
+		snow->update(deltaTime);
 
 		// Update camera
 		glfwGetCursorPos(window, &mouse_x, &mouse_y);

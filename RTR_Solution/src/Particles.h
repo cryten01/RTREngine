@@ -1,5 +1,6 @@
 #pragma once
 #include "Utils.h"
+#include "Shader.h"
 
 struct ParticleData
 {
@@ -10,21 +11,34 @@ struct ParticleData
 class Particles
 {
 private:
-	// SSBO BufferIDs (Arrays of size 2 because of PingPonging)
-	GLuint _ssboPos[2];
+	const unsigned int MAX_PARTICLES = 10000;
+	const double SPAWN_RATE_PER_SECOND = 2;
+
+	GLuint _ssboPos[2];		// SSBO BufferIDs (Arrays of size 2 because of PingPonging)
 	GLuint _ssboVel[2];	
 	GLuint _vaos[2];
 	GLuint _atomicCounterID;
 	GLuint _tempBufferID;
 
-	const unsigned int MAX_PARTICLES = 10000;
+	bool _bufferIndex;
+	GLuint _particleCount;		// The number of total particles existend
+	GLuint _readyToSpawn;
+	double _remainingToSpawn;	// The number of new particles per frame
+	std::shared_ptr<Shader> _computeShader;
 
 	void createAtomicCounter();
+	void createTempBuffer();
+
+	void calcReadyAndRemainingToSpawn(float deltaTime);
+
 
 public:
-	 Particles(ParticleData data);
+	 Particles(ParticleData data, std::shared_ptr<Shader> computeShader);
 	~Particles();
 
-	static ParticleData createSnow(const unsigned int TTL);
-};
+	void update(float deltaTime);
 
+
+	static ParticleData emit(const unsigned int TTL);
+	
+};

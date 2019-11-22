@@ -6,13 +6,14 @@ class Shader
 {
 private:
 	GLuint _programID;
-	//std::vector<GLuint> _shaderIDs;
 
 	std::string readInFile(const std::string& filePath);
 	GLuint compileShader(const std::string& filePath, GLuint type);
+	void addToProgram(GLenum shaderType, const std::string& filePath);
 
 public:
 	 Shader(const std::string& vertexFilePath, const std::string& fragmentFilePath, const std::string& geometryFilePath = "");
+	 Shader(const std::string& computeFilePath);
 	~Shader();
 
 	void use() const;

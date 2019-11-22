@@ -158,7 +158,7 @@
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\Transform.cpp" />
-    <ClCompile Include="src\Testing.cpp" />
+    <ClCompile Include="src\Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Particles.h" />
@@ -175,7 +175,7 @@
     <ClInclude Include="src\Transform.h" />
     <ClInclude Include="src\Utils.h" />
     <ClInclude Include="src\Texture.h" />
-    <ClInclude Include="src\Testing.h" />
+    <ClInclude Include="src\Test.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,7 +2,7 @@
 #include "Utils.h"
 #include "Shader.h"
 
-struct ParticleData
+struct ParticleData						  // Note: assumes identical amounts for positionsTTL and velocity
 {
 	std::vector<glm::vec4> positionsTTL;  // includes TimeToLive
 	std::vector<glm::vec4> velocity;
@@ -23,7 +23,7 @@ private:
 	GLuint _atomicCounterID;
 	GLuint _tempBufferID;
 
-	bool _bufferIndex;
+	bool _pingPongIndex;			// The currently active SSBO set
 	GLuint _particleCount;		// The number of total particles existent
 	GLuint _readyToSpawn;		// The number of particles that are ready for emission
 	double _remainingToSpawn;	// The number that are not ready for emission yet
@@ -31,17 +31,18 @@ private:
 
 	void createAtomicCounter();
 	void createTempBuffer();
-	void calcReadyAndRemainingToSpawn(float deltaTime);
+	void addToParticleCount(float deltaTime);
+	void addToSSBOSet(ParticleData emitters);
 
 
 public:
-	 Particles(ParticleData data, std::shared_ptr<Shader> computeShader, std::shared_ptr<Shader> renderShader);
+	 Particles(ParticleData emitters, std::shared_ptr<Shader> computeShader, std::shared_ptr<Shader> renderShader);
 	~Particles();
 
 	void update(float deltaTime);
 	void render(glm::mat4 viewMatrix, glm::mat4 projMatrix);
 
 
-	static ParticleData emit(const unsigned int TTL);
+	static ParticleData createEmitters(const unsigned int TTL);
 	
 };

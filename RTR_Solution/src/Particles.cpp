@@ -2,7 +2,7 @@
 
 
 
-Particles::Particles(ParticleData data, std::shared_ptr<Shader> computeShader, std::shared_ptr<Shader> renderShader)
+Particles::Particles(ParticleData emitters, std::shared_ptr<Shader> computeShader, std::shared_ptr<Shader> renderShader)
 	: _computeShader(computeShader), _renderShader(renderShader)
 {
 	// HELP
@@ -14,60 +14,44 @@ Particles::Particles(ParticleData data, std::shared_ptr<Shader> computeShader, s
 
 
 	// Init values
-	_bufferIndex = 0;
+	_pingPongIndex = 0;
 	_readyToSpawn = 0;
 	_remainingToSpawn = 0;
-	_particleCount = 0;
-
-	
-	// Create SSBOs (2x position-read/write, 2x velocity-read/write because of PingPonging)
-	glGenBuffers(1, &_ssboPos[0]); 	// position_In
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, _ssboPos[0]);
-	glBufferData(GL_SHADER_STORAGE_BUFFER, MAX_PARTICLES * sizeof(glm::vec4), NULL, GL_DYNAMIC_DRAW);
-
-	glGenBuffers(1, &_ssboPos[1]); 	// position_Out
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, _ssboPos[1]);
-	glBufferData(GL_SHADER_STORAGE_BUFFER, MAX_PARTICLES * sizeof(glm::vec4), NULL, GL_DYNAMIC_DRAW);
-
-	glGenBuffers(1, &_ssboVel[0]); 	// velocity_In
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, _ssboVel[0]);
-	glBufferData(GL_SHADER_STORAGE_BUFFER, MAX_PARTICLES * sizeof(glm::vec4), NULL, GL_DYNAMIC_DRAW);
-
-	glGenBuffers(1, &_ssboVel[1]); 	// velocity_Out
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, _ssboVel[1]);
-	glBufferData(GL_SHADER_STORAGE_BUFFER, MAX_PARTICLES * sizeof(glm::vec4), NULL, GL_DYNAMIC_DRAW);
+	_particleCount = emitters.positionsTTL.size();
 
 
-	// Copy particle positions to SSBO[0]
-	GLuint offsetPosition = 0;
-	GLuint sizePosition = data.positionsTTL.size() * sizeof(glm::vec4);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, _ssboPos[0]);
-	glBufferSubData(GL_SHADER_STORAGE_BUFFER, offsetPosition, sizePosition, &data.positionsTTL[0]);
+	// Create an empty set of 2 SSBOs (1x position-read/write, 1x velocity-read/write each because of PingPonging)
+	for (size_t i = 0; i < 2; i++)
+	{
+		glGenBuffers(1, &_ssboPos[i]);
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, _ssboPos[i]);
+		glBufferData(GL_SHADER_STORAGE_BUFFER, MAX_PARTICLES * sizeof(glm::vec4), NULL, GL_DYNAMIC_DRAW);
 
-	// Copy particle velocities to SSBO[0]
-	GLuint offsetVelocity = 0;
-	GLuint sizeVelocity = data.velocity.size() * sizeof(glm::vec4);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, _ssboVel[0]);
-	glBufferSubData(GL_SHADER_STORAGE_BUFFER, offsetVelocity, sizeVelocity, &data.velocity[0]);
+		glGenBuffers(1, &_ssboVel[i]);
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, _ssboVel[i]);
+		glBufferData(GL_SHADER_STORAGE_BUFFER, MAX_PARTICLES * sizeof(glm::vec4), NULL, GL_DYNAMIC_DRAW);
+	}
 
 
-	// Create VAOs 
+	// Create 2 VAOs that each contain a position SSBO for the renderShader
 	glGenVertexArrays(2, _vaos);
 
-	// Connect SSBO[0] to VAO[0];
-	glBindVertexArray(_vaos[0]);
-	glBindBuffer(GL_ARRAY_BUFFER, _ssboPos[0]);
-	// Bind position to location 0
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+	for (size_t i = 0; i < 2; i++)
+	{
+		// Connect SSBO[i] to VAO[i];
+		glBindVertexArray(_vaos[i]);
+		glBindBuffer(GL_ARRAY_BUFFER, _ssboPos[i]);
+		// Bind position to location 0 in renderShader
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
 
-	// Connect SSBO[1] to VAO[1];
-	glBindVertexArray(_vaos[1]);
-	glBindBuffer(GL_ARRAY_BUFFER, _ssboPos[1]);
-	// Bind both position to location 0
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+		// Unbind VAO
+		glBindVertexArray(0);
+	}
 
+
+	// Add emitters to SSBOSet
+	addToSSBOSet(emitters);
 
 	createAtomicCounter();
 	createTempBuffer();
@@ -80,8 +64,10 @@ Particles::~Particles()
 	glDeleteBuffers(1, &_ssboPos[1]);
 	glDeleteBuffers(1, &_ssboVel[0]);
 	glDeleteBuffers(1, &_ssboVel[1]);
+
 	glDeleteBuffers(1, &_atomicCounterID);
 	glDeleteBuffers(1, &_tempBufferID);
+
 	glDeleteVertexArrays(2, _vaos);
 }
 
@@ -95,46 +81,45 @@ void Particles::update(float deltaTime)
 	// glMapBufferRange					reads and writes into the AtomicCounter buffer
 
 
-	// Calc new particles that are readyToSpawn
-	calcReadyAndRemainingToSpawn(deltaTime);
+	// Add new particles that are readyToSpawn to particle count
+	addToParticleCount(deltaTime);
 
-	// Add particles that are ready to spawn
-	_particleCount += _readyToSpawn;
-	
+
 	// Set uniforms
 	_computeShader->use();
 	_computeShader->setUniform("DeltaT", deltaTime);
 	_computeShader->setUniform("MaximumCount", MAX_PARTICLES);
 	_computeShader->setUniform("LastCount", _particleCount);
+	_computeShader->setUniform("GRAVITY", glm::vec3(0, 0, 0));
 
 
 	// Bind to current SSBO and atomic counter
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, _ssboPos[ _bufferIndex]);	// IN 
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, _ssboVel[ _bufferIndex]);	// IN
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, _ssboPos[!_bufferIndex]); // OUT
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, _ssboVel[!_bufferIndex]); // OUT
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, _ssboPos[_pingPongIndex]);	// IN 
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, _ssboVel[_pingPongIndex]);	// IN
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, _ssboPos[!_pingPongIndex]);	// OUT
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 3, _ssboVel[!_pingPongIndex]);	// OUT
 	glBindBufferBase(GL_ATOMIC_COUNTER_BUFFER, 4, _atomicCounterID);
 
 	// Switch buffers (pingPonging)
-	_bufferIndex = !_bufferIndex;
+	_pingPongIndex = !_pingPongIndex;
 
 	// Execute computeShader with a 16x16 work group size
 	GLuint groups = (_particleCount / (16 * 16)) + 1;		// determines how many particles for each workgroup (min 1)
 	glDispatchCompute(groups, 1, 1);						// launches compute work groups
 
 	// Memory barrier ensures that atomicCounter gets updated first
-	glMemoryBarrier(GL_ATOMIC_COUNTER_BARRIER_BIT); 	
+	glMemoryBarrier(GL_ATOMIC_COUNTER_BARRIER_BIT);
 
-	// Bind atomicCounter buffer and its temp buffer
+	// Bind atomic buffer and its temp buffer
 	glBindBuffer(GL_ATOMIC_COUNTER_BUFFER, _atomicCounterID);
 	glBindBuffer(GL_COPY_WRITE_BUFFER, _tempBufferID);
-	
-	// Copy buffer data from the atomic counter buffer to the temp buffer
+
+	// Copy atomicCounter value from the atomic buffer to the temp buffer
 	glCopyBufferSubData(GL_ATOMIC_COUNTER_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, sizeof(GLuint));
 
 	// Receive value from temp buffer
 	GLuint *counterValue = (GLuint*)glMapBufferRange(GL_COPY_WRITE_BUFFER, 0, sizeof(GLuint), GL_MAP_READ_BIT | GL_MAP_WRITE_BIT);
-	
+
 	// Set current particle count 
 	_particleCount = counterValue[0];
 
@@ -148,7 +133,7 @@ void Particles::update(float deltaTime)
 	glCopyBufferSubData(GL_COPY_WRITE_BUFFER, GL_ATOMIC_COUNTER_BUFFER, 0, 0, sizeof(GLuint));
 
 	// Memory barrier ensures that everything from computeShader is written
-	glMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT); 
+	glMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
 }
 
 void Particles::render(glm::mat4 viewMatrix, glm::mat4 projMatrix)
@@ -156,13 +141,13 @@ void Particles::render(glm::mat4 viewMatrix, glm::mat4 projMatrix)
 	// enableBlendMode()
 
 	_renderShader->use();
-	_renderShader->setUniform("ModelViewMatrix", viewMatrix * glm::mat4(1.0f));
-	_renderShader->setUniform("ProjectionMatrix", projMatrix);
+	_renderShader->setUniform("modelViewMatrix", viewMatrix * glm::mat4(1.0f));
+	_renderShader->setUniform("projectionMatrix", projMatrix);
 
-	glBindVertexArray(_vaos[_bufferIndex]);			// bind current VAO
+	glBindVertexArray(_vaos[_pingPongIndex]);		// bind current VAO
 	glDrawArrays(GL_POINTS, 0, _particleCount);		// draw particles (points are necessary for generating quads
 	glBindVertexArray(0);							// stop binding
-	
+
 	_renderShader->unuse();
 
 	// diableBlendMode()
@@ -170,7 +155,7 @@ void Particles::render(glm::mat4 viewMatrix, glm::mat4 projMatrix)
 
 
 /**
-*	Creates an atomic counter that represents the particle count synchronized across all work groups 
+*	Creates an atomic counter that represents the particle count synchronized across all work groups
 **/
 void Particles::createAtomicCounter()
 {
@@ -180,14 +165,16 @@ void Particles::createAtomicCounter()
 	glGenBuffers(1, &_atomicCounterID);
 	glBindBuffer(GL_ATOMIC_COUNTER_BUFFER, _atomicCounterID);
 	glBufferData(GL_ATOMIC_COUNTER_BUFFER, sizeof(GLuint), NULL, GL_DYNAMIC_DRAW);
-	glBufferSubData(GL_ATOMIC_COUNTER_BUFFER, 0, sizeof(GLuint), 0);
 
+	// Set up a new atomic counter with value 0
+	GLuint value = 0;
+	glBufferSubData(GL_ATOMIC_COUNTER_BUFFER, 0, sizeof(GLuint), &value);
 	glBindBuffer(GL_ATOMIC_COUNTER_BUFFER, 0);
 }
 
 
 /**
-*	Creates a temporary buffer for "move to" and "read from". 
+*	Creates a temporary buffer for "move to" and "read from".
 *	This buffer is needed because a performance warning is raised when reading the atomic counter.
 **/
 void Particles::createTempBuffer()
@@ -207,41 +194,63 @@ void Particles::createTempBuffer()
 *	Ensures frame rate independet spawning of X particles per second.
 *	This happens by accumulating the count over multiple frames.
 **/
-void Particles::calcReadyAndRemainingToSpawn(float deltaTime)
+void Particles::addToParticleCount(float deltaTime)
 {
-	// Add new particles (can be 0.5 particles etc.)
+	// Add new particles regardless if they are complete (can be 0.5 particles etc.)
 	_remainingToSpawn += SPAWN_RATE_PER_SECOND * deltaTime;
 
 	// Check if particles at least one full particle is ready to be spawned
-	if (_remainingToSpawn >= 1)
+	if (_remainingToSpawn > 1)
 	{
 		// Determine the amount of already complete particles by cutting decimal places
 		GLuint completeParticles = (GLuint)_remainingToSpawn;
 
 		// Add complete particles to spawnCount
-		_readyToSpawn += completeParticles;
+		_particleCount += completeParticles;
 
 		// Subtract complete particles from the remaining particles to spawn
 		_remainingToSpawn -= completeParticles;
 	}
 }
 
+void Particles::addToSSBOSet(ParticleData emitters)
+{
+	// Copy particle positions to SSBO[0]
+	GLuint offsetPosition = _particleCount * sizeof(glm::vec4);
+	GLuint sizePosition = emitters.positionsTTL.size() * sizeof(glm::vec4);
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, _ssboPos[_pingPongIndex]);
+	glBufferSubData(GL_SHADER_STORAGE_BUFFER, offsetPosition, sizePosition, &emitters.positionsTTL[0]);
+
+
+	// Copy particle velocities to SSBO[0]
+	GLuint offsetVelocity = _particleCount * sizeof(glm::vec4);
+	GLuint sizeVelocity = emitters.velocity.size() * sizeof(glm::vec4);
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, _ssboVel[_pingPongIndex]);
+	glBufferSubData(GL_SHADER_STORAGE_BUFFER, offsetVelocity, sizeVelocity, &emitters.velocity[0]);
+}
+
 
 /**
 *	Needed for initial particle emitters
 **/
-ParticleData Particles::emit(const unsigned int TTL)
+ParticleData Particles::createEmitters(const unsigned int TTL)
 {
 	ParticleData data;
 
 	data.positionsTTL = {
-		glm::vec4(0, 0, 0, TTL),
-		glm::vec4(2, 0, 1, TTL)
+		glm::vec4(-1.5f,  0.5f, 0, TTL),
+		glm::vec4( 0.5f,  0.5f, 0, TTL),
+		glm::vec4( 0.5f, -0.5f, 0, TTL),
+		glm::vec4(-0.5f, -0.5f, 0, TTL),
 	};
 
 	data.velocity = {
-		glm::vec4(0, 0, 0, 0),
-		glm::vec4(0, 0, 0, 0),
+		glm::vec4(0, 1, 0, 0),
+		glm::vec4(0, 1, 0, 0),
+		glm::vec4(0, 1, 0, 0),
+		glm::vec4(0, 1, 0, 0),
 	};
 
 	return std::move(data);

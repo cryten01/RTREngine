@@ -1,6 +1,9 @@
 #version 430 core
 
-/** Transforms particles into a quad that always faces the cam's viewing direction */
+/*
+*	This shader transforms particles into a quad that always faces the cam's viewing direction.
+*	It also applies the projection matrix on this quad.
+*/
 
 layout (points) in;								// the particle points from the vertexShader
 layout (triangle_strip, max_vertices = 4) out;	// the quads created from the particles
@@ -17,9 +20,36 @@ out VertexData {
 } fromGeom;
 
 
-void main (void) {
 
-	const vec2 particleSize = vec2(0.05, 0.05);			// defines how big the quad should be
+// Generate a basic house (for testing purposes only)
+void quad_test(vec4 position) 
+{    
+	// EmitVertex() emits a vertex to the first vertex stream
+	// EndPrimitive() completes the current output primitive on the first vertex stream
+
+	// 1:bottom-left 
+    gl_Position = position + vec4(-0.5, -0.5, 0.0, 0.0);   
+    EmitVertex();   
+
+	// 2:bottom-right
+    gl_Position = position + vec4( 0.5, -0.5, 0.0, 0.0); 
+    EmitVertex();
+
+	// 3:top-left
+    gl_Position = position + vec4(-0.5,  0.5, 0.0, 0.0); 
+    EmitVertex();
+
+	// 4:top-right
+    gl_Position = position + vec4( 0.5,  0.5, 0.0, 0.0); 
+    EmitVertex();
+
+    EndPrimitive();
+}
+
+
+void buildParticleQuad()
+{
+	const vec2 particleSize = vec2(0.5, 0.5);			// defines how big the quad should be
 	vec4 P = gl_in[0].gl_Position;						// particle position in view-space
 
 	// a: left-bottom
@@ -51,4 +81,13 @@ void main (void) {
 	EmitVertex(); 
 
 	EndPrimitive();		// completes the current output primitive on the first vertex stream (= finishes quad)
+}
+
+
+
+
+
+void main (void) {
+
+	quad_test(gl_in[0].gl_Position);	// passes the first position of the primitive
 }

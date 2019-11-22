@@ -45,7 +45,7 @@ void Skybox::render(std::shared_ptr<Shader> shader, glm::mat4 viewMatrix, glm::m
 	// Change depth function so depth test passes when values are <= 1.0 (so all objects are rendered in front of the skybox)
 	glDepthFunc(GL_LEQUAL);
 
-	// Select shader
+
 	shader->use();
 
 	// Set shader uniforms (view projection matrix)
@@ -62,6 +62,8 @@ void Skybox::render(std::shared_ptr<Shader> shader, glm::mat4 viewMatrix, glm::m
 
 	// Set depth test back to default
 	glDepthFunc(GL_LESS);
+
+	shader->unuse();
 }
 
 

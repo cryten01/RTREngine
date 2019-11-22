@@ -13,7 +13,7 @@
 #include "SceneObject.h"
 #include "SceneComponent.h"
 #include "Transform.h"
-#include "Testing.h"
+#include "Test.h"
 
 
 
@@ -197,7 +197,7 @@ int main(int argc, char** argv)
 	));
 
 	// Create Particle systems here
-	std::shared_ptr<Particles> snow = std::make_shared<Particles>(Particles::emit(10.0f), particleComputeShader, particleRenderShader);
+	std::shared_ptr<Particles> snow = std::make_shared<Particles>(Particles::createEmitters(10.0f), particleComputeShader, particleRenderShader);
 
 	// Create scene objects here
 	std::shared_ptr<SceneObject> sphere1 = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
@@ -265,10 +265,9 @@ int main(int argc, char** argv)
 	* Define all testing variables here
 	******************************/
 
-	// Create testing class here
-	Testing test;
-
-	test.createGeometryTest();
+	// Create tests here
+	Test geoTest(GEOMETRYSHADER);
+	Test particleTest(PARTICLES);
 
 	float range = 30;
 	float threshold = 30;
@@ -295,8 +294,6 @@ int main(int argc, char** argv)
 			fps = frames;
 			frames = 0;
 			lastTime += 1.0;
-
-			//std::cout << fps << std::endl;
 		}
 
 		// Update test (For debugging purposes only!)
@@ -321,7 +318,7 @@ int main(int argc, char** argv)
 		// Update scene objects here
 		cube->update();
 		nanoMan->updateAll();
-		snow->update(deltaTime);
+		//snow->update(deltaTime);
 
 		// Update camera
 		glfwGetCursorPos(window, &mouse_x, &mouse_y);
@@ -345,10 +342,11 @@ int main(int argc, char** argv)
 		//hdrBuffer.use();
 
 		// Render scene
-		renderScene(renderableObjects);
-		snow->render(orbitCam.getViewMatrix(), orbitCam.getProjMatrix());
+		//renderScene(renderableObjects);
+		//snow->render(orbitCam.getViewMatrix(), orbitCam.getProjMatrix());
 		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render skybox always last!
-		//test.renderGeometry(geometryShader);
+		//geoTest.renderGeometry(particleRenderShader);
+		particleTest.renderParticles(particleRenderShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix());
 		
 		// Switch back to default buffer
 		//hdrBuffer.unuse();

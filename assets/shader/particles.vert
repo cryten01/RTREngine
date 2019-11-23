@@ -19,8 +19,8 @@ uniform mat4 viewProjMatrix;
 void main()
 {	
 	// extracts TTL from vec4
-	fromVert.TTL1 = position.w;							
+	fromVert.TTL1 = position.w;
 
-	// gl_Position contains position of current vertex
-	gl_Position = modelViewMatrix * position;		
+	// gl_Position contains position of current vertex (note that position.w is the TTL here)
+	gl_Position = modelViewMatrix * vec4(position.xyz, 1.0);
 }

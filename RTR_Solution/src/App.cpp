@@ -384,16 +384,16 @@ void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLig
 {
 	shader->use();
 
-	//***********//
-	//	Camera
-	//***********//
+	//**********//
+	//	Camera  //
+	//**********//
 
 	shader->setUniform("viewProjMatrix", camera.getProjMatrix() * camera.getViewMatrix());
 	shader->setUniform("camera_world", camera.getPosition());
 
 
 	//*******************//
-	//	Geometry Shader
+	//	Geometry Shader	 //
 	//*******************//
 
 	shader->setUniform("time", (float) glfwGetTime()); 
@@ -401,7 +401,7 @@ void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLig
 
 
 	//***********//
-	//	Lights
+	//	Lights	 //
 	//***********//
 
 	shader->setUniform("dirL.color", dirLight.color);

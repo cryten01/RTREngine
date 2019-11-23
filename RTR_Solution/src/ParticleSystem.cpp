@@ -225,16 +225,16 @@ void ParticleSystem::addToActiveSSBOSet(std::vector<Particle> emitters)
 std::vector<Particle> ParticleSystem::createEmitters(const unsigned int TTL)
 {
 	glm::vec4 positionTTLs[] = {
-		glm::vec4( 0.5f, -0.5f, 0, TTL),
+		glm::vec4( 1.0f,  0.5f, 0, TTL),
 		glm::vec4( 0.5f,  0.5f, 0, TTL),
 		glm::vec4(-0.5f,  0.5f, 0, TTL),
-		glm::vec4( 0.0f,  0.0f, 0, TTL),
+		glm::vec4(-1.0f,  0.5f, 0, TTL),
 	};
 
 	glm::vec4 velocities[] = {
 		glm::vec4(0, 1, 0, 0),
 		glm::vec4(0, 1, 0, 0),
-		glm::vec4(1, 1, 0, 0),
+		glm::vec4(0, 1, 0, 0),
 		glm::vec4(0, 1, 0, 0),
 	};
 

@@ -197,7 +197,7 @@ int main(int argc, char** argv)
 	));
 
 	// Create Particle systems here
-	std::shared_ptr<ParticleSystem> snow = std::make_shared<ParticleSystem>(ParticleSystem::createStarEmitter(2.0f), particleComputeShader, particleRenderShader);
+	std::shared_ptr<ParticleSystem> snow = std::make_shared<ParticleSystem>(ParticleSystem::createSnowEmitter(), particleComputeShader, particleRenderShader);
 
 	// Create scene objects here
 	std::shared_ptr<SceneObject> sphere1 = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
@@ -341,7 +341,7 @@ int main(int argc, char** argv)
 		setPerFrameUniforms(standardShader.get(), orbitCam, dirLight, pointLights, spotLights);
 
 		// Switch to screnQuadBuffer
-		hdrBuffer.use();
+		//hdrBuffer.use();
 
 		// Render scene
 		//renderScene(renderableObjects);
@@ -350,7 +350,7 @@ int main(int argc, char** argv)
 		//geoTest.renderGeometry(particleRenderShader);
 		
 		// Switch back to default buffer
-		hdrBuffer.unuse();
+		//hdrBuffer.unuse();
 
 
 
@@ -358,7 +358,7 @@ int main(int argc, char** argv)
 		*	Second render pass (render buffer to quad)
 		**/
 
-		hdrBuffer.renderScreenQuad(postProcessShader, _hdr, _exposure);
+		//hdrBuffer.renderScreenQuad(postProcessShader, _hdr, _exposure);
 
 
 		// Poll events and swap buffers

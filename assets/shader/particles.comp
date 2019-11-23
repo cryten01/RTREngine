@@ -26,7 +26,11 @@ uniform float DeltaT;
 uniform uint MaximumCount;
 uniform uint SpawnCount;	// The amount of particles that need to be spawend
 uniform uint LastCount;		// The amount of particles that were in the last frame
+
+uniform vec3 RandomRange;
+
 uniform vec3 GRAVITY;
+uniform vec3 WIND;
 
 
 /**
@@ -50,11 +54,14 @@ void addToOutputList(Particle particle) {
 /**
 *	Create new particle only if last count is not reached
 **/
-Particle createParticle(Particle reference)
+Particle createSnowParticle(Particle reference)
 {
 	Particle p;
-	p.positionTTL = vec4(0,0,0, 2.0);
-	p.velocity = reference.velocity;
+
+	float height = 10;
+
+	p.positionTTL = vec4(RandomRange.x, height, RandomRange.z, height);
+	p.velocity = vec4(0.0);
 
 	return p;
 }
@@ -74,6 +81,8 @@ Particle updateParticle(Particle particle)
 	{
 		// Physics (add wind or other forces here)
 		vec3 forces = GRAVITY;
+
+		forces += WIND;
 
 		// Velocity after physics was applied
 		particle.velocity.xyz = particle.velocity.xyz + forces * DeltaT;
@@ -106,10 +115,9 @@ void main() {
 		p = updateParticle(p);
 		addToOutputList(p);
 	} 
-		
-
+	
 	if (SpawnCount > 0) {
-		p = createParticle(p);
+		p = createSnowParticle(p);
 		addToOutputList(p);
 	}
 

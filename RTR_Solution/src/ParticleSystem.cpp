@@ -35,7 +35,7 @@ ParticleSystem::ParticleSystem(std::vector<Particle> emitters, std::shared_ptr<S
 	{
 		// Connect SSBO[i] to VAO[i];
 		glBindVertexArray(_vaos[i]);
-	
+
 		// Bind position to attribute input location 0 in renderShader (note the offset)
 		glBindBuffer(GL_ARRAY_BUFFER, _ssbos[i]);
 		glEnableVertexAttribArray(0);
@@ -75,13 +75,20 @@ ParticleSystem::~ParticleSystem()
 **/
 void ParticleSystem::update(float deltaTime)
 {
+	// Snow mode (for testing purposes only!)
+	float rangeX = rand() % 80 + (-40);
+	float rangeZ = rand() % 80 + (-40);
+	float dimm = 0.03f;
+
 	// Set uniforms
 	_computeShader->use();
 	_computeShader->setUniform("DeltaT", deltaTime);
 	_computeShader->setUniform("LastCount", _particleCount);
 	_computeShader->setUniform("SpawnCount", getReadyToSpawn(deltaTime));
 	_computeShader->setUniform("MaximumCount", MAX_PARTICLES);
-	_computeShader->setUniform("GRAVITY", glm::vec3(0, 0, 0));
+	_computeShader->setUniform("GRAVITY", glm::vec3(0, -1, 0));
+	_computeShader->setUniform("WIND", glm::vec3(rangeX * dimm, 0, rangeZ * dimm));
+	_computeShader->setUniform("RandomRange", glm::vec3(rangeX, 0, rangeZ));
 
 	// Bind to current SSBO and atomic counter
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, _ssbos[_pingPongIndex]);	// IN 
@@ -162,7 +169,7 @@ void ParticleSystem::createAtomicCounter()
 /**
 *	Creates a temporary buffer for "move to" and "read from".
 *	This buffer is only necesseray when a performance warning occurs (because of reading the atomic counter)
-* 
+*
 *	HELP
 *	GL_COPY_WRITE_BUFFER	allows copies between buffers without disturbing the OpenGL state.
 **/
@@ -229,11 +236,11 @@ std::vector<Particle> ParticleSystem::createStarEmitter(const unsigned int TTL)
 	};
 
 	glm::vec4 velocities[] = {
-		glm::vec4( 0, 1, 0, 0),
-		glm::vec4( 1, 1, 0, 0),
+		glm::vec4(0, 1, 0, 0),
+		glm::vec4(1, 1, 0, 0),
 		glm::vec4(-1, 1, 0, 0),
 		glm::vec4(-1,-1, 0, 0),
-		glm::vec4( 1,-1, 0, 0),
+		glm::vec4(1,-1, 0, 0),
 	};
 
 
@@ -244,6 +251,36 @@ std::vector<Particle> ParticleSystem::createStarEmitter(const unsigned int TTL)
 		emitterData.push_back(emitterSlot);
 	}
 
+
+	return emitterData;
+}
+
+std::vector<Particle> ParticleSystem::createSnowEmitter()
+{
+	std::vector<Particle> emitterData;
+	Particle emitterSlot;
+
+	float height = 20;
+
+	glm::vec4 positionTTLs[] = {
+	glm::vec4(1.0f, height,-2, height),
+	glm::vec4(-2.0f, height, 1, height),
+	glm::vec4(3.0f, height, 4, height),
+	};
+
+	glm::vec4 velocities[] = {
+		glm::vec4(0, -1, 0, 0),
+		glm::vec4(0, -1, 0, 0),
+		glm::vec4(0, -1, 0, 0),
+	};
+
+
+	for (size_t i = 0; i < sizeof(positionTTLs) / sizeof(glm::vec4); i++)
+	{
+		emitterSlot.positionsTTL = positionTTLs[i];
+		emitterSlot.velocity = velocities[i];
+		emitterData.push_back(emitterSlot);
+	}
 
 	return emitterData;
 }

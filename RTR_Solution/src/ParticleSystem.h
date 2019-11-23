@@ -14,7 +14,7 @@ class ParticleSystem
 {
 private:
 	const unsigned int MAX_PARTICLES = 10000;
-	const double SPAWN_RATE_PER_SECOND = 6;
+	const double SPAWN_RATE_PER_SECOND = 20;
 
 	std::shared_ptr<Shader> _computeShader;
 	std::shared_ptr<Shader> _renderShader;
@@ -26,7 +26,6 @@ private:
 
 	bool _pingPongIndex;		// The currently active SSBO set
 	GLuint _particleCount;		// The number of total particles existent
-	//GLuint _readyToSpawn;		// The number of particles that are ready for emission
 	double _remainingToSpawn;	// The number of particles that are not ready for emission yet
 
 
@@ -45,5 +44,5 @@ public:
 
 
 	static std::vector<Particle> createStarEmitter(const unsigned int TTL);
-	
+	static std::vector<Particle> createSnowEmitter();
 };

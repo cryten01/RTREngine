@@ -4,36 +4,35 @@
 * This shader is responisble for updating particle physics using SIMD logic 
 */
 
-// LAYOUTS //
-
-layout (binding = 4, offset = 0) uniform atomic_uint particleCount;		// current particle count as atomic counter (because used simultaneously in every workgroup)
-
-layout (local_size_x = 16, local_size_y = 16, local_size_y = 1) in;		// work group (grid of threads), gets a 16x16 workgroup from outside
-
-layout(std430, binding = 0) buffer Pos1 {								// buffers (2x particlePos, 2x particleVel, duplicates because of ping-ponging)
-	vec4 PosTTL_In[];
-};
-layout(std430, binding = 1) buffer Vel1 { 
-	vec4 Velocity_In[];
-};
-layout(std430, binding = 2) buffer Pos2 {
-	vec4 PosTTL_Out[];
-};
-layout(std430, binding = 3) buffer Vel2 {
-	vec4 Velocity_Out[];
+struct Particle
+{
+	vec4 positionTTL;
+	vec4 velocity;
 };
 
+// Represents 1 work group with 256 threads
+layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;		
 
-// PURE UNIFORMS AND CONSTANTS //
+// Buffer blocks (1 per attribute * 2 because of pingPonging)
+layout(std430, binding = 0) buffer Particles_in_buffer {
+	Particle particles_in[];
+};
+
+layout(std430, binding = 1) buffer Particles_out_buffer {
+	Particle particles_out[];
+};
+
+// Current particle count as atomic counter (used simultaneously in every thread)
+layout (binding = 2, offset = 0) uniform atomic_uint particleCount;		
+
+
 
 uniform float DeltaT;
 uniform uint MaximumCount;
 uniform uint LastCount;
-
 uniform vec3 GRAVITY;
 
 
-// METHODS //
 
 void addParticleToOutputList(vec3 pos, vec3 vel, float TTL) { 
 
@@ -45,23 +44,27 @@ void addParticleToOutputList(vec3 pos, vec3 vel, float TTL) {
 		atomicCounterDecrement(particleCount);
 		return;
 	}
-
-	PosTTL_Out[particleIndex] = vec4(pos, TTL);		// set positionTTL for current particle
-	Velocity_Out[particleIndex] = vec4(vel, 0);		// set velocity for current particle
+	
+	// Set all particle attributes
+	particles_out[particleIndex].positionTTL = vec4(pos, TTL);
+	particles_out[particleIndex].velocity = vec4(vel, 0);
 }
 
 
 void main() {
 
+	// Help
+	// gl_GlobalInvocationID	ID of thread within dispatch
+
 	// Unique one-dimensional index of workgroup
-	uint idx = gl_GlobalInvocationID.x + gl_GlobalInvocationID.y * gl_NumWorkGroups.x * gl_WorkGroupSize.x;	
+	uint threadIndex = gl_GlobalInvocationID.x;
 
 	// Bound check
-	if (idx >= LastCount) return;
+	if (threadIndex >= LastCount) return;
 
 	// Receive position and velocity of particle from workgroup
-	vec3 ParticlePos = vec3(PosTTL_In[idx].xyz);
-	vec3 ParticleVel = vec3(Velocity_In[idx].xyz);
+	vec3 ParticlePos = vec3(particles_in[threadIndex].positionTTL.xyz);
+	vec3 ParticleVel = vec3(particles_in[threadIndex].velocity.xyz);
 
 	// Add wind or other forces here
 	vec3 forces = GRAVITY;
@@ -73,7 +76,7 @@ void main() {
 	vec3 pos = ParticlePos + DeltaT * velocity;
 	
 	// Update TimeToLive
-	float TTL = PosTTL_In[idx].w - DeltaT;
+	float TTL = particles_in[threadIndex].positionTTL.w - DeltaT;
 
 	// Check if particle is still alive and add it to the output list
 	if (TTL > 0) {		

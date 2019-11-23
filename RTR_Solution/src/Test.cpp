@@ -63,37 +63,9 @@ void Test::renderGeometry(std::shared_ptr<Shader> shader)
 
 void Test::createParticleTest()
 {
-	// Create emitter
-	ParticleData emitter = Particles::createEmitters(10.0f);
-
-	// Set element count
-	elementCount = emitter.positionsTTL.size();
-
-	// Create VAO
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
-	// Create positions VBO
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, emitter.positionsTTL.size() * sizeof(glm::vec4), emitter.positionsTTL.data(), GL_STATIC_DRAW);
-	// Bind positions to location 0
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
-
-	// Unbind VAO
-	glBindVertexArray(0);
 }
 
 
 void Test::renderParticles(std::shared_ptr<Shader> shader, glm::mat4 viewMatrix, glm::mat4 projMatrix)
 {
-	shader->use();
-	shader->setUniform("modelViewMatrix", glm::mat4(1.0f));
-	shader->setUniform("viewProjectionMatrix", projMatrix);
-
-	glBindVertexArray(VAO);				// bind current VAO
-	glDrawArrays(GL_POINTS, 0, 4);		// draw particles (points are necessary for generating quads
-	glBindVertexArray(0);
-	shader->unuse();
 }

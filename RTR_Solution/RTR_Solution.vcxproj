@@ -146,7 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Particles.cpp" />
+    <ClCompile Include="src\ParticleSystem.cpp" />
     <ClCompile Include="src\FrameBuffer.cpp" />
     <ClCompile Include="src\SceneObject.cpp" />
     <ClCompile Include="src\Skybox.cpp" />
@@ -161,7 +161,7 @@
     <ClCompile Include="src\Test.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Particles.h" />
+    <ClInclude Include="src\ParticleSystem.h" />
     <ClInclude Include="src\FrameBuffer.h" />
     <ClInclude Include="src\SceneComponent.h" />
     <ClInclude Include="src\Light.h" />

@@ -8,7 +8,7 @@
 #include "Skybox.h"
 #include "Light.h"
 #include "FrameBuffer.h"
-#include "Particles.h"
+#include "ParticleSystem.h"
 
 #include "SceneObject.h"
 #include "SceneComponent.h"
@@ -197,7 +197,7 @@ int main(int argc, char** argv)
 	));
 
 	// Create Particle systems here
-	std::shared_ptr<Particles> snow = std::make_shared<Particles>(Particles::createEmitters(10.0f), particleComputeShader, particleRenderShader);
+	std::shared_ptr<ParticleSystem> snow = std::make_shared<ParticleSystem>(ParticleSystem::createEmitters(10.0f), particleComputeShader, particleRenderShader);
 
 	// Create scene objects here
 	std::shared_ptr<SceneObject> sphere1 = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
@@ -266,8 +266,7 @@ int main(int argc, char** argv)
 	******************************/
 
 	// Create tests here
-	Test geoTest(GEOMETRYSHADER);
-	Test particleTest(PARTICLES);
+	//Test geoTest(GEOMETRYSHADER);
 
 	float range = 30;
 	float threshold = 30;
@@ -343,10 +342,9 @@ int main(int argc, char** argv)
 
 		// Render scene
 		//renderScene(renderableObjects);
-		//snow->render(orbitCam.getViewMatrix(), orbitCam.getProjMatrix());
+		snow->render(orbitCam.getViewMatrix(), orbitCam.getProjMatrix());
 		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render skybox always last!
 		//geoTest.renderGeometry(particleRenderShader);
-		particleTest.renderParticles(particleRenderShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix());
 		
 		// Switch back to default buffer
 		//hdrBuffer.unuse();

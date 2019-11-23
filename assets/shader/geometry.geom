@@ -5,7 +5,7 @@
 **/
 
 layout (points) in;								// the input type
-layout (triangle_strip, max_vertices = 5) out;	// the output type (triangle_strip allows for connected triangles)
+layout (triangle_strip, max_vertices = 4) out;	// the output type (triangle_strip allows for connected triangles)
 
 
 in VertexData {

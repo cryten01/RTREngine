@@ -6,11 +6,13 @@
 
 layout (location = 0) in vec4 position; // positions from the computeShader
 
+
 out VertexData {
-	float TTL1;	 // additional vertexData (color could also be here)
+	float TTL1;	 
 } fromVert;
 
-uniform mat4 modelViewMatrix;	// the camera's ViewMatrix
+
+uniform mat4 modelViewMatrix;
 uniform mat4 viewProjMatrix;
 
 

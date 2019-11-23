@@ -1,7 +1,7 @@
 #pragma once
 #include "Utils.h"
 #include "Shader.h"
-#include "Particles.h"
+#include "ParticleSystem.h"
 
 
 enum TestType

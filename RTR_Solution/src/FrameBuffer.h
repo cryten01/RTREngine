@@ -13,6 +13,8 @@ enum BufferType
 class FrameBuffer
 {
 private:
+	const GLuint _WIDTH, _HEIGHT;
+
 	GLuint _fbo;
 	GLuint _rbo;
 	GLuint _quadVAO;
@@ -20,6 +22,8 @@ private:
 	GLuint _textureID;
 	BufferType _type;
 
+	void addTexture(GLenum texFormat, GLenum dataFormat);
+	void addRBO();
 	void loadScreenQuad();
 
 public:

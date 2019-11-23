@@ -341,7 +341,7 @@ int main(int argc, char** argv)
 		setPerFrameUniforms(standardShader.get(), orbitCam, dirLight, pointLights, spotLights);
 
 		// Switch to screnQuadBuffer
-		//hdrBuffer.use();
+		hdrBuffer.use();
 
 		// Render scene
 		//renderScene(renderableObjects);
@@ -350,7 +350,7 @@ int main(int argc, char** argv)
 		//geoTest.renderGeometry(particleRenderShader);
 		
 		// Switch back to default buffer
-		//hdrBuffer.unuse();
+		hdrBuffer.unuse();
 
 
 
@@ -358,7 +358,7 @@ int main(int argc, char** argv)
 		*	Second render pass (render buffer to quad)
 		**/
 
-		//hdrBuffer.renderScreenQuad(postProcessShader, _hdr, _exposure);
+		hdrBuffer.renderScreenQuad(postProcessShader, _hdr, _exposure);
 
 
 		// Poll events and swap buffers

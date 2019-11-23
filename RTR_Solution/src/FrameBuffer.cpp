@@ -2,35 +2,20 @@
 
 
 FrameBuffer::FrameBuffer(const GLuint WIDTH, const GLuint HEIGHT, BufferType type)
-	: _type(type)
+	: _type(type), _WIDTH(WIDTH), _HEIGHT(HEIGHT)
 {
 	// Create framebuffer object
 	glGenFramebuffers(1, &_fbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
 
-	// Create color attachment texture
-	glGenTextures(1, &_textureID);
-	glBindTexture(GL_TEXTURE_2D, _textureID);
-	
-	// Give an empty image to OpenGL (therefore NULL at the end)
+	// Add attachments
 	if (type == DEFAULT) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, WIDTH, HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);		
+		addTexture(GL_RGBA, GL_UNSIGNED_BYTE);
 	}
-	if (type == FLOAT) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, WIDTH, HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+	else if (type == FLOAT) {
+		addTexture(GL_RGBA16F, GL_FLOAT);
+		addRBO();
 	}
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);								// Poor filtering. Needed !
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);								// Poor filtering. Needed !
-	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, _textureID, 0);						// Attach texture to framebuffer (as colour attachement #0) 
-
-
-	// Create renderBuffer object for depth
-	glGenRenderbuffers(1, &_rbo);
-	glBindRenderbuffer(GL_RENDERBUFFER, _rbo);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, WIDTH, HEIGHT);				// Creates actual RBO
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _rbo);	// Attach RBO to framebuffer
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
 	// Check if the framebuffer was successfully completed or not
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
@@ -54,6 +39,29 @@ FrameBuffer::~FrameBuffer()
 	glDeleteBuffers(1, &_quadVBO);
 }
 
+
+void FrameBuffer::addTexture(GLenum texFormat, GLenum dataFormat)
+{
+	// Create color attachment texture
+	glGenTextures(1, &_textureID);
+	glBindTexture(GL_TEXTURE_2D, _textureID);
+
+	// Give an empty image to OpenGL (therefore NULL at the end)
+	glTexImage2D(GL_TEXTURE_2D, 0, texFormat, _WIDTH, _HEIGHT, 0, GL_RGBA, dataFormat, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);								// Poor filtering. Needed !
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);								// Poor filtering. Needed !
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, _textureID, 0);						// Attach texture to framebuffer (as colour attachement #0) 
+}
+
+void FrameBuffer::addRBO()
+{
+	// Create renderBuffer object for depth
+	glGenRenderbuffers(1, &_rbo);
+	glBindRenderbuffer(GL_RENDERBUFFER, _rbo);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, _WIDTH, _HEIGHT);				// Creates actual RBO
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _rbo);		// Attach RBO to framebuffer
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+}
 
 void FrameBuffer::loadScreenQuad()
 {

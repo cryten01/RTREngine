@@ -14,7 +14,6 @@ ParticleSystem::ParticleSystem(std::vector<Particle> emitters, std::shared_ptr<S
 {
 	// Init values
 	_pingPongIndex = 0;
-	_readyToSpawn = 0;
 	_remainingToSpawn = 0;
 	_particleCount = 0;
 
@@ -48,7 +47,7 @@ ParticleSystem::ParticleSystem(std::vector<Particle> emitters, std::shared_ptr<S
 
 
 	// Add emitters to SSBOSet
-	addToActiveSSBOSet(emitters);
+	addEmittersToActiveSSBO(emitters);
 
 
 	// Create atomicCounter (as buffer) and tempBuffer
@@ -76,29 +75,27 @@ ParticleSystem::~ParticleSystem()
 **/
 void ParticleSystem::update(float deltaTime)
 {
-	// Add new particles that are readyToSpawn to particle count
-	addToParticleCount(deltaTime);
-
-
 	// Set uniforms
 	_computeShader->use();
 	_computeShader->setUniform("DeltaT", deltaTime);
-	_computeShader->setUniform("MaximumCount", MAX_PARTICLES);
 	_computeShader->setUniform("LastCount", _particleCount);
+	_computeShader->setUniform("SpawnCount", getReadyToSpawn(deltaTime));
+	_computeShader->setUniform("MaximumCount", MAX_PARTICLES);
 	_computeShader->setUniform("GRAVITY", glm::vec3(0, 0, 0));
-
 
 	// Bind to current SSBO and atomic counter
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, _ssbos[_pingPongIndex]);	// IN 
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, _ssbos[!_pingPongIndex]);	// OUT
-	glBindBufferBase(GL_ATOMIC_COUNTER_BUFFER, 4, _atomicCounterID);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, _ssbos[!_pingPongIndex]);	// OUT
+	glBindBufferBase(GL_ATOMIC_COUNTER_BUFFER, 2, _atomicCounterID);
 
-	// Switch buffers (pingPonging)
+	// Ping pong between buffers
 	_pingPongIndex = !_pingPongIndex;
 
 	// Execute computeShader with a 256 work group
-	GLuint groups = _particleCount / 256 + 1;				// determines how many particles for each thread (min 1)
-	glDispatchCompute(groups, 1, 1);						// launches compute work groups
+	GLuint groups = _particleCount / 256 + 1;
+	glDispatchCompute(groups, 1, 1);				// launches compute work groups
+
+
 
 	// Memory barrier ensures that atomicCounter gets updated first
 	glMemoryBarrier(GL_ATOMIC_COUNTER_BARRIER_BIT);
@@ -110,10 +107,10 @@ void ParticleSystem::update(float deltaTime)
 	// Copy atomicCounter value from the atomic buffer to the temp buffer
 	glCopyBufferSubData(GL_ATOMIC_COUNTER_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, sizeof(GLuint));
 
-	// Receive value from temp buffer
+	// Read atomic counter value from temp buffer
 	GLuint *counterValue = (GLuint*)glMapBufferRange(GL_COPY_WRITE_BUFFER, 0, sizeof(GLuint), GL_MAP_READ_BIT | GL_MAP_WRITE_BIT);
 
-	// Set current particle count 
+	// Set particleCount = atomic counter value
 	_particleCount = counterValue[0];
 
 	// Reset atomic counter in temp buffer
@@ -164,7 +161,7 @@ void ParticleSystem::createAtomicCounter()
 
 /**
 *	Creates a temporary buffer for "move to" and "read from".
-*	This buffer is needed because a performance warning is raised when reading the atomic counter.
+*	This buffer is only necesseray when a performance warning occurs (because of reading the atomic counter)
 * 
 *	HELP
 *	GL_COPY_WRITE_BUFFER	allows copies between buffers without disturbing the OpenGL state.
@@ -174,7 +171,6 @@ void ParticleSystem::createTempBuffer()
 	glGenBuffers(1, &_tempBufferID);
 	glBindBuffer(GL_COPY_WRITE_BUFFER, _tempBufferID);
 	glBufferData(GL_COPY_WRITE_BUFFER, sizeof(GLuint), NULL, GL_DYNAMIC_READ);
-
 	glBindBuffer(GL_COPY_WRITE_BUFFER, 0);
 }
 
@@ -183,30 +179,27 @@ void ParticleSystem::createTempBuffer()
 *	Ensures frame rate independet spawning of X particles per second.
 *	This happens by accumulating the count over multiple frames.
 **/
-void ParticleSystem::addToParticleCount(float deltaTime)
+GLuint ParticleSystem::getReadyToSpawn(float deltaTime)
 {
-	// Add new particles regardless if they are complete (can be 0.5 particles etc.)
-	_remainingToSpawn += SPAWN_RATE_PER_SECOND * deltaTime;
+	_remainingToSpawn += SPAWN_RATE_PER_SECOND * deltaTime;		// Add new particles regardless if they are complete (can be 0.5 particles etc.)
 
-	// Check if particles at least one full particle is ready to be spawned
-	if (_remainingToSpawn > 1)
+	if (_remainingToSpawn > 1)									// Check if particles at least one full particle is ready to be spawned
 	{
-		// Determine the amount of already complete particles by cutting decimal places
-		GLuint completeParticles = (GLuint)_remainingToSpawn;
+		GLuint completeParticles = (GLuint)_remainingToSpawn;	// Determine the amount of already complete particles by cutting decimal places
 
-		// Add complete particles to spawnCount
-		_particleCount += completeParticles;
+		_remainingToSpawn -= completeParticles;					// Subtract complete particles from the remaining particles to spawn
 
-		// Subtract complete particles from the remaining particles to spawn
-		_remainingToSpawn -= completeParticles;
+		return completeParticles;
 	}
+
+	return 0;
 }
 
 
 /**
 *	Copies particle positions to currently active SSBO based on _pingPongIndex
 **/
-void ParticleSystem::addToActiveSSBOSet(std::vector<Particle> emitters)
+void ParticleSystem::addEmittersToActiveSSBO(std::vector<Particle> emitters)
 {
 	GLuint offsetPosition = _particleCount * sizeof(Particle);
 	GLuint sizePosition = emitters.size() * sizeof(Particle);
@@ -214,40 +207,41 @@ void ParticleSystem::addToActiveSSBOSet(std::vector<Particle> emitters)
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, _ssbos[_pingPongIndex]);
 	glBufferSubData(GL_SHADER_STORAGE_BUFFER, offsetPosition, sizePosition, &emitters[0]);
 
-	// Must be determined after setting offset and size
-	_particleCount += emitters.size();
+	_particleCount += emitters.size();	// Must be determined after setting offset and size
 }
 
 
 /**
-*	Needed for initial particle emitters
+*	Needed for initial particle emitters that are created on the cpu side
 **/
-std::vector<Particle> ParticleSystem::createEmitters(const unsigned int TTL)
+std::vector<Particle> ParticleSystem::createStarEmitter(const unsigned int TTL)
 {
+	// Construct emitters and add them to the emitter vector
+	std::vector<Particle> emitterData;
+	Particle emitterSlot;
+
 	glm::vec4 positionTTLs[] = {
-		glm::vec4( 1.0f,  0.5f, 0, TTL),
-		glm::vec4( 0.5f,  0.5f, 0, TTL),
-		glm::vec4(-0.5f,  0.5f, 0, TTL),
-		glm::vec4(-1.0f,  0.5f, 0, TTL),
+		glm::vec4(0.0f, 0.5f, 0, TTL),
+		glm::vec4(0.0f, 0.5f, 0, TTL),
+		glm::vec4(0.0f, 0.5f, 0, TTL),
+		glm::vec4(0.0f, 0.5f, 0, TTL),
+		glm::vec4(0.0f, 0.5f, 0, TTL),
 	};
 
 	glm::vec4 velocities[] = {
-		glm::vec4(0, 1, 0, 0),
-		glm::vec4(0, 1, 0, 0),
-		glm::vec4(0, 1, 0, 0),
-		glm::vec4(0, 1, 0, 0),
+		glm::vec4( 0, 1, 0, 0),
+		glm::vec4( 1, 1, 0, 0),
+		glm::vec4(-1, 1, 0, 0),
+		glm::vec4(-1,-1, 0, 0),
+		glm::vec4( 1,-1, 0, 0),
 	};
 
 
-	// Construct emitters and add them to the emitter vector
-	std::vector<Particle> emitterData;
-	Particle emitter;
-
 	for (size_t i = 0; i < sizeof(positionTTLs) / sizeof(glm::vec4); i++)
 	{
-		emitter.positionsTTL = positionTTLs[i];
-		emitter.velocity = velocities[i];
-		emitterData.push_back(emitter);
+		emitterSlot.positionsTTL = positionTTLs[i];
+		emitterSlot.velocity = velocities[i];
+		emitterData.push_back(emitterSlot);
 	}
 
 

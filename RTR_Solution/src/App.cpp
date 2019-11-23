@@ -197,7 +197,7 @@ int main(int argc, char** argv)
 	));
 
 	// Create Particle systems here
-	std::shared_ptr<ParticleSystem> snow = std::make_shared<ParticleSystem>(ParticleSystem::createEmitters(10.0f), particleComputeShader, particleRenderShader);
+	std::shared_ptr<ParticleSystem> snow = std::make_shared<ParticleSystem>(ParticleSystem::createStarEmitter(2.0f), particleComputeShader, particleRenderShader);
 
 	// Create scene objects here
 	std::shared_ptr<SceneObject> sphere1 = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
@@ -317,7 +317,7 @@ int main(int argc, char** argv)
 		// Update scene objects here
 		cube->update();
 		nanoMan->updateAll();
-		//snow->update(deltaTime);
+		snow->update(deltaTime);
 
 		// Update camera
 		glfwGetCursorPos(window, &mouse_x, &mouse_y);
@@ -332,13 +332,16 @@ int main(int argc, char** argv)
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// First render pass (render scene into screenQuadBuffer)
+
+		/**
+		*	First render pass (render scene into screenQuadBuffer)
+		**/
 
 		// Set per-frame uniforms
 		setPerFrameUniforms(standardShader.get(), orbitCam, dirLight, pointLights, spotLights);
 
 		// Switch to screnQuadBuffer
-		//hdrBuffer.use();
+		hdrBuffer.use();
 
 		// Render scene
 		//renderScene(renderableObjects);
@@ -347,13 +350,15 @@ int main(int argc, char** argv)
 		//geoTest.renderGeometry(particleRenderShader);
 		
 		// Switch back to default buffer
-		//hdrBuffer.unuse();
+		hdrBuffer.unuse();
 
 
 
-		// Second render pass (render buffer to quad)
-		//hdrBuffer.renderScreenQuad(postProcessShader, _hdr, _exposure);
+		/**
+		*	Second render pass (render buffer to quad)
+		**/
 
+		hdrBuffer.renderScreenQuad(postProcessShader, _hdr, _exposure);
 
 
 		// Poll events and swap buffers

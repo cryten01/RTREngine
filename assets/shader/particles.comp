@@ -1,85 +1,116 @@
 #version 430 core
 
-/*
-* This shader is responisble for updating particle physics using SIMD logic 
-*/
+/**
+*	This shader is responisble for creating and updating particles using SIMD logic
+**/
 
-struct Particle
-{
+
+struct Particle {
 	vec4 positionTTL;
 	vec4 velocity;
 };
 
-// Represents 1 work group with 256 threads
-layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;		
 
-// Buffer blocks (1 per attribute * 2 because of pingPonging)
-layout(std430, binding = 0) buffer Particles_in_buffer {
+layout (local_size_x = 256, local_size_y = 1, local_size_z = 1) in;		// Represents 1 work group with 256 threads. Every thread is responsible for 1 particle slot.
+
+layout(std430, binding = 0) buffer Particles_in_buffer {				// Buffer blocks that are needed for ping ponging. Every arraypos is responsible for 1 particle slot.
 	Particle particles_in[];
 };
-
-layout(std430, binding = 1) buffer Particles_out_buffer {
+layout(std430, binding = 1) buffer Particles_out_buffer {				
 	Particle particles_out[];
 };
 
-// Current particle count as atomic counter (used simultaneously in every thread)
-layout (binding = 2, offset = 0) uniform atomic_uint particleCount;		
-
-
+layout (binding = 2, offset = 0) uniform atomic_uint slotCount;			// Atomic counter that represents how many particles are already in the buffer slots. Resets to 0 every frame
 
 uniform float DeltaT;
 uniform uint MaximumCount;
-uniform uint LastCount;
+uniform uint SpawnCount;	// The amount of particles that need to be spawend
+uniform uint LastCount;		// The amount of particles that were in the last frame
 uniform vec3 GRAVITY;
 
 
+/**
+*	Adds updated particles to the output list
+**/
+void addToOutputList(Particle particle) { 
 
-void addParticleToOutputList(vec3 pos, vec3 vel, float TTL) { 
-
-	// Increment the atomic counter and use its previous value
-	uint particleIndex = atomicCounterIncrement(particleCount);	
+	// Increment the atomic counter and use its previous value which equals the particles index
+	uint particleIndex = atomicCounterIncrement(slotCount);	
 
 	// Check if max particles is reached
 	if (particleIndex >= MaximumCount) {
-		atomicCounterDecrement(particleCount);
+		atomicCounterDecrement(slotCount);
 		return;
 	}
 	
-	// Set all particle attributes
-	particles_out[particleIndex].positionTTL = vec4(pos, TTL);
-	particles_out[particleIndex].velocity = vec4(vel, 0);
+	// Write current particle into particles_out buffer
+	particles_out[particleIndex] = particle;
+}
+
+/**
+*	Create new particle only if last count is not reached
+**/
+Particle createParticle(Particle reference)
+{
+	Particle p;
+	p.positionTTL = vec4(0,0,0, 2.0);
+	p.velocity = reference.velocity;
+
+	return p;
 }
 
 
+
+/**
+*	Updates particle attributes with physics etc.
+**/
+Particle updateParticle(Particle particle)
+{
+	// Update TimeToLive
+	particle.positionTTL.w = particle.positionTTL.w - DeltaT;
+
+	// Continue updating only particle when alive
+	if (particle.positionTTL.w > 0.0)
+	{
+		// Physics (add wind or other forces here)
+		vec3 forces = GRAVITY;
+
+		// Velocity after physics was applied
+		particle.velocity.xyz = particle.velocity.xyz + forces * DeltaT;
+
+		// Position with velocity
+		particle.positionTTL.xyz = particle.positionTTL.xyz + particle.velocity.xyz * DeltaT;
+	}
+
+	return particle;
+}
+
+
+/**
+*	Help
+*	gl_GlobalInvocationID	ID of thread within dispatch
+**/
 void main() {
 
-	// Help
-	// gl_GlobalInvocationID	ID of thread within dispatch
-
-	// Unique one-dimensional index of workgroup
+	// Unique one-dimensional index that is used as slotIndex (1 thread = 1 processing unit for 1 particle slot)
 	uint threadIndex = gl_GlobalInvocationID.x;
 
-	// Bound check
+	// Checks if specific thread needs to process a particle
 	if (threadIndex >= LastCount) return;
-
-	// Receive position and velocity of particle from workgroup
-	vec3 ParticlePos = vec3(particles_in[threadIndex].positionTTL.xyz);
-	vec3 ParticleVel = vec3(particles_in[threadIndex].velocity.xyz);
-
-	// Add wind or other forces here
-	vec3 forces = GRAVITY;
-
-	// Determine new velocity after forces were applied
-	vec3 velocity = ParticleVel + DeltaT * forces;
-
-	// Update position with velocity
-	vec3 pos = ParticlePos + DeltaT * velocity;
 	
-	// Update TimeToLive
-	float TTL = particles_in[threadIndex].positionTTL.w - DeltaT;
+	// Get values of particle slot
+	Particle p = particles_in[threadIndex]; 
 
-	// Check if particle is still alive and add it to the output list
-	if (TTL > 0) {		
-		addParticleToOutputList(ParticlePos, ParticlePos, TTL);
-	};
+	// Check if particle is alive
+	if (p.positionTTL.w > 0.0) {
+		p = updateParticle(p);
+		addToOutputList(p);
+	} 
+		
+
+	if (SpawnCount > 0) {
+		p = createParticle(p);
+		addToOutputList(p);
+	}
+
 }

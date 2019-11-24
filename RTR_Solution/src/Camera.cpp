@@ -52,7 +52,7 @@ void Camera::processMouseMovement(int x, int y)
 }
 
 
-void Camera::update(int x, int y, float zoom, bool dragging, bool strafing)
+void Camera::update(int x, int y, float zoom, bool dragging, bool strafing, float height)
 {
 	// Update _yaw and _pitch if dragging is activated
 	if (dragging)
@@ -70,7 +70,7 @@ void Camera::update(int x, int y, float zoom, bool dragging, bool strafing)
 	_viewMatrix = glm::rotate(_viewMatrix, glm::radians(_pitch), glm::vec3(1.0, 0.0, 0.0));
 
 	// Set distance based on zoom 
-	_viewMatrix = glm::translate(_viewMatrix, glm::vec3(0, 0, zoom)); // (y axis for debugging purposes!)
+	_viewMatrix = glm::translate(_viewMatrix, glm::vec3(0, height, zoom)); // (y axis for debugging purposes!)
 
 	// Receive camera position by getting translation vector (first 3 elements of the last column)
 	_position = glm::vec3(_viewMatrix[3]);

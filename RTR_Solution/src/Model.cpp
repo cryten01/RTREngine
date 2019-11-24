@@ -158,8 +158,9 @@ std::shared_ptr<Material> Model::loadMaterial(aiMesh* aMesh, const aiScene *aSce
 		allMaps.insert(allMaps.end(), diffuseMaps.begin(), diffuseMaps.end());
 		allMaps.insert(allMaps.end(), specularMaps.begin(), specularMaps.end());
 
-		//Texture leatherTexture("../assets/textures/leather.jpg", TEX_DIFFUSE);
 		material = std::make_shared<TextureMaterial>(_shader, glm::vec3(0.0f, 0.7f, 0.0f), 1.0f, allMaps);
+
+		material->setState(REFRACTIVE);
 	}
 
 	return material;

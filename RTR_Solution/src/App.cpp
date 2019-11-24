@@ -34,7 +34,8 @@ static bool _wireframe = false;
 static bool _culling = true;
 static bool _dragging = false;
 static bool _strafing = false;
-static float _zoom = 6.0f;
+static float _zoom = 30.0f;
+static float _height = 10.0f;
 
 // Post processing effects
 static bool _hdr = false;
@@ -50,6 +51,7 @@ static std::string FormatDebugOutput(GLenum source, GLenum textype, GLuint id, G
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+void key_polling(GLFWwindow* window, float deltaTime);
 
 void renderScene(std::vector<std::shared_ptr<SceneObject>> renderableObjects);
 void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<std::shared_ptr<PointLight>> pointLights, std::vector<std::shared_ptr<SpotLight>> spotLights);
@@ -139,33 +141,40 @@ int main(int argc, char** argv)
 
 	// Create materials here
 	std::shared_ptr<Material> singleColorMaterial = std::make_shared<Material>(standardShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+	std::shared_ptr<Material> iceMaterial = std::make_shared<Material>(standardShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 	std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, leatherTexture);
 	std::shared_ptr<Material> minionMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, minionTexture);
 
 	// Set initial material states here
 	singleColorMaterial->setState(REFLECTIVE);
 	minionMaterial->setState(TEXTURE);
+	iceMaterial->setState(REFRACTIVE);
 
 	// Create geometry here
 	std::shared_ptr<Mesh> sphere1Mesh = std::make_shared<Mesh>(
 		Mesh::createSphereGeometry(24, 24, 0.7f),
-		minionMaterial
-	);
+		iceMaterial
+		);
 
 	std::shared_ptr<Mesh> sphere2Mesh = std::make_shared<Mesh>(
 		Mesh::createSphereGeometry(24, 24, 0.7f),
-		minionMaterial
-	);
+		iceMaterial
+		);
 
 	std::shared_ptr<Mesh> cubeMesh = std::make_shared<Mesh>(
 		Mesh::createCubeGeometry(1.0f, 1.0f, 2.5f),
 		singleColorMaterial
-	);
+		);
+
+	std::shared_ptr<Mesh> floorMesh = std::make_shared<Mesh>(
+		Mesh::createCubeGeometry(40.0f, 0.5f, 40.0f),
+		minionMaterial
+		);
 
 	std::shared_ptr<Mesh> cylinderMesh = std::make_shared<Mesh>(
-		Mesh::createCylinderGeometry(24.0f, 1.0f, 3.0f),
+		Mesh::createCylinderGeometry(24.0f, 2.0f, 3.0f),
 		singleColorMaterial
-	);
+		);
 
 	// Create directional light here
 	DirectionalLight dirLight(glm::vec3(1.0f), glm::vec3(0, -1, 0));
@@ -191,10 +200,10 @@ int main(int argc, char** argv)
 		glm::vec3(1.0f),
 		glm::vec3(0.0f, 12.0f, 4.0f),
 		glm::vec3(1.0f, 0.4f, 0.1f),
-		glm::vec3(0.0f, 0.0f,-1.0f),
+		glm::vec3(0.0f, 0.0f, -1.0f),
 		glm::cos(glm::radians(10.5f)),
 		glm::cos(glm::radians(12.5f))
-	));
+		));
 
 	// Create Particle systems here
 	std::shared_ptr<ParticleSystem> snow = std::make_shared<ParticleSystem>(ParticleSystem::createSnowEmitter(), particleComputeShader, particleRenderShader);
@@ -205,32 +214,35 @@ int main(int argc, char** argv)
 	std::shared_ptr<SceneObject> cube = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
 	std::shared_ptr<SceneObject> cylinder = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
 	std::shared_ptr<SceneObject> nanoMan = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
+	std::shared_ptr<SceneObject> floor = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
 
 	// Push back scene objects that should be rendered here
 	std::vector<std::shared_ptr<SceneObject>> renderableObjects;
 	renderableObjects.push_back(cube);
-	renderableObjects.push_back(nanoMan);
+	renderableObjects.push_back(floor);
 
 	// Add meshes here
 	sphere1->addMesh(sphere1Mesh);
 	sphere2->addMesh(sphere2Mesh);
 	cube->addMesh(cubeMesh);
 	cylinder->addMesh(cylinderMesh);
+	floor->addMesh(floorMesh);
 
 	// Add children here
-	cylinder->addChild(sphere1);
-	cylinder->addChild(sphere2);
-	nanoMan->addChild(cylinder);
+	floor->addChild(cylinder);
+	cylinder->addChild(nanoMan);
+	nanoMan->addChild(sphere1);
+	nanoMan->addChild(sphere2);
 
 	// Add initial transformations here
 	sphere1->getTransform()->setLocalPos(glm::vec3(-4.0f, 4.0, 0.0));
-	sphere2->getTransform()->setLocalPos(glm::vec3( 4.0f, 4.0, 0.0));
-	cylinder->getTransform()->setLocalPos(glm::vec3(0.0f, -0.5, 0.0));
+	sphere2->getTransform()->setLocalPos(glm::vec3(4.0f, 4.0, 0.0));
+	cylinder->getTransform()->setLocalPos(glm::vec3(0.0f, 0.5, 0.0));
 	cube->getTransform()->setLocalPos(glm::vec3(0, 10, 6));
 
 	// Add lights here
 	cube->setLight(pointLights.at(0));
-	
+
 	// Create model loader here (object files must be in separate directory)
 	Model modelLoader;
 
@@ -249,7 +261,7 @@ int main(int argc, char** argv)
 	Skybox skybox(60.0f, skyboxTextures);
 
 	// Initialize camera here
-	Camera orbitCam(fov, WIDTH/HEIGHT, nearZ, farZ);
+	Camera orbitCam(fov, WIDTH / HEIGHT, nearZ, farZ);
 
 	// Render loop variables
 	float currentTime = float(glfwGetTime());
@@ -268,7 +280,7 @@ int main(int argc, char** argv)
 	// Create tests here
 	//Test geoTest(GEOMETRYSHADER);
 
-	float range = 30;
+	float range = 40;
 	float threshold = 30;
 	float step = 20;
 	bool up = true;
@@ -296,7 +308,7 @@ int main(int argc, char** argv)
 		}
 
 		// Update test (For debugging purposes only!)
-		if (up)	{
+		if (up) {
 			range += step * deltaTime;
 
 			if (range > threshold)
@@ -316,12 +328,12 @@ int main(int argc, char** argv)
 
 		// Update scene objects here
 		cube->update();
-		nanoMan->updateAll();
+		floor->updateAll();
 		snow->update(deltaTime);
 
 		// Update camera
 		glfwGetCursorPos(window, &mouse_x, &mouse_y);
-		orbitCam.update(int(mouse_x), int(mouse_y), _zoom, _dragging, _strafing);
+		orbitCam.update(int(mouse_x), int(mouse_y), _zoom, _dragging, _strafing, _height);
 
 
 		//********************************//
@@ -341,27 +353,26 @@ int main(int argc, char** argv)
 		setPerFrameUniforms(standardShader.get(), orbitCam, dirLight, pointLights, spotLights);
 
 		// Switch to screnQuadBuffer
-		hdrBuffer.use();
+		//hdrBuffer.use();
 
 		// Render scene
-		//renderScene(renderableObjects);
+		renderScene(renderableObjects);
 		snow->render(orbitCam.getViewMatrix(), orbitCam.getProjMatrix());
 		skybox.render(skyboxShader, orbitCam.getViewMatrix(), orbitCam.getProjMatrix()); // render skybox always last!
 		//geoTest.renderGeometry(particleRenderShader);
-		
+
 		// Switch back to default buffer
-		hdrBuffer.unuse();
-
-
+		//hdrBuffer.unuse();
 
 		/**
 		*	Second render pass (render buffer to quad)
 		**/
 
-		hdrBuffer.renderScreenQuad(postProcessShader, _hdr, _exposure);
+		//hdrBuffer.renderScreenQuad(postProcessShader, _hdr, _exposure);
 
 
 		// Poll events and swap buffers
+		key_polling(window, deltaTime);
 		glfwPollEvents();
 		glfwSwapBuffers(window);
 	}
@@ -401,8 +412,8 @@ void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLig
 	//	Geometry Shader	 //
 	//*******************//
 
-	shader->setUniform("time", (float) glfwGetTime()); 
-	shader->setUniform("enableGeometryShader", true);
+	shader->setUniform("time", (float)glfwGetTime());
+	shader->setUniform("enableGeometryShader", false);
 
 
 	//***********//
@@ -433,6 +444,19 @@ void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLig
 }
 
 
+void key_polling(GLFWwindow* window, float deltaTime)
+{
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+	{
+		_height += 4.2f * deltaTime;
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+	{
+		_height -= 4.2f * deltaTime;
+	}
+}
+
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
@@ -457,11 +481,12 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 }
 
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) 
-{	
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
 	// F1 - Wireframe
 	// F2 - Culling
 	// Esc - Exit
+
 
 	if (action != GLFW_RELEASE) return;
 

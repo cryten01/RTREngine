@@ -36,6 +36,7 @@ static bool _dragging = false;
 static bool _strafing = false;
 static float _zoom = 30.0f;
 static float _height = 10.0f;
+static bool _freezeScene = false;
 
 // Post processing effects
 static bool _hdr = false;
@@ -309,34 +310,36 @@ int main(int argc, char** argv)
 			lastTime += 1.0;
 		}
 
-		// Update test (For debugging purposes only!)
-		if (up) {
-			range += step * deltaTime;
-
-			if (range > threshold)
-				up = false;
-		}
-
-		if (!up) {
-			range -= step * deltaTime;
-
-			if (range < -threshold)
-				up = true;
-		}
-
-		// Update transformations here
-		nanoMan->getTransform()->setLocalRot(glm::vec3(0, range * 2.0, 0));
-		cube->getTransform()->setLocalPos(glm::vec3(0, 8 + range * 0.3, 6));
-
-		// Update scene objects here
-		cube->update();
-		floor->updateAll();
-		snow->update(deltaTime);
-
 		// Update camera
 		glfwGetCursorPos(window, &mouse_x, &mouse_y);
 		orbitCam.update(int(mouse_x), int(mouse_y), _zoom, _dragging, _strafing, _height);
 
+		if (_freezeScene == false) 
+		{
+			// Update test (For debugging purposes only!)
+			if (up) {
+				range += step * deltaTime;
+
+				if (range > threshold)
+					up = false;
+			}
+
+			if (!up) {
+				range -= step * deltaTime;
+
+				if (range < -threshold)
+					up = true;
+			}
+
+			// Update transformations here
+			nanoMan->getTransform()->setLocalRot(glm::vec3(0, range * 2.0, 0));
+			cube->getTransform()->setLocalPos(glm::vec3(0, 8 + range * 0.3, 6));
+
+			// Update scene objects here
+			cube->update();
+			floor->updateAll();
+			snow->update(deltaTime);
+		}
 
 		//********************************//
 		// Do all render functions here
@@ -487,6 +490,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 {
 	// F1 - Wireframe
 	// F2 - Culling
+	// F3 - HDR
+	// F4 - Freeze
 	// Esc - Exit
 
 
@@ -508,6 +513,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		break;
 	case GLFW_KEY_F3:
 		_hdr = !_hdr;
+		break;
+	case GLFW_KEY_F4:
+		_freezeScene = !_freezeScene;
 		break;
 	}
 }

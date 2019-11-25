@@ -58,7 +58,7 @@ Particle createSnowParticle(Particle reference)
 {
 	Particle p;
 
-	float height = 10;
+	float height = 40;
 
 	p.positionTTL = vec4(RandomRange.x, height, RandomRange.z, height);
 	p.velocity = vec4(0.0);

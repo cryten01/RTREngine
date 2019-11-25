@@ -24,7 +24,7 @@ out vec4 fragColor;
 void main() {
 	vec4 uvColor = texture(material.texture_diffuse1, fromGeom.uv);
 
-	if (uvColor.a < 0.1)
+	if (uvColor.a < 0.6) // discards all pixels lower than this alpha barrier
 		discard;
 
 	fragColor = uvColor;

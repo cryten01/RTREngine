@@ -15,7 +15,7 @@ class ParticleSystem
 {
 private:
 	const unsigned int MAX_PARTICLES = 10000;
-	const double SPAWN_RATE_PER_SECOND = 20;
+	const double SPAWN_RATE_PER_SECOND = 50;
 
 	std::shared_ptr<Shader> _computeShader;
 	std::shared_ptr<Shader> _renderShader;

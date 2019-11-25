@@ -124,6 +124,11 @@ int main(int argc, char** argv)
 	// Initialize scene and render loop
 	/* --------------------------------------------- */
 
+
+	//**************************//
+	//	Scene object resources  //
+	//**************************//
+
 	// Create framebuffers here
 	FrameBuffer screenQuadBuffer(WIDTH, HEIGHT, DEFAULT);
 	FrameBuffer hdrBuffer(WIDTH, HEIGHT, FLOAT);
@@ -148,70 +153,36 @@ int main(int argc, char** argv)
 	std::shared_ptr<Material> floorMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, floorTexture);
 	std::shared_ptr<Material> snowflakeMaterial = std::make_shared<TextureMaterial>(particleRenderShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, snowflakeTexture);
 
-	// Set initial material states here
-	singleColorMaterial->setState(REFLECTIVE);
-	floorMaterial->setState(TEXTURE);
-	iceMaterial->setState(REFRACTIVE);
-
 	// Create geometry here
 	std::shared_ptr<Mesh> sphere1Mesh = std::make_shared<Mesh>(
 		Mesh::createSphereGeometry(24, 24, 0.7f),
 		iceMaterial
-		);
+	);
 
 	std::shared_ptr<Mesh> sphere2Mesh = std::make_shared<Mesh>(
 		Mesh::createSphereGeometry(24, 24, 0.7f),
 		iceMaterial
-		);
+	);
 
 	std::shared_ptr<Mesh> sphere3Mesh = std::make_shared<Mesh>(
 		Mesh::createSphereGeometry(24, 24, 0.7f),
 		iceMaterial
-		);
+	);
 
 	std::shared_ptr<Mesh> cubeMesh = std::make_shared<Mesh>(
 		Mesh::createCubeGeometry(1.0f, 1.0f, 2.5f),
 		singleColorMaterial
-		);
+	);
 
 	std::shared_ptr<Mesh> floorMesh = std::make_shared<Mesh>(
 		Mesh::createCubeGeometry(120.0f, 0.5f, 120.0f),
 		floorMaterial
-		);
+	);
 
 	std::shared_ptr<Mesh> podiumMesh = std::make_shared<Mesh>(
 		Mesh::createCylinderGeometry(24.0f, 2.0f, 4.0f),
 		singleColorMaterial
-		);
-
-	// Create directional light here
-	DirectionalLight dirLight(glm::vec3(1.0f), glm::vec3(0, -1, 0));
-
-	// Create point lights here
-	std::vector<std::shared_ptr<PointLight>> pointLights;
-
-	pointLights.push_back(std::make_shared<PointLight>(
-		glm::vec3(1.0f),
-		glm::vec3(0.0f, 1.0f, 0.0f),
-		glm::vec3(1.0f, 0.4f, 0.1f)
-		));
-
-	//pointLights.push_back(std::make_shared<PointLight>(
-	//	glm::vec3(0.6f),
-	//	glm::vec3(0.0f, -1.0f, 0.0f),
-	//	glm::vec3(1.0f, 0.4f, 0.1f)
-	//	));
-
-	// Create spot lights here
-	std::vector<std::shared_ptr<SpotLight>> spotLights;
-	spotLights.push_back(std::make_shared<SpotLight>(
-		glm::vec3(1.0f),
-		glm::vec3(0.0f, 12.0f, 4.0f),
-		glm::vec3(1.0f, 0.4f, 0.1f),
-		glm::vec3(0.0f, 0.0f, -1.0f),
-		glm::cos(glm::radians(10.5f)),
-		glm::cos(glm::radians(12.5f))
-		));
+	);
 
 	// Create Particle systems here
 	std::shared_ptr<ParticleSystem> snow = std::make_shared<ParticleSystem>(ParticleSystem::createSnowEmitter(), snowflakeMaterial, particleComputeShader, particleRenderShader);
@@ -224,37 +195,6 @@ int main(int argc, char** argv)
 	std::shared_ptr<SceneObject> podium = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
 	std::shared_ptr<SceneObject> nanoMan = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
 	std::shared_ptr<SceneObject> floor = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
-
-	// Push back scene objects that should be rendered here
-	std::vector<std::shared_ptr<SceneObject>> renderableObjects;
-	renderableObjects.push_back(cube);
-	renderableObjects.push_back(floor);
-	renderableObjects.push_back(sphere1);
-
-	// Add meshes here
-	sphere1->addMesh(sphere1Mesh);
-	sphere2->addMesh(sphere2Mesh);
-	sphere3->addMesh(sphere3Mesh);
-	cube->addMesh(cubeMesh);
-	podium->addMesh(podiumMesh);
-	floor->addMesh(floorMesh);
-
-	// Add children here
-	floor->addChild(podium);
-	podium->addChild(nanoMan);
-	sphere1->addChild(sphere2);
-	sphere2->addChild(sphere3);
-
-	// Add initial transformations here
-	sphere1->getTransform()->setLocalPos(glm::vec3(-10.0f, 10.0, 0.0));
-	sphere2->getTransform()->setLocalPos(glm::vec3(3.0f, 4.0, 0.0));
-	sphere3->getTransform()->setLocalPos(glm::vec3(1.0f, 4.0, 0.0));
-	podium->getTransform()->setLocalPos(glm::vec3(0.0f, 1.0, 0.0));
-	cube->getTransform()->setLocalPos(glm::vec3(0, 10, 6));
-	nanoMan->getTransform()->setLocalPos(glm::vec3(0, 1, 0));
-
-	// Add lights here
-	cube->setLight(pointLights.at(0));
 
 	// Create model loader here (object files must be in separate directory)
 	Model modelLoader;
@@ -273,8 +213,87 @@ int main(int argc, char** argv)
 	};
 	Skybox skybox(60.0f, skyboxTextures);
 
-	// Initialize camera here
+	// Create debug cam here
 	Camera orbitCam(fov, WIDTH / HEIGHT, nearZ, farZ);
+
+
+	//**********//
+	//	Lights  //
+	//**********//
+
+	// Create directional lights here
+	DirectionalLight dirLight(glm::vec3(1.0f), glm::vec3(0, -1, 0));
+
+	// Create point lights here
+	std::vector<std::shared_ptr<PointLight>> pointLights;
+
+	pointLights.push_back(std::make_shared<PointLight>(
+		glm::vec3(1.0f),
+		glm::vec3(0.0f, 1.0f, 0.0f),
+		glm::vec3(1.0f, 0.4f, 0.1f)
+	));
+
+	//pointLights.push_back(std::make_shared<PointLight>(
+	//	glm::vec3(0.6f),
+	//	glm::vec3(0.0f, -1.0f, 0.0f),
+	//	glm::vec3(1.0f, 0.4f, 0.1f)
+	//	));
+
+	// Create spot lights here
+	std::vector<std::shared_ptr<SpotLight>> spotLights;
+	spotLights.push_back(std::make_shared<SpotLight>(
+		glm::vec3(1.0f),
+		glm::vec3(0.0f, 12.0f, 4.0f),
+		glm::vec3(1.0f, 0.4f, 0.1f),
+		glm::vec3(0.0f, 0.0f, -1.0f),
+		glm::cos(glm::radians(10.5f)),
+		glm::cos(glm::radians(12.5f))
+	));
+
+
+	//****************************//
+	//	Scene object attachments  //
+	//****************************//
+
+	// Attach meshes here
+	sphere1->addMesh(sphere1Mesh);
+	sphere2->addMesh(sphere2Mesh);
+	sphere3->addMesh(sphere3Mesh);
+	cube->addMesh(cubeMesh);
+	podium->addMesh(podiumMesh);
+	floor->addMesh(floorMesh);
+
+	// Attach children here
+	floor->addChild(podium);
+	podium->addChild(nanoMan);
+	sphere1->addChild(sphere2);
+	sphere2->addChild(sphere3);
+
+	// Attach lights here
+	cube->setLight(pointLights.at(0));
+
+
+	//*****************//
+	//	Intial states  //
+	//*****************//
+
+	// Set initial transformations here
+	sphere1->getTransform()->setLocalPos(glm::vec3(-10.0f, 10.0, 0.0));
+	sphere2->getTransform()->setLocalPos(glm::vec3(3.0f, 4.0, 0.0));
+	sphere3->getTransform()->setLocalPos(glm::vec3(1.0f, 4.0, 0.0));
+	podium->getTransform()->setLocalPos(glm::vec3(0.0f, 1.0, 0.0));
+	cube->getTransform()->setLocalPos(glm::vec3(0, 10, 6));
+	nanoMan->getTransform()->setLocalPos(glm::vec3(0, 1, 0));
+
+	// Set initial material states here
+	singleColorMaterial->setState(REFLECTIVE);
+	floorMaterial->setState(TEXTURE);
+	iceMaterial->setState(REFRACTIVE);
+
+
+	//***************************//
+	//	Render loop preparation  //
+	//***************************//
 
 	// Render loop variables
 	float currentTime = float(glfwGetTime());
@@ -285,26 +304,28 @@ int main(int argc, char** argv)
 	int fps = 0;
 	double mouse_x, mouse_y;
 
-
-	/******************************
-	* Define all testing variables here
-	******************************/
+	// Push back scene objects that should be rendered here
+	std::vector<std::shared_ptr<SceneObject>> renderableObjects;
+	renderableObjects.push_back(cube);
+	renderableObjects.push_back(floor);
+	renderableObjects.push_back(sphere1);
 
 	// Create tests here
-	//Test geoTest(GEOMETRYSHADER);
-
 	float range = 40;
 	float threshold = 30;
 	float step = 20;
 	bool up = true;
 
 
-	// Loop until the user closes the window
+	//***************//
+	//	Render loop  //
+	//***************//
+
 	while (!glfwWindowShouldClose(window))
 	{
-		/******************************
-		* Do all update functions here
-		******************************/
+		//**********//
+		//	Update  //
+		//**********//
 
 		// Compute frame time
 		deltaTime = currentTime;
@@ -324,6 +345,8 @@ int main(int argc, char** argv)
 		glfwGetCursorPos(window, &mouse_x, &mouse_y);
 		orbitCam.update(int(mouse_x), int(mouse_y), _zoom, _dragging, _strafing, _height);
 
+
+		// Update scene here
 		if (_freezeScene == false)
 		{
 			// Update test (For debugging purposes only!)
@@ -331,7 +354,6 @@ int main(int argc, char** argv)
 
 			if (range > 360.0f)
 				range = 0.0f;
-
 
 			// Update transformations here
 			nanoMan->getTransform()->setLocalRot(glm::vec3(0, range * 2.0, 0));
@@ -346,9 +368,10 @@ int main(int argc, char** argv)
 			snow->update(deltaTime);
 		}
 
-		//********************************//
-		// Do all render functions here
-		//********************************//
+
+		//**********//
+		//	Render  //
+		//**********//
 
 		// Enable if default buffer is used only!
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);

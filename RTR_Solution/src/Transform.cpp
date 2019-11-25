@@ -89,7 +89,7 @@ void Transform::applyLocalTRS()
 	_modelMatrix = glm::rotate(_modelMatrix, glm::radians(_localRot.x), glm::vec3(1, 0, 0));
 
 	// Scaling
-	glm::mat4 scaling = glm::scale(_modelMatrix, _localScale);
+	_modelMatrix = glm::scale(_modelMatrix, _localScale);
 }
 
 void Transform::applyGlobalTRS()

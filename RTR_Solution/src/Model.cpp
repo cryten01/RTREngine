@@ -158,9 +158,16 @@ std::shared_ptr<Material> Model::loadMaterial(aiMesh* aMesh, const aiScene *aSce
 		allMaps.insert(allMaps.end(), diffuseMaps.begin(), diffuseMaps.end());
 		allMaps.insert(allMaps.end(), specularMaps.begin(), specularMaps.end());
 
-		material = std::make_shared<TextureMaterial>(_shader, glm::vec3(0.0f, 0.7f, 0.0f), 1.0f, allMaps);
 
-		material->setState(REFRACTIVE);
+		// Set mesh material to loaded textures if existent, otherwise create default material
+		if (allMaps.size() > 0) 
+		{
+			material = std::make_shared<TextureMaterial>(_shader, glm::vec3(0.0f, 0.7f, 0.0f), 1.0f, allMaps);
+		}
+		else 
+		{
+			material = std::make_shared<Material>(_shader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(1.0f, 0.0f, 1.0f));
+		}
 	}
 
 	return material;

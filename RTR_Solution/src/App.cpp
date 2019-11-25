@@ -138,19 +138,19 @@ int main(int argc, char** argv)
 
 	// Load textures here
 	Texture leatherTexture("../assets/textures/leather.jpg", TEX_DIFFUSE);
-	Texture minionTexture("../assets/textures/minion.jpg", TEX_DIFFUSE);
+	Texture floorTexture("../assets/textures/floor.jpg", TEX_DIFFUSE);
 	Texture snowflakeTexture("../assets/textures/snowflake.png", TEX_DIFFUSE);
 
 	// Create materials here
-	std::shared_ptr<Material> singleColorMaterial = std::make_shared<Material>(standardShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+	std::shared_ptr<Material> singleColorMaterial = std::make_shared<Material>(standardShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(1.0f, 0.0f, 1.0f));
 	std::shared_ptr<Material> iceMaterial = std::make_shared<Material>(standardShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 	std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, leatherTexture);
-	std::shared_ptr<Material> minionMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, minionTexture);
+	std::shared_ptr<Material> floorMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, floorTexture);
 	std::shared_ptr<Material> snowflakeMaterial = std::make_shared<TextureMaterial>(particleRenderShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, snowflakeTexture);
 
 	// Set initial material states here
 	singleColorMaterial->setState(REFLECTIVE);
-	minionMaterial->setState(TEXTURE);
+	floorMaterial->setState(TEXTURE);
 	iceMaterial->setState(REFRACTIVE);
 
 	// Create geometry here
@@ -164,18 +164,23 @@ int main(int argc, char** argv)
 		iceMaterial
 		);
 
+	std::shared_ptr<Mesh> sphere3Mesh = std::make_shared<Mesh>(
+		Mesh::createSphereGeometry(24, 24, 0.7f),
+		iceMaterial
+		);
+
 	std::shared_ptr<Mesh> cubeMesh = std::make_shared<Mesh>(
 		Mesh::createCubeGeometry(1.0f, 1.0f, 2.5f),
 		singleColorMaterial
 		);
 
 	std::shared_ptr<Mesh> floorMesh = std::make_shared<Mesh>(
-		Mesh::createCubeGeometry(40.0f, 0.5f, 40.0f),
-		minionMaterial
+		Mesh::createCubeGeometry(120.0f, 0.5f, 120.0f),
+		floorMaterial
 		);
 
-	std::shared_ptr<Mesh> cylinderMesh = std::make_shared<Mesh>(
-		Mesh::createCylinderGeometry(24.0f, 2.0f, 3.0f),
+	std::shared_ptr<Mesh> podiumMesh = std::make_shared<Mesh>(
+		Mesh::createCylinderGeometry(24.0f, 2.0f, 4.0f),
 		singleColorMaterial
 		);
 
@@ -214,8 +219,9 @@ int main(int argc, char** argv)
 	// Create scene objects here
 	std::shared_ptr<SceneObject> sphere1 = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
 	std::shared_ptr<SceneObject> sphere2 = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
+	std::shared_ptr<SceneObject> sphere3 = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
 	std::shared_ptr<SceneObject> cube = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
-	std::shared_ptr<SceneObject> cylinder = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
+	std::shared_ptr<SceneObject> podium = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
 	std::shared_ptr<SceneObject> nanoMan = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
 	std::shared_ptr<SceneObject> floor = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
 
@@ -223,25 +229,29 @@ int main(int argc, char** argv)
 	std::vector<std::shared_ptr<SceneObject>> renderableObjects;
 	renderableObjects.push_back(cube);
 	renderableObjects.push_back(floor);
+	renderableObjects.push_back(sphere1);
 
 	// Add meshes here
 	sphere1->addMesh(sphere1Mesh);
 	sphere2->addMesh(sphere2Mesh);
+	sphere3->addMesh(sphere3Mesh);
 	cube->addMesh(cubeMesh);
-	cylinder->addMesh(cylinderMesh);
+	podium->addMesh(podiumMesh);
 	floor->addMesh(floorMesh);
 
 	// Add children here
-	floor->addChild(cylinder);
-	cylinder->addChild(nanoMan);
-	nanoMan->addChild(sphere1);
-	nanoMan->addChild(sphere2);
+	floor->addChild(podium);
+	podium->addChild(nanoMan);
+	sphere1->addChild(sphere2);
+	sphere2->addChild(sphere3);
 
 	// Add initial transformations here
-	sphere1->getTransform()->setLocalPos(glm::vec3(-4.0f, 4.0, 0.0));
-	sphere2->getTransform()->setLocalPos(glm::vec3(4.0f, 4.0, 0.0));
-	cylinder->getTransform()->setLocalPos(glm::vec3(0.0f, 0.5, 0.0));
+	sphere1->getTransform()->setLocalPos(glm::vec3(-10.0f, 10.0, 0.0));
+	sphere2->getTransform()->setLocalPos(glm::vec3(3.0f, 4.0, 0.0));
+	sphere3->getTransform()->setLocalPos(glm::vec3(1.0f, 4.0, 0.0));
+	podium->getTransform()->setLocalPos(glm::vec3(0.0f, 1.0, 0.0));
 	cube->getTransform()->setLocalPos(glm::vec3(0, 10, 6));
+	nanoMan->getTransform()->setLocalPos(glm::vec3(0, 1, 0));
 
 	// Add lights here
 	cube->setLight(pointLights.at(0));
@@ -314,29 +324,24 @@ int main(int argc, char** argv)
 		glfwGetCursorPos(window, &mouse_x, &mouse_y);
 		orbitCam.update(int(mouse_x), int(mouse_y), _zoom, _dragging, _strafing, _height);
 
-		if (_freezeScene == false) 
+		if (_freezeScene == false)
 		{
 			// Update test (For debugging purposes only!)
-			if (up) {
-				range += step * deltaTime;
+			range += step * deltaTime;
 
-				if (range > threshold)
-					up = false;
-			}
+			if (range > 360.0f)
+				range = 0.0f;
 
-			if (!up) {
-				range -= step * deltaTime;
-
-				if (range < -threshold)
-					up = true;
-			}
 
 			// Update transformations here
 			nanoMan->getTransform()->setLocalRot(glm::vec3(0, range * 2.0, 0));
 			cube->getTransform()->setLocalPos(glm::vec3(0, 8 + range * 0.3, 6));
+			sphere1->getTransform()->setLocalRot(glm::vec3(0, range * 2.0, 0));
+			sphere2->getTransform()->setLocalRot(glm::vec3(range * 2.0, 0, 0));
 
 			// Update scene objects here
 			cube->update();
+			sphere1->updateAll();
 			floor->updateAll();
 			snow->update(deltaTime);
 		}

@@ -36,7 +36,7 @@ void Material::setUniforms()
 	_shader->setUniform("material.light", _reflectionConstants);
 	_shader->setUniform("material.alpha", _alpha);
 	_shader->setUniform("param.state", _state);
-	_shader->setUniform("param.illuminated", false);
+	_shader->setUniform("param.illuminated", true);
 	_shader->setUniform("skybox", 0);
 	_shader->setUniform("material.color", _color);
 }

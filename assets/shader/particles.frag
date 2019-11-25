@@ -10,11 +10,22 @@ in VertexData {
 } fromGeom;
 
 
+uniform struct Material {
+	sampler2D texture_diffuse1;		// don't change naming. requires consinstent naming scheme for loading
+	vec3 light;						// x = ambient, y = diffuse, z = specular 
+	vec3 color;
+	float alpha;
+} material;
+
+
 out vec4 fragColor;		
 
 
 void main() {
-	vec3 color = vec3(0.0, 1.0, 0.0);
-	float alpha = 0.2;
-	fragColor = vec4(color, 1.0);
+	vec4 uvColor = texture(material.texture_diffuse1, fromGeom.uv);
+
+	if (uvColor.a < 0.1)
+		discard;
+
+	fragColor = uvColor;
 }

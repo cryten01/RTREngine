@@ -138,12 +138,14 @@ int main(int argc, char** argv)
 	// Load textures here
 	Texture leatherTexture("../assets/textures/leather.jpg", TEX_DIFFUSE);
 	Texture minionTexture("../assets/textures/minion.jpg", TEX_DIFFUSE);
+	Texture snowflakeTexture("../assets/textures/frozenflake.png", TEX_DIFFUSE);
 
 	// Create materials here
 	std::shared_ptr<Material> singleColorMaterial = std::make_shared<Material>(standardShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 	std::shared_ptr<Material> iceMaterial = std::make_shared<Material>(standardShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 	std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, leatherTexture);
 	std::shared_ptr<Material> minionMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, minionTexture);
+	std::shared_ptr<Material> snowflakeMaterial = std::make_shared<TextureMaterial>(particleRenderShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, snowflakeTexture);
 
 	// Set initial material states here
 	singleColorMaterial->setState(REFLECTIVE);
@@ -206,7 +208,7 @@ int main(int argc, char** argv)
 		));
 
 	// Create Particle systems here
-	std::shared_ptr<ParticleSystem> snow = std::make_shared<ParticleSystem>(ParticleSystem::createSnowEmitter(), particleComputeShader, particleRenderShader);
+	std::shared_ptr<ParticleSystem> snow = std::make_shared<ParticleSystem>(ParticleSystem::createSnowEmitter(), snowflakeMaterial, particleComputeShader, particleRenderShader);
 
 	// Create scene objects here
 	std::shared_ptr<SceneObject> sphere1 = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
@@ -341,7 +343,7 @@ int main(int argc, char** argv)
 		//********************************//
 
 		// Enable if default buffer is used only!
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClearColor(0.9f, 0.9f, 0.9f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 

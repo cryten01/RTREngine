@@ -12,6 +12,7 @@ Texture::Texture(const char* texFilePath, TextureType type)
 	// Load texture
 	int width, height, nrChannels;
 	unsigned char *texData = stbi_load(texFilePath, &width, &height, &nrChannels, STBI_rgb_alpha);
+	//unsigned char *texData = SOIL_load_image(texFilePath, &width, &height, &nrChannels, SOIL_LOAD_RGBA);
 
 	// Generate texture
 	if (texData)
@@ -23,7 +24,7 @@ Texture::Texture(const char* texFilePath, TextureType type)
 		// Set the texture wrapping/filtering options (on the currently bound texture object)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);					// Magnification filter set to linear
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);						// Texture wrapping set to repeat
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);				// Texture wrapping set to repeat
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	}
 	else
@@ -33,6 +34,7 @@ Texture::Texture(const char* texFilePath, TextureType type)
 
 	// Free the image memory
 	stbi_image_free(texData);
+	//SOIL_free_image_data(texData);
 
 	// Unbinds texture
 	glBindTexture(GL_TEXTURE_2D, 0);

@@ -9,8 +9,8 @@
 *	glBufferdata		Define data-structure (defines how big the buffer is and what data it contains)
 *	GL_DYNAMIC_DRAW		Content of data-storage gets repeatedly declared by application.
 **/
-ParticleSystem::ParticleSystem(std::vector<Particle> emitters, std::shared_ptr<Shader> computeShader, std::shared_ptr<Shader> renderShader)
-	: _computeShader(computeShader), _renderShader(renderShader)
+ParticleSystem::ParticleSystem(std::vector<Particle> emitters, std::shared_ptr<Material> emitterMaterial, std::shared_ptr<Shader> computeShader, std::shared_ptr<Shader> renderShader)
+	: _emitterMaterial(emitterMaterial), _computeShader(computeShader), _renderShader(renderShader)
 {
 	// Init values
 	_pingPongIndex = 0;
@@ -135,13 +135,19 @@ void ParticleSystem::update(float deltaTime)
 
 void ParticleSystem::render(glm::mat4 viewMatrix, glm::mat4 projMatrix)
 {
+
+	// Set particle systems uniforms
 	_renderShader->use();
 	_renderShader->setUniform("modelViewMatrix", viewMatrix * glm::mat4(1.0f));
 	_renderShader->setUniform("projectionMatrix", projMatrix);
 
+	// Set material uniforms
+	_emitterMaterial->setUniforms();
+
 	glBindVertexArray(_vaos[_pingPongIndex]);		// bind current VAO
 	glDrawArrays(GL_POINTS, 0, _particleCount);		// draw particles (points are necessary for generating quads
 	glBindVertexArray(0);							// stop binding
+
 
 	_renderShader->unuse();
 }

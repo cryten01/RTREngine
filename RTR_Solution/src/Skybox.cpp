@@ -36,6 +36,12 @@ Skybox::~Skybox()
 {
 }
 
+void Skybox::bindTextures(unsigned int unit)
+{
+	glActiveTexture(GL_TEXTURE0 + unit);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, _cubeMapID);
+}
+
 void Skybox::render(std::shared_ptr<Shader> shader, glm::mat4 viewMatrix, glm::mat4 projMatrix)
 {
 	// Remove translation part of view matrix so movement doesn't affect the skybox's position vectors
@@ -52,8 +58,7 @@ void Skybox::render(std::shared_ptr<Shader> shader, glm::mat4 viewMatrix, glm::m
 	shader->setUniform("viewProjMatrix", projMatrix * viewMatrix);
 
 	// Bind cube map textures
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, _texturesID);
+	bindTextures();
 
 	// Bind _vao
 	glBindVertexArray(_vao);
@@ -131,8 +136,8 @@ MeshData Skybox::loadMeshData(float size)
 void Skybox::loadTextures(const char * textures[])
 {
 	// Generate reference and bind cube map textures
-	glGenTextures(1, &_texturesID);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, _texturesID);
+	glGenTextures(1, &_cubeMapID);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, _cubeMapID);
 
 	int width, height, nrChannels;
 	for (unsigned int i = 0; i < 6; i++)

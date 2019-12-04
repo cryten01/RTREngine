@@ -27,7 +27,7 @@ const GLuint WIDTH = 800, HEIGHT = 600;
 const char* TITLE = "RTR Engine";
 
 // View frustum dimensions
-float fov = 60.0f, nearZ = 0.1f, farZ = 100.0f;
+float fov = 60.0f, nearZ = 0.1f, farZ = 400.0f;
 
 // Camera controls
 static bool _wireframe = false;
@@ -55,7 +55,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void key_polling(GLFWwindow* window, float deltaTime);
 
 void renderScene(std::vector<std::shared_ptr<SceneObject>> renderableObjects);
-void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<std::shared_ptr<PointLight>> pointLights, std::vector<std::shared_ptr<SpotLight>> spotLights);
+void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<std::shared_ptr<PointLight>> pointLights, std::vector<std::shared_ptr<SpotLight>> spotLights, Skybox& skybox);
 
 
 int main(int argc, char** argv)
@@ -152,6 +152,9 @@ int main(int argc, char** argv)
 	std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, leatherTexture);
 	std::shared_ptr<Material> floorMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, floorTexture);
 	std::shared_ptr<Material> snowflakeMaterial = std::make_shared<TextureMaterial>(particleRenderShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, snowflakeTexture);
+
+	// Set initial material states here
+	iceMaterial->setIsReflective(true);
 
 	// Create geometry here
 	std::shared_ptr<Mesh> sphere1Mesh = std::make_shared<Mesh>(
@@ -273,9 +276,9 @@ int main(int argc, char** argv)
 	cube->setLight(pointLights.at(0));
 
 
-	//*****************//
-	//	Intial states  //
-	//*****************//
+	//*********************//
+	//	Intial transforms  //
+	//*********************//
 
 	// Set initial transformations here
 	sphere1->getTransform()->setLocalPos(glm::vec3(-10.0f, 10.0, 0.0));
@@ -285,12 +288,7 @@ int main(int argc, char** argv)
 	cube->getTransform()->setLocalPos(glm::vec3(0, 10, 6));
 	nanoMan->getTransform()->setLocalPos(glm::vec3(0, 1, 0));
 
-	// Set initial material states here
-	singleColorMaterial->setState(REFLECTIVE);
-	floorMaterial->setState(TEXTURE);
-	iceMaterial->setState(REFRACTIVE);
-
-
+	
 	//***************************//
 	//	Render loop preparation  //
 	//***************************//
@@ -383,7 +381,7 @@ int main(int argc, char** argv)
 		**/
 
 		// Set per-frame uniforms
-		setPerFrameUniforms(standardShader.get(), orbitCam, dirLight, pointLights, spotLights);
+		setPerFrameUniforms(standardShader.get(), orbitCam, dirLight, pointLights, spotLights, skybox);
 
 		// Switch to screnQuadBuffer
 		//hdrBuffer.use();
@@ -429,9 +427,17 @@ void renderScene(std::vector<std::shared_ptr<SceneObject>> drawableObjects)
 }
 
 
-void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<std::shared_ptr<PointLight>> pointLights, std::vector<std::shared_ptr<SpotLight>> spotLights)
+void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLight, std::vector<std::shared_ptr<PointLight>> pointLights, std::vector<std::shared_ptr<SpotLight>> spotLights, Skybox& skybox)
 {
 	shader->use();
+
+	//**********//
+	//	Skybox  //
+	//**********//
+
+	skybox.bindTextures(5);
+	shader->setUniform("skybox", 5);
+
 
 	//**********//
 	//	Camera  //
@@ -453,6 +459,8 @@ void setPerFrameUniforms(Shader* shader, Camera& camera, DirectionalLight dirLig
 	//	Lights	 //
 	//***********//
 
+	shader->setUniform("param.illuminated", true);
+	
 	shader->setUniform("dirL.color", dirLight.color);
 	shader->setUniform("dirL.direction", dirLight.direction);
 

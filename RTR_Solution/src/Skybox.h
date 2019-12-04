@@ -10,7 +10,7 @@ protected:
 	GLuint _vao;
 	GLuint _vboPositions;
 	GLuint _vboIndices;
-	GLuint _texturesID;
+	GLuint _cubeMapID;
 	unsigned int _elementCount;
 
 	MeshData loadMeshData(float size);
@@ -20,6 +20,7 @@ public:
 	 Skybox(float size, const char* textures[]);
 	~Skybox();
 
+	void bindTextures(unsigned int unit = 7);
 	void render(std::shared_ptr<Shader> shader, glm::mat4 viewMatrix, glm::mat4 projMatrix);
 };
 

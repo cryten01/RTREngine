@@ -8,7 +8,9 @@
 Material::Material(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, glm::vec3 color)
 	: _shader(shader), _reflectionConstants(reflectionConstants), _alpha(alpha), _color(color)
 {
-	_state = DIFFUSE;
+	_type = DIFFUSE;
+	_isReflective = false;
+	_isRefractive = false;
 	_alpha = 296.0f;
 }
 
@@ -21,24 +23,34 @@ Shader* Material::getShader()
 	return _shader.get();
 }
 
-MaterialState& Material::getState()
+MaterialType& Material::getType()
 {
-	return this->_state;
+	return this->_type;
 }
 
-void Material::setState(MaterialState state)
+void Material::setType(MaterialType state)
 {
-	this->_state = state;
+	this->_type = state;
+}
+
+void Material::setIsRefractive(bool state)
+{
+	this->_isRefractive = state;
+}
+
+void Material::setIsReflective(bool state)
+{
+	this->_isReflective = state;
 }
 
 void Material::setUniforms()
 {
+	_shader->setUniform("material.type", _type);
 	_shader->setUniform("material.light", _reflectionConstants);
-	_shader->setUniform("material.alpha", _alpha);
-	_shader->setUniform("param.state", _state);
-	_shader->setUniform("param.illuminated", true);
-	_shader->setUniform("skybox", 0);
 	_shader->setUniform("material.color", _color);
+	_shader->setUniform("material.alpha", _alpha);
+	_shader->setUniform("material.isRefractive", _isRefractive);
+	_shader->setUniform("material.isReflective", _isReflective);
 }
 
 
@@ -49,12 +61,15 @@ void Material::setUniforms()
 TextureMaterial::TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, Texture texture)
 	: Material(shader, reflectionConstants, alpha, glm::vec3(1.0f, 0.0f, 1.0f))
 {
+	_type = TEXTURE;
+
 	_textures.push_back(texture);
 }
 
 TextureMaterial::TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, std::vector<Texture> textures)
 	: Material(shader, reflectionConstants, alpha, glm::vec3(1.0f, 0.0f, 1.0f)), _textures(textures)
 {
+	_type = TEXTURE;
 }
 
 

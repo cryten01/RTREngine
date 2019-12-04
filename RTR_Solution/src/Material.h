@@ -4,12 +4,10 @@
 #include "Shader.h"
 #include "Texture.h"
 
-enum MaterialState
+enum MaterialType
 {
-	REFLECTIVE = 0,
-	REFRACTIVE = 1,
-	TEXTURE = 2,
-	DIFFUSE = 3		// Default state
+	TEXTURE = 0,
+	DIFFUSE = 1		// Default state
 };
 
 
@@ -18,18 +16,22 @@ class Material
 protected:
 	std::shared_ptr<Shader> _shader;
 
-	MaterialState _state;
+	MaterialType _type;
 	glm::vec3 _color;
 	glm::vec3 _reflectionConstants; // x = ambient, y = diffuse, z = specular
 	float _alpha;
+	bool _isRefractive;
+	bool _isReflective;
 
 public:
 	Material(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, glm::vec3 color);
 	virtual ~Material();
 
 	Shader* getShader();
-	MaterialState& getState();
-	void setState(MaterialState state);
+	MaterialType& getType();
+	void setType(MaterialType state);
+	void setIsRefractive(bool state);
+	void setIsReflective(bool state);
 
 	virtual void setUniforms();
 };

@@ -4,11 +4,9 @@
 // DataType declarations
 /* ---------------------------------- */
 
-/** STATE ENUMS */
-const uint REFLECTIVE = 0;
-const uint REFRACTIVE = 1;
-const uint TEXTURE = 2;
-const uint DIFFUSE = 3;
+/** ENUMS */
+const int TEXTURE = 0;
+const int DIFFUSE = 1;
 
 
 /** INPUTS */
@@ -29,7 +27,6 @@ uniform samplerCube skybox;
 
 
 uniform struct ControlParameters {
-	int state;
 	bool illuminated;
 } param;
 
@@ -39,6 +36,9 @@ uniform struct Material {
 	vec3 light;						// x = ambient, y = diffuse, z = specular 
 	vec3 color;
 	float alpha;
+	bool isRefractive;
+	bool isReflective;
+	int type;
 } material;
 
 
@@ -170,25 +170,30 @@ void main() {
 	// Calculate eye direction
 	vec3 eyeDir = normalize(camera_world - vert.position_world);
 
-
-	// Define objectColor
-	if (param.state == REFLECTIVE) {
-		vec3 R = reflect(-eyeDir, normal);
-		objectColor = texture(skybox, R).rgb;
-	} 
-	if (param.state == REFRACTIVE) {
-		float ratio = 1.00 / 1.309;
-		vec3 R = refract(-eyeDir, normal, ratio);
-		objectColor = texture(skybox, R).rgb;
-	} 
-	if (param.state == TEXTURE) {
+	// Define base color
+	if (material.type == TEXTURE) {
 		objectColor = texture2D(material.texture_diffuse1, vert.uv).rgb; 
 	} 
-	if (param.state == DIFFUSE) {
+	else if (material.type == DIFFUSE){
 		objectColor = material.color;
-	}
-	
+	} 
 
+	// Add material properties here
+	if (material.isReflective) {
+		vec3 R = reflect(-eyeDir, normal);
+		vec3 reflectiveColor = texture(skybox, R).rgb;
+		objectColor = mix(objectColor, reflectiveColor, 1.0);
+	} 
+
+	if (material.isRefractive) {
+		float ratio = 1.00 / 1.309;
+		vec3 R = refract(-eyeDir, normal, ratio);
+		vec3 refractiveColor = texture(skybox, R).rgb;
+		objectColor = mix(objectColor, refractiveColor, 0.8);
+	} 
+
+
+	// Add lighting properties here
 	if (param.illuminated) {
 		// Calculate ambient (Ia * ka)
 		fragColor = vec4((objectColor * material.light.x), 1); // ambient

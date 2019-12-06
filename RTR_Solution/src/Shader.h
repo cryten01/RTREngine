@@ -7,7 +7,6 @@ class Shader
 private:
 	GLuint _programID;
 
-	std::string readInFile(const std::string& filePath);
 	GLuint compileShader(const std::string& filePath, GLuint type);
 	void addToProgram(GLenum shaderType, const std::string& filePath);
 

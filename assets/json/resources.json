@@ -1,0 +1,19 @@
+{
+  "textures": [
+    {
+      "name": "leather",
+      "format": ".jpg",
+      "type": "diffuse"
+    },
+    {
+      "name": "floor",
+      "format": ".jpg",
+      "type": "diffuse"
+    },
+    {
+      "name": "snowflake",
+      "format": ".png",
+      "type":  "diffuse"
+    }
+  ]
+}

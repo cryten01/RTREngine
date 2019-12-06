@@ -41,7 +41,7 @@ void Shader::addToProgram(GLenum shaderType, const std::string& filePath)
 	GLuint shaderID;
 
 	// Compile shader
-	std::string shaderSource = readInFile(filePath);
+	std::string shaderSource = Utils::readInFile(filePath);
 	shaderID = compileShader(shaderSource, shaderType);
 
 	// Attach shader
@@ -51,27 +51,6 @@ void Shader::addToProgram(GLenum shaderType, const std::string& filePath)
 	glDeleteShader(shaderID);
 }
 
-
-/** Reads in a shader file in order to provide the source code for OpenGL */
-std::string Shader::readInFile(const std::string& filePath)
-{
-	std::string fileContent;
-	std::ifstream fileStream(filePath, std::ios::in);
-
-	if (!fileStream.is_open()) {
-		std::cerr << "Could not read file " << filePath << std::endl;
-		return "";
-	}
-
-	std::string line = "";
-	while (!fileStream.eof()) {
-		std::getline(fileStream, line);
-		fileContent.append(line + "\n");
-	}
-
-	fileStream.close();
-	return fileContent;
-};
 
 /** OpenGL compiles the shader source code and assign an identifier to it */
 GLuint Shader::compileShader(const std::string& source, GLuint type)

@@ -14,6 +14,7 @@
 #include "SceneComponent.h"
 #include "Transform.h"
 #include "Test.h"
+#include "Scene.h"
 
 
 
@@ -141,22 +142,26 @@ int main(int argc, char** argv)
 	std::shared_ptr<Shader> particleRenderShader = std::make_shared<Shader>("../assets/shader/particles.vert", "../assets/shader/particles.frag", "../assets/shader/particles.geom");
 	std::shared_ptr<Shader> particleComputeShader = std::make_shared<Shader>("../assets/shader/particles.comp");
 
+	// For debugging only!
+	Scene scene;
+
 	// Load textures here
 	Texture leatherTexture("../assets/textures/leather.jpg", TEX_DIFFUSE);
 	Texture floorTexture("../assets/textures/floor.jpg", TEX_DIFFUSE);
 	Texture snowflakeTexture("../assets/textures/snowflake.png", TEX_DIFFUSE);
+	Texture& mapTest = scene.textureMap.find("leather")->second;
 
 	// Create materials here
 	std::shared_ptr<Material> singleColorMaterial = std::make_shared<Material>(standardShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(1.0f, 0.0f, 1.0f));
 	std::shared_ptr<Material> iceMaterial = std::make_shared<Material>(standardShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
 	std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, leatherTexture);
-	std::shared_ptr<Material> floorMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, floorTexture);
+	std::shared_ptr<Material> floorMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, mapTest);
 	std::shared_ptr<Material> snowflakeMaterial = std::make_shared<TextureMaterial>(particleRenderShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, snowflakeTexture);
 
 	// Set initial material states here
 	iceMaterial->setIsReflective(true);
 
-	// Create geometry here
+	// Create meshes here
 	std::shared_ptr<Mesh> sphere1Mesh = std::make_shared<Mesh>(
 		Mesh::createSphereGeometry(24, 24, 0.7f),
 		iceMaterial
@@ -274,6 +279,8 @@ int main(int argc, char** argv)
 
 	// Attach lights here
 	cube->setLight(pointLights.at(0));
+
+
 
 
 	//*********************//

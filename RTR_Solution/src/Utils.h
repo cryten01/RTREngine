@@ -9,6 +9,7 @@
 #include <memory>
 #include <algorithm>
 #include <list>
+#include <map> 
 
 // GLEW
 #define GLEW_STATIC
@@ -31,6 +32,13 @@
 // STBI
 #include <stb_image.h>
 
+// RAPIDJSON
+#include "document.h"
+using namespace rapidjson;
+
+
+
+
 // Custom error msg
 #define EXIT_WITH_ERROR(err) \
 	std::cout << "ERROR: " << err << std::endl; \
@@ -39,25 +47,27 @@
 
 
 
-/* --------------------------------------------- */
-// Meta programming
-/* --------------------------------------------- */
 
-/** GOAL for identical types (tunneling): 
-	shader->setUniform(pointLights[i].color)	// Array
-	shader->setUniform(material.alpha)			// Single variable
+// Methods
+namespace Utils 
+{
+	static std::string readInFile(const std::string& filePath)
+	{
+		std::string fileContent;
+		std::ifstream fileStream(filePath, std::ios::in);
 
-	GOAL for non-identical types (location based tunneling):
-	shader->setUniform(location = 0)			// GPU only dataTypes
-*/
+		if (!fileStream.is_open()) {
+			std::cerr << "Could not read file " << filePath << std::endl;
+			return "";
+		}
 
+		std::string line = "";
+		while (!fileStream.eof()) {
+			std::getline(fileStream, line);
+			fileContent.append(line + "\n");
+		}
 
-// Gets variable name
-
-// Check if uniform does exist (once at compile time, debug only)
-
-// Check if declaration/definition name is identical  (once at compile time, debug only)
-
-// Check if structure is identical (once at compile time, debug only)
-
-// Set all struct attributes (ensures access to all attributes on GPU side)
+		fileStream.close();
+		return fileContent;
+	};
+}

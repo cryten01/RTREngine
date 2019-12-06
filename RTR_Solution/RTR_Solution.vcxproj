@@ -91,7 +91,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)external\STB\include;$(SolutionDir)external\ASSIMP\include;$(SolutionDir)external\SOIL2\include;$(SolutionDir)external\GLM;$(SolutionDir)external\GLEW\include;$(SolutionDir)external\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)external\RAPIDJSON\include\rapidjson;$(SolutionDir)external\STB\include;$(SolutionDir)external\ASSIMP\include;$(SolutionDir)external\SOIL2\include;$(SolutionDir)external\GLM;$(SolutionDir)external\GLEW\include;$(SolutionDir)external\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)external\ASSIMP\lib;$(SolutionDir)external\SOIL2\lib;$(SolutionDir)external\GLFW\lib-vc2017;$(SolutionDir)external\GLEW\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -119,7 +119,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)external\STB\include;$(SolutionDir)external\ASSIMP\include;$(SolutionDir)external\SOIL2\include;$(SolutionDir)external\GLM;$(SolutionDir)external\GLEW\include;$(SolutionDir)external\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)external\RAPIDJSON\include\rapidjson;$(SolutionDir)external\STB\include;$(SolutionDir)external\ASSIMP\include;$(SolutionDir)external\SOIL2\include;$(SolutionDir)external\GLM;$(SolutionDir)external\GLEW\include;$(SolutionDir)external\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\ParticleSystem.cpp" />
     <ClCompile Include="src\FrameBuffer.cpp" />
     <ClCompile Include="src\SceneObject.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="src\Test.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\ParticleSystem.h" />
     <ClInclude Include="src\FrameBuffer.h" />
     <ClInclude Include="src\SceneComponent.h" />

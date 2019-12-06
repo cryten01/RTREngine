@@ -102,7 +102,7 @@ void ParticleSystem::update(float deltaTime)
 	GLuint groups = _particleCount / 256 + 1;
 	glDispatchCompute(groups, 1, 1);				// launches compute work groups
 
-
+	std::cout << getReadyToSpawn(deltaTime) << std::endl;
 
 	// Memory barrier ensures that atomicCounter gets updated first
 	glMemoryBarrier(GL_ATOMIC_COUNTER_BARRIER_BIT);

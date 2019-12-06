@@ -69,27 +69,20 @@ Particle createSnowParticle(Particle reference)
 
 
 /**
-*	Updates particle attributes with physics etc.
+*	Updates particle attributes with physics etc. only when still alive
 **/
 Particle updateParticle(Particle particle)
 {
-	// Update TimeToLive
-	particle.positionTTL.w = particle.positionTTL.w - DeltaT;
+	// Physics (add wind or other forces here)
+	vec3 forces = GRAVITY;
 
-	// Continue updating only particle when alive
-	if (particle.positionTTL.w > 0.0)
-	{
-		// Physics (add wind or other forces here)
-		vec3 forces = GRAVITY;
+	forces += WIND;
 
-		forces += WIND;
+	// Velocity after physics was applied
+	particle.velocity.xyz = particle.velocity.xyz + forces * DeltaT;
 
-		// Velocity after physics was applied
-		particle.velocity.xyz = particle.velocity.xyz + forces * DeltaT;
-
-		// Position with velocity
-		particle.positionTTL.xyz = particle.positionTTL.xyz + particle.velocity.xyz * DeltaT;
-	}
+	// Position with velocity
+	particle.positionTTL.xyz = particle.positionTTL.xyz + particle.velocity.xyz * DeltaT;
 
 	return particle;
 }
@@ -110,7 +103,10 @@ void main() {
 	// Get values of particle slot
 	Particle p = particles_in[threadIndex]; 
 
-	// Check if particle is alive
+	// Update TimeToLive
+	p.positionTTL.w = p.positionTTL.w - DeltaT;
+
+	// Check if existing particle is still alive
 	if (p.positionTTL.w > 0.0) {
 		p = updateParticle(p);
 		addToOutputList(p);

@@ -156,39 +156,17 @@ int main(int argc, char** argv)
 	std::shared_ptr<Material> leatherMaterial = scene.materialMap.find("leather")->second;
 	std::shared_ptr<Material> iceMaterial = scene.materialMap.find("ice")->second;
 
+	// Still needs to be integrated with json
 	std::shared_ptr<Material> snowflakeMaterial = std::make_shared<TextureMaterial>(particleRenderShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, snowflakeTexture);
 
-
 	// Create meshes here
-	std::shared_ptr<Mesh> sphere1Mesh = std::make_shared<Mesh>(
-		Mesh::createSphereGeometry(24, 24, 0.7f),
-		singleColorMaterial
-	);
+	std::shared_ptr<Mesh> sphere1Mesh = scene.meshMap.find("sphere1")->second;
+	std::shared_ptr<Mesh> sphere2Mesh = scene.meshMap.find("sphere2")->second;
+	std::shared_ptr<Mesh> sphere3Mesh = scene.meshMap.find("sphere3")->second;
+	std::shared_ptr<Mesh> cubeMesh = scene.meshMap.find("cube")->second;
+	std::shared_ptr<Mesh> floorMesh = scene.meshMap.find("floor")->second;
+	std::shared_ptr<Mesh> podiumMesh = scene.meshMap.find("podium")->second;
 
-	std::shared_ptr<Mesh> sphere2Mesh = std::make_shared<Mesh>(
-		Mesh::createSphereGeometry(24, 24, 0.7f),
-		iceMaterial
-	);
-
-	std::shared_ptr<Mesh> sphere3Mesh = std::make_shared<Mesh>(
-		Mesh::createSphereGeometry(24, 24, 0.7f),
-		iceMaterial
-	);
-
-	std::shared_ptr<Mesh> cubeMesh = std::make_shared<Mesh>(
-		Mesh::createCubeGeometry(1.0f, 1.0f, 2.5f),
-		singleColorMaterial
-	);
-
-	std::shared_ptr<Mesh> floorMesh = std::make_shared<Mesh>(
-		Mesh::createCubeGeometry(120.0f, 0.5f, 120.0f),
-		leatherMaterial
-	);
-
-	std::shared_ptr<Mesh> podiumMesh = std::make_shared<Mesh>(
-		Mesh::createCylinderGeometry(24.0f, 2.0f, 4.0f),
-		singleColorMaterial
-	);
 
 	// Create Particle systems here
 	std::shared_ptr<ParticleSystem> snow = std::make_shared<ParticleSystem>(ParticleSystem::createSnowEmitter(), snowflakeMaterial, particleComputeShader, particleRenderShader);

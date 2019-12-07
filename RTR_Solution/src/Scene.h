@@ -1,8 +1,12 @@
 #pragma once
 #include "Utils.h"
-#include "SceneObject.h"
-#include "Texture.h"
 #include "Shader.h"
+#include "Texture.h"
+#include "Material.h"
+#include "Mesh.h"
+#include "SceneObject.h"
+
+
 
 /**
 *	Manages the scene
@@ -15,12 +19,15 @@ private:
 	std::shared_ptr<Shader> _standardShader;
 	std::vector<std::shared_ptr<SceneObject>> _sceneObjects;
 
+	void parseResource(const Value& resourceArray);
 	void parseTextures(const Value& textureArray);
 	void parseMaterials(const Value& materialArray);
+	void parseMeshes(const Value& meshArray);
 
 public:
 	std::map<std::string, Texture> textureMap;
 	std::map<std::string, std::shared_ptr<Material>> materialMap;
+	std::map<std::string, std::shared_ptr<Mesh>> meshMap;
 
 	 Scene(std::shared_ptr<Shader> standardShader);
 	~Scene();

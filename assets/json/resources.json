@@ -58,5 +58,44 @@
       "reflective": true,
       "refractive": false
     }
+  ],
+
+  "meshes": [
+    {
+      "name": "sphere1",
+      "type": "sphere",
+      "dimensions": [ 24.0, 24.0, 0.7 ],
+      "material": "singleColor"
+    },
+    {
+      "name": "sphere2",
+      "type": "sphere",
+      "dimensions": [ 24.0, 24.0, 0.7 ],
+      "material": "ice"
+    },
+    {
+      "name": "sphere3",
+      "type": "sphere",
+      "dimensions": [ 24.0, 24.0, 0.7 ],
+      "material": "ice"
+    },
+    {
+      "name": "cube",
+      "type": "cube",
+      "dimensions": [ 1.0, 1.0, 2.5 ],
+      "material": "singleColor"
+    },
+    {
+      "name": "floor",
+      "type": "cube",
+      "dimensions": [ 120.0, 0.5, 120.0 ],
+      "material": "floor"
+    },
+    {
+      "name": "podium",
+      "type": "cylinder",
+      "dimensions": [ 24.0, 2.0, 4.0 ],
+      "material": "singleColor"
+    }
   ]
 }

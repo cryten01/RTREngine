@@ -13,7 +13,50 @@
     {
       "name": "snowflake",
       "format": ".png",
-      "type":  "diffuse"
+      "type": "diffuse"
+    }
+  ],
+
+  "materials": [
+    {
+      "name": "singleColor",
+      "shader": "standard",
+      "type": "color",
+      "reflectionConstants": [ 0.2, 0.4, 0.8 ],
+      "alpha": 1.0,
+      "color": [ 1.0, 0.0, 1.0 ],
+      "reflective": false,
+      "refractive": true
+    },
+    {
+      "name": "floor",
+      "shader": "standard",
+      "type": "texture",
+      "reflectionConstants": [ 1.0, 0.0, 0.0 ],
+      "alpha": 1.0,
+      "texture": "floor",
+      "reflective": false,
+      "refractive": true
+    },
+    {
+      "name": "leather",
+      "shader": "standard",
+      "type": "texture",
+      "reflectionConstants": [ 1.0, 0.0, 0.0 ],
+      "alpha": 1.0,
+      "texture": "leather",
+      "reflective": false,
+      "refractive": true
+    },
+    {
+      "name": "ice",
+      "shader": "standard",
+      "type": "color",
+      "reflectionConstants": [ 0.2, 0.4, 0.8 ],
+      "alpha": 1.0,
+      "color": [ 0.0, 0.0, 1.0 ],
+      "reflective": true,
+      "refractive": false
     }
   ]
 }

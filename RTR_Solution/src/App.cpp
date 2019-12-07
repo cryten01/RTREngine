@@ -143,28 +143,26 @@ int main(int argc, char** argv)
 	std::shared_ptr<Shader> particleComputeShader = std::make_shared<Shader>("../assets/shader/particles.comp");
 
 	// For debugging only!
-	Scene scene;
+	Scene scene(standardShader);
 
 	// Load textures here
-	Texture leatherTexture("../assets/textures/leather.jpg", TEX_DIFFUSE);
-	Texture floorTexture("../assets/textures/floor.jpg", TEX_DIFFUSE);
-	Texture snowflakeTexture("../assets/textures/snowflake.png", TEX_DIFFUSE);
-	Texture& mapTest = scene.textureMap.find("leather")->second;
+	Texture& floorTexture = scene.textureMap.find("floor")->second;
+	Texture& snowflakeTexture = scene.textureMap.find("snowflake")->second;
+	Texture& leatherTexture = scene.textureMap.find("leather")->second;
 
 	// Create materials here
-	std::shared_ptr<Material> singleColorMaterial = std::make_shared<Material>(standardShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(1.0f, 0.0f, 1.0f));
-	std::shared_ptr<Material> iceMaterial = std::make_shared<Material>(standardShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-	std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, leatherTexture);
-	std::shared_ptr<Material> floorMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, mapTest);
+	std::shared_ptr<Material> singleColorMaterial = scene.materialMap.find("singleColor")->second;
+	std::shared_ptr<Material> floorMaterial = scene.materialMap.find("floor")->second;
+	std::shared_ptr<Material> leatherMaterial = scene.materialMap.find("leather")->second;
+	std::shared_ptr<Material> iceMaterial = scene.materialMap.find("ice")->second;
+
 	std::shared_ptr<Material> snowflakeMaterial = std::make_shared<TextureMaterial>(particleRenderShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, snowflakeTexture);
 
-	// Set initial material states here
-	iceMaterial->setIsReflective(true);
 
 	// Create meshes here
 	std::shared_ptr<Mesh> sphere1Mesh = std::make_shared<Mesh>(
 		Mesh::createSphereGeometry(24, 24, 0.7f),
-		iceMaterial
+		singleColorMaterial
 	);
 
 	std::shared_ptr<Mesh> sphere2Mesh = std::make_shared<Mesh>(
@@ -184,7 +182,7 @@ int main(int argc, char** argv)
 
 	std::shared_ptr<Mesh> floorMesh = std::make_shared<Mesh>(
 		Mesh::createCubeGeometry(120.0f, 0.5f, 120.0f),
-		floorMaterial
+		leatherMaterial
 	);
 
 	std::shared_ptr<Mesh> podiumMesh = std::make_shared<Mesh>(

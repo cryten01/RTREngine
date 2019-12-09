@@ -1,0 +1,49 @@
+{
+  "sceneObjects": [
+    {
+      "name": "sphere1",
+      "shader": "standard",
+      "mesh": "sphere1",
+      "children": [ "sphere2" ],
+      "transform": {
+        "localPos": [ -10.0, 10.0, 0.0 ]
+      }
+    },
+    {
+      "name": "sphere2",
+      "shader": "standard",
+      "mesh": "sphere2",
+      "children": [ "sphere3" ],
+      "transform": {
+        "localPos": [ 3.0, 4.0, 0.0 ]
+      }
+    },
+    {
+      "name": "sphere3",
+      "shader": "standard",
+      "mesh": "sphere3",
+      "children": [],
+      "transform": {
+        "localPos": [ 1.0, 4.0, 0.0 ]
+      }
+    },
+    {
+      "name": "podium",
+      "shader": "standard",
+      "mesh": "podium",
+      "children": ["nanoman"],
+      "transform": {
+        "localPos": [ 0.0, 1.0, 0.0 ]
+      }
+    },
+    {
+      "name": "nanoman",
+      "shader": "standard",
+      "model": "nanosuit.obj",
+      "children": [],
+      "transform": {
+        "localPos": [ 0.0, 1.0, 0.0 ]
+      }
+    }
+  ]
+}

@@ -3,31 +3,11 @@
 Scene::Scene(std::shared_ptr<Shader> standardShader)
 	: _standardShader(standardShader)
 {
-	// Read in json file
-	std::string jsonString = Utils::readInFile("../assets/json/resources.json");
-	const char* json = jsonString.c_str();
+	Document dom = JSONMapper::loadDom("../assets/json/resources.json");
 
-	// Parse json into document object as a DOM tree
-	Document document;
-	document.Parse(json);
-
-	// Check if root is an object
-	assert(document.IsObject());
-
-	// Check if DOM tree contains a texture array and parse it
-	assert(document.HasMember("textures"));
-	assert(document["textures"].IsArray());
-	parseTextures(document["textures"]);
-
-	// Check if DOM tree contains a material array and parse it
-	assert(document.HasMember("materials"));
-	assert(document["materials"].IsArray());
-	parseMaterials(document["materials"]);
-
-	// Check if DOM tree contains a mesh array and parse it
-	assert(document.HasMember("meshes"));
-	assert(document["meshes"].IsArray());
-	parseMeshes(document["meshes"]);
+	parseTextures(dom["textures"]);
+	parseMaterials(dom["materials"]);
+	parseMeshes(dom["meshes"]);
 }
 
 
@@ -44,13 +24,13 @@ void Scene::parseTextures(const Value& textureArray)
 		assert(texture.HasMember("format"));
 		assert(texture.HasMember("type"));
 
-		std::string name = texture["name"].GetString();
-		std::string format = texture["format"].GetString();
-		std::string type = texture["type"].GetString();
+		std::string name = JSONMapper::getString(texture["name"]);
+		std::string format = JSONMapper::getString(texture["format"]);
+		TextureType type = JSONMapper::getTextureType(texture["type"]);
 
-		// Create actual texture
+		// Create texture
 		std::string total = "../assets/textures/" + name + format;
-		Texture texture(total.c_str(), TEX_DIFFUSE);
+		Texture texture(total.c_str(), type);
 
 		// Add texture to texture map
 		textureMap.insert(std::pair<std::string, Texture>(name, texture));
@@ -60,85 +40,59 @@ void Scene::parseTextures(const Value& textureArray)
 void Scene::parseMaterials(const Value & materialArray)
 {
 	// Access material objects attributes
-	for (auto& material : materialArray.GetArray())
+	for (auto& jMaterial : materialArray.GetArray())
 	{
-		assert(material.HasMember("name"));
-		assert(material.HasMember("shader"));
-		assert(material.HasMember("type"));
-		assert(material.HasMember("reflectionConstants"));
-		assert(material.HasMember("alpha"));
+		assert(jMaterial.HasMember("name"));
+		assert(jMaterial.HasMember("shader"));
+		assert(jMaterial.HasMember("type"));
+		assert(jMaterial.HasMember("reflectionConstants"));
+		assert(jMaterial.HasMember("alpha"));
+		assert(jMaterial.HasMember("reflective"));
+		assert(jMaterial.HasMember("refractive"));
 
-		std::string name = material["name"].GetString();
-		std::string shader = material["shader"].GetString();
-		std::string type = material["type"].GetString();
-		const Value& constants = material["reflectionConstants"];
-		glm::vec3 reflectionConstants = glm::vec3(constants[0].GetFloat(), constants[1].GetFloat(), constants[2].GetFloat());
-		float alpha = material["alpha"].GetFloat();
+		std::string name = JSONMapper::getString(jMaterial["name"]);
+		MaterialType type = JSONMapper::getMaterialType(jMaterial["type"]);
+		glm::vec3 reflectionConstants = JSONMapper::getVec3(jMaterial["reflectionConstants"]);
+		float alpha = JSONMapper::getFloat(jMaterial["alpha"]);
 
 		// Create actual material based on type
-		std::shared_ptr<Material> mat; 
+		std::shared_ptr<Material> material; 
 
-		if (type == "color") 
+		if (type == DIFFUSE) 
 		{
-			const Value& color = material["color"];
-			glm::vec3 diffuseColor = glm::vec3(color[0].GetFloat(), color[1].GetFloat(), color[2].GetFloat());
-			mat = std::make_shared<Material>(_standardShader, reflectionConstants, alpha, diffuseColor);
+			glm::vec3 diffuseColor = JSONMapper::getVec3(jMaterial["color"]);
+			material = std::make_shared<Material>(_standardShader, reflectionConstants, alpha, diffuseColor);
 		}
 		else 
 		{
-			const Value& texture = material["texture"];
-			Texture& tex = textureMap.find(texture.GetString())->second;
-			mat = std::make_shared<TextureMaterial>(_standardShader, reflectionConstants, alpha, tex);
+			Texture& texture = JSONMapper::getTexture(textureMap, jMaterial["texture"]);
+			material = std::make_shared<TextureMaterial>(_standardShader, reflectionConstants, alpha, texture);
 		}
 
 		// Set initial states
-		assert(material.HasMember("reflective"));
-		mat->setIsReflective(material["reflective"].GetBool());
-
-		assert(material.HasMember("refractive"));
-		mat->setIsRefractive(material["refractive"].GetBool());
+		material->setIsReflective(jMaterial["reflective"].GetBool());
+		material->setIsRefractive(jMaterial["refractive"].GetBool());
 
 		// Add material to material map
-		materialMap.insert(std::pair<std::string, std::shared_ptr<Material>>(name, mat));
+		materialMap.insert(std::pair<std::string, std::shared_ptr<Material>>(name, material));
 	}
 }
 
 void Scene::parseMeshes(const Value & meshArray)
 {
-	for (auto& mesh : meshArray.GetArray()) 
+	for (auto& jMesh : meshArray.GetArray()) 
 	{
-		assert(mesh.HasMember("name"));
-		assert(mesh.HasMember("type"));
-		assert(mesh.HasMember("dimensions"));
-		assert(mesh.HasMember("material"));
+		assert(jMesh.HasMember("name"));
+		assert(jMesh.HasMember("type"));
+		assert(jMesh.HasMember("dimensions"));
+		assert(jMesh.HasMember("material"));
 
-		std::string name = mesh["name"].GetString();
-		std::string type = mesh["type"].GetString();
-		const Value& dim = mesh["dimensions"];
-		glm::vec3 dimensions = glm::vec3(dim[0].GetFloat(), dim[1].GetFloat(), dim[2].GetFloat());
+		std::string name = JSONMapper::getString(jMesh["name"]);
+		std::shared_ptr<Material> material = JSONMapper::getMaterial(materialMap, jMesh["material"]);
+		MeshData meshData = JSONMapper::getMeshData(jMesh["type"], jMesh["dimensions"]);
 
-		const Value& mat = mesh["material"];
-		std::shared_ptr<Material> material = materialMap.find(mat.GetString())->second;
-
-
-		// Create actual mesh based on type
-		std::shared_ptr<Mesh> mesh;
-		MeshData meshData;
-
-		if (type == "cube")
-		{
-			meshData = Mesh::createCubeGeometry(dimensions[0], dimensions[1], dimensions[2]);
-		}
-		else if (type == "sphere")
-		{
-			meshData = Mesh::createSphereGeometry(dimensions[0], dimensions[1], dimensions[2]);
-		}
-		else if (type == "cylinder")
-		{
-			meshData = Mesh::createCylinderGeometry(dimensions[0], dimensions[1], dimensions[2]);
-		}
-
-		mesh = std::make_shared<Mesh>(
+		// Create mesh
+		std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>(
 			meshData,
 			material
 		);

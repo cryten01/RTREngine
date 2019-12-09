@@ -5,6 +5,7 @@
 #include "Material.h"
 #include "Mesh.h"
 #include "SceneObject.h"
+#include "JSONMapper.h"
 
 
 

@@ -23,6 +23,7 @@ private:
 	void parseTextures(const Value& textureArray);
 	void parseMaterials(const Value& materialArray);
 	void parseMeshes(const Value& meshArray);
+	void parseSceneObjects(const Value& sceneObjArray);
 
 public:
 	std::map<std::string, Texture> textureMap;

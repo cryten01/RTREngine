@@ -58,7 +58,7 @@ void Scene::parseMaterials(const Value & materialArray)
 		}
 		else 
 		{
-			auto texture = mapper.lookupTexture("texture", textureMap);
+			auto texture = mapper.lookup(textureMap, "texture");
 			material = std::make_shared<TextureMaterial>(_standardShader, reflectionConstants, alpha, texture);
 		}
 		
@@ -67,7 +67,9 @@ void Scene::parseMaterials(const Value & materialArray)
 		material->setIsRefractive(refractive);
 
 		// Add material to material map
-		materialMap.insert(std::pair<std::string, std::shared_ptr<Material>>(name, material));
+		mapper.insert(materialMap, name, material);
+
+		//materialMap.insert(std::pair<std::string, std::shared_ptr<Material>>(name, material));
 	}
 }
 
@@ -77,7 +79,7 @@ void Scene::parseMeshes(const Value & meshArray)
 	{
 		JMapper mapper(jMesh);
 		auto name = mapper.getString("name");		
-		auto material = mapper.lookupMaterial("material", materialMap);
+		auto material = mapper.lookup(materialMap, "material");
 		auto data = mapper.getMeshData("type", "dimensions");
 
 		// Create mesh
@@ -87,6 +89,17 @@ void Scene::parseMeshes(const Value & meshArray)
 		meshMap.insert(std::pair<std::string, std::shared_ptr<Mesh>>(name, mesh));
 	}
 }
+
+void Scene::parseSceneObjects(const Value & sceneObjArray)
+{
+	for (auto& jSceneObj : sceneObjArray.GetArray())
+	{
+		JMapper mapper(jSceneObj);
+		auto name = mapper.getString("name");
+	}
+}
+
+
 
 
 //

@@ -42,8 +42,26 @@ public:
 	glm::vec3 getVec3(const char* attribute);
 	MeshData getMeshData(const char* type, const char* array);
 
-	Texture& lookupTexture(const char* attribute, std::map<std::string, Texture>& map);
-	std::shared_ptr<Material> lookupMaterial(const char* attribute, std::map<std::string, std::shared_ptr<Material>>& map);
+	template<typename T>
+	T getEnum(const char* attribute) 
+	{
+		// Loop through enum
 
+		// Return correct enum
+	}
+
+	template<typename T>
+	T lookup(std::map<std::string, T>& map, const char* jAttributeName)
+	{
+		std::string key = getString(jAttributeName);
+		return map.find(key)->second;
+	}
+
+	template<typename T>
+	void insert(std::map<std::string, T>& map, std::string key, T value)
+	{
+		map.insert(std::pair<std::string, T>(key, value));
+	}
 };
+
 

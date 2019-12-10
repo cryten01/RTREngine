@@ -108,17 +108,3 @@ MeshData JMapper::getMeshData(const char* jType, const char* array)
 		return Mesh::createCylinderGeometry(dimensions[0], dimensions[1], dimensions[2]);
 	}
 }
-
-
-Texture& JMapper::lookupTexture(const char* attribute, std::map<std::string, Texture>& map)
-{
-	std::string keyString = getString(attribute);
-	return map.find(keyString)->second;
-};
-
-
-std::shared_ptr<Material> JMapper::lookupMaterial(const char* attribute, std::map<std::string, std::shared_ptr<Material>>& map)
-{
-	std::string keyString = getString(attribute);
-	return map.find(keyString)->second;
-}

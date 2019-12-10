@@ -1,17 +1,17 @@
 #include "JSONMapper.h"
 
 
-
-JSONMapper::JSONMapper()
+JMapper::JMapper(const Value& jObject)
+	: _jObject(jObject)
 {
 }
 
 
-JSONMapper::~JSONMapper()
+JMapper::~JMapper()
 {
 }
 
-Document JSONMapper::loadDom(const std::string & jFilePath)
+Document JMapper::loadDom(const std::string & jFilePath)
 {
 	// Read in json file
 	std::string jsonString = Utils::readInFile(jFilePath);
@@ -28,24 +28,72 @@ Document JSONMapper::loadDom(const std::string & jFilePath)
 	return dom;
 }
 
-
-float JSONMapper::getFloat(const Value & jFloat)
+void JMapper::checkObjectStructure(const Value& objectArray, std::vector<const char*> checkList)
 {
-	return jFloat.GetFloat();
+	for (auto& object : objectArray.GetArray())
+	{
+		// Structure check
+		for (const char* attribute : checkList)
+		{
+			assert(object.HasMember(attribute));
+		}
+	}
 }
 
 
-std::string JSONMapper::getString(const Value& jString)
+bool JMapper::getBool(const char* attribute) 
 {
-	return jString.GetString();
+	return 	_jObject[attribute].GetBool();
+};
+
+float JMapper::getFloat(const char* attribute)
+{
+	return 	_jObject[attribute].GetFloat();
 }
 
 
+std::string JMapper::getString(const char* attribute)
+{
+	return 	_jObject[attribute].GetString();
+}
 
-MeshData JSONMapper::getMeshData(const Value & jType, const Value & jVecArray)
+
+glm::vec3 JMapper::getVec3(const char* attribute)
+{
+	float x = _jObject[attribute][0].GetFloat();
+	float y = _jObject[attribute][1].GetFloat();
+	float z = _jObject[attribute][2].GetFloat();
+
+	return glm::vec3(x,y,z);
+}
+
+
+TextureType JMapper::getTextureType(const char* attribute)
+{
+	std::string type = getString(attribute);
+
+	if (type == "diffuse")
+		return TEX_DIFFUSE;
+	else
+		return TEX_SPECULAR;
+}
+
+
+MaterialType JMapper::getMaterialType(const char* attribute)
+{
+	std::string type = getString(attribute);
+
+	if (type == "color")
+		return DIFFUSE;
+	else
+		return TEXTURE;
+}
+
+
+MeshData JMapper::getMeshData(const char* jType, const char* array)
 {
 	std::string type = getString(jType);
-	glm::vec3 dimensions = getVec3(jVecArray);
+	glm::vec3 dimensions = getVec3(array);
 
 	if (type == "cube")
 	{
@@ -61,41 +109,16 @@ MeshData JSONMapper::getMeshData(const Value & jType, const Value & jVecArray)
 	}
 }
 
-TextureType JSONMapper::getTextureType(const Value& jType)
+
+Texture& JMapper::lookupTexture(const char* attribute, std::map<std::string, Texture>& map)
 {
-	std::string type = getString(jType);
-
-	if (type == "diffuse")
-		return TEX_DIFFUSE;
-	else
-		return TEX_SPECULAR;
-}
-
-MaterialType JSONMapper::getMaterialType(const Value & jType)
-{
-	std::string type = getString(jType);
-
-	if (type == "color")
-		return DIFFUSE;
-	else
-		return TEXTURE;
-}
-
-glm::vec3 JSONMapper::getVec3(const Value& jVector)
-{
-	return glm::vec3(getFloat(jVector[0]), getFloat(jVector[1]), getFloat(jVector[2]));
-}
-
-Texture& JSONMapper::getTexture(std::map<std::string, Texture>& map, const Value& jKey)
-{
-	std::string keyString = getString(jKey);
-	
+	std::string keyString = getString(attribute);
 	return map.find(keyString)->second;
 };
 
-std::shared_ptr<Material> JSONMapper::getMaterial(std::map<std::string, std::shared_ptr<Material>>& map, const Value & jKey)
-{
-	std::string keyString = getString(jKey);
 
+std::shared_ptr<Material> JMapper::lookupMaterial(const char* attribute, std::map<std::string, std::shared_ptr<Material>>& map)
+{
+	std::string keyString = getString(attribute);
 	return map.find(keyString)->second;
 }

@@ -20,7 +20,6 @@ private:
 	std::shared_ptr<Shader> _standardShader;
 	std::vector<std::shared_ptr<SceneObject>> _sceneObjects;
 
-	void parseResource(const Value& resourceArray);
 	void parseTextures(const Value& textureArray);
 	void parseMaterials(const Value& materialArray);
 	void parseMeshes(const Value& meshArray);

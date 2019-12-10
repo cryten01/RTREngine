@@ -1,0 +1,24 @@
+{
+  "textures": {
+    "name": "std::string",
+    "format": "std::string",
+    "type": "TextureType"
+  },
+
+  "materials": {
+    "name": "std::string",
+    "shader": "std::shared_ptr<Shader>",
+    "reflectionConstants": "glm::vec3",
+    "alpha": "float",
+    "color": "glm::vec3",
+    "reflective": "bool",
+    "refractive": "bool"
+  },
+
+  "meshes": {
+    "name": "std::string",
+    "type": "methodCall?",
+    "dimensions": "glm::vec3",
+    "material": "std::shared_ptr<Material>"
+  }
+}

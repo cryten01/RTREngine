@@ -4,29 +4,46 @@
 #include "Material.h"
 #include "Mesh.h"
 
+
+
+struct JTexture
+{
+	std::string name;
+	std::string format;
+	TextureType texType;
+};
+
+
 /**
 *	A mapper for converting JSON attribute values to (interpreted) C++ values 
 *	This mapper extends the rapidJSON library
 **/
-class JSONMapper
+class JMapper
 {
+private:
+	const Value& _jObject;
+
 public:
-	 JSONMapper();
-	~JSONMapper();
+	 JMapper(const Value& jObject);
+	~JMapper();
 
 	// Helper methods
 	static Document loadDom(const std::string& jFilePath);
+	static void checkObjectStructure(const Value& objectArray, std::vector<const char*> checkList);
 
-	// Basic types (from RapidJSON)
-	static float getFloat(const Value& jFloat);
-	static std::string getString(const Value& jString);
+	// Basic types (JSON)
+	bool getBool(const char* attribute);
+	float getFloat(const char* attribute);
+	std::string getString(const char* attribute);
 
-	// Extended types
-	static MeshData getMeshData(const Value& jType, const Value& jVecArray);
-	static TextureType getTextureType(const Value& jType);
-	static MaterialType getMaterialType(const Value& jType);
-	static Texture& getTexture(std::map<std::string, Texture>& map, const Value& jKey);
-	static std::shared_ptr<Material> getMaterial(std::map<std::string, std::shared_ptr<Material>>& map, const Value& jKey);
-	static glm::vec3 getVec3(const Value& jVecArray);
+	// Extended types (C++)
+	TextureType getTextureType(const char* attribute);
+	MaterialType getMaterialType(const char* attribute);
+	glm::vec3 getVec3(const char* attribute);
+	MeshData getMeshData(const char* type, const char* array);
+
+	Texture& lookupTexture(const char* attribute, std::map<std::string, Texture>& map);
+	std::shared_ptr<Material> lookupMaterial(const char* attribute, std::map<std::string, std::shared_ptr<Material>>& map);
+
 };
 

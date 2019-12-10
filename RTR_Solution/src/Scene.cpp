@@ -3,8 +3,9 @@
 Scene::Scene(std::shared_ptr<Shader> standardShader)
 	: _standardShader(standardShader)
 {
-	Document dom = JSONMapper::loadDom("../assets/json/resources.json");
+	Document dom = JMapper::loadDom("../assets/json/resources.json");
 
+	JMapper::checkObjectStructure(dom["textures"], { "name", "format", "type" });
 	parseTextures(dom["textures"]);
 	parseMaterials(dom["materials"]);
 	parseMeshes(dom["meshes"]);
@@ -15,63 +16,55 @@ Scene::~Scene()
 {
 }
 
-void Scene::parseTextures(const Value& textureArray)
+void Scene::parseTextures(const Value& objectArray)
 {
-	// Access texture objects attributes
-	for (auto& texture : textureArray.GetArray())
+	// Retrieve objects
+	for (auto& object : objectArray.GetArray())
 	{
-		assert(texture.HasMember("name"));
-		assert(texture.HasMember("format"));
-		assert(texture.HasMember("type"));
-
-		std::string name = JSONMapper::getString(texture["name"]);
-		std::string format = JSONMapper::getString(texture["format"]);
-		TextureType type = JSONMapper::getTextureType(texture["type"]);
+		JMapper mapper(object);
+		auto name = mapper.getString("name");
+		auto format = mapper.getString("format");
+		auto type = mapper.getTextureType("type");
 
 		// Create texture
-		std::string total = "../assets/textures/" + name + format;
-		Texture texture(total.c_str(), type);
+		std::string filePath = "../assets/textures/" + name + format;
+		Texture texture(filePath.c_str(), type);
 
 		// Add texture to texture map
 		textureMap.insert(std::pair<std::string, Texture>(name, texture));
 	}
 }
 
+
 void Scene::parseMaterials(const Value & materialArray)
 {
 	// Access material objects attributes
 	for (auto& jMaterial : materialArray.GetArray())
 	{
-		assert(jMaterial.HasMember("name"));
-		assert(jMaterial.HasMember("shader"));
-		assert(jMaterial.HasMember("type"));
-		assert(jMaterial.HasMember("reflectionConstants"));
-		assert(jMaterial.HasMember("alpha"));
-		assert(jMaterial.HasMember("reflective"));
-		assert(jMaterial.HasMember("refractive"));
+		JMapper mapper(jMaterial);
+		auto name = mapper.getString("name");
+		auto reflectionConstants = mapper.getVec3("reflectionConstants");
+		auto alpha = mapper.getFloat("alpha");
+		auto refractive = mapper.getBool("refractive");
+		auto reflective = mapper.getBool("reflective");
 
-		std::string name = JSONMapper::getString(jMaterial["name"]);
-		MaterialType type = JSONMapper::getMaterialType(jMaterial["type"]);
-		glm::vec3 reflectionConstants = JSONMapper::getVec3(jMaterial["reflectionConstants"]);
-		float alpha = JSONMapper::getFloat(jMaterial["alpha"]);
+		// Create material
+		std::shared_ptr<Material> material;
 
-		// Create actual material based on type
-		std::shared_ptr<Material> material; 
-
-		if (type == DIFFUSE) 
+		if (jMaterial.HasMember("color")) 
 		{
-			glm::vec3 diffuseColor = JSONMapper::getVec3(jMaterial["color"]);
+			auto diffuseColor = mapper.getVec3("color");
 			material = std::make_shared<Material>(_standardShader, reflectionConstants, alpha, diffuseColor);
 		}
 		else 
 		{
-			Texture& texture = JSONMapper::getTexture(textureMap, jMaterial["texture"]);
+			auto texture = mapper.lookupTexture("texture", textureMap);
 			material = std::make_shared<TextureMaterial>(_standardShader, reflectionConstants, alpha, texture);
 		}
-
+		
 		// Set initial states
-		material->setIsReflective(jMaterial["reflective"].GetBool());
-		material->setIsRefractive(jMaterial["refractive"].GetBool());
+		material->setIsReflective(reflective);
+		material->setIsRefractive(refractive);
 
 		// Add material to material map
 		materialMap.insert(std::pair<std::string, std::shared_ptr<Material>>(name, material));
@@ -82,26 +75,35 @@ void Scene::parseMeshes(const Value & meshArray)
 {
 	for (auto& jMesh : meshArray.GetArray()) 
 	{
-		assert(jMesh.HasMember("name"));
-		assert(jMesh.HasMember("type"));
-		assert(jMesh.HasMember("dimensions"));
-		assert(jMesh.HasMember("material"));
-
-		std::string name = JSONMapper::getString(jMesh["name"]);
-		std::shared_ptr<Material> material = JSONMapper::getMaterial(materialMap, jMesh["material"]);
-		MeshData meshData = JSONMapper::getMeshData(jMesh["type"], jMesh["dimensions"]);
+		JMapper mapper(jMesh);
+		auto name = mapper.getString("name");		
+		auto material = mapper.lookupMaterial("material", materialMap);
+		auto data = mapper.getMeshData("type", "dimensions");
 
 		// Create mesh
-		std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>(
-			meshData,
-			material
-		);
+		std::shared_ptr<Mesh> mesh = std::make_shared<Mesh>(data, material);
 
 		// Add mesh to mesh map
 		meshMap.insert(std::pair<std::string, std::shared_ptr<Mesh>>(name, mesh));
 	}
 }
 
+
+//
+//void Scene::JMaterial(const Value& object)
+//{
+//	std::list<const char*> constructorParameter = { "name", "shader", "reflectionConstants", "alpha", "reflective", "refractive" };
+//
+//	for (const char* parameter : constructorParameter)
+//	{
+//		assert(object.HasMember(parameter));
+//	}
+//
+//	for (Value::ConstMemberIterator itr = object.MemberBegin(); itr != object.MemberEnd(); ++itr)
+//	{
+//		printf("Type of member %s", itr->name.GetString());
+//	}
+//}
 
 void Scene::render()
 {

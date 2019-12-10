@@ -21,7 +21,6 @@
     {
       "name": "singleColor",
       "shader": "standard",
-      "type": "color",
       "reflectionConstants": [ 0.2, 0.4, 0.8 ],
       "alpha": 1.0,
       "color": [ 1.0, 0.0, 1.0 ],
@@ -29,19 +28,17 @@
       "refractive": true
     },
     {
-      "name": "floor",
+      "name": "ice",
       "shader": "standard",
-      "type": "texture",
-      "reflectionConstants": [ 1.0, 0.0, 0.0 ],
+      "reflectionConstants": [ 0.2, 0.4, 0.8 ],
       "alpha": 1.0,
-      "texture": "floor",
-      "reflective": false,
-      "refractive": true
+      "color": [ 0.0, 0.0, 1.0 ],
+      "reflective": true,
+      "refractive": false
     },
     {
       "name": "leather",
       "shader": "standard",
-      "type": "texture",
       "reflectionConstants": [ 1.0, 0.0, 0.0 ],
       "alpha": 1.0,
       "texture": "leather",
@@ -49,14 +46,13 @@
       "refractive": true
     },
     {
-      "name": "ice",
+      "name": "floor",
       "shader": "standard",
-      "type": "color",
-      "reflectionConstants": [ 0.2, 0.4, 0.8 ],
+      "reflectionConstants": [ 1.0, 0.0, 0.0 ],
       "alpha": 1.0,
-      "color": [ 0.0, 0.0, 1.0 ],
-      "reflective": true,
-      "refractive": false
+      "texture": "floor",
+      "reflective": false,
+      "refractive": true
     }
   ],
 

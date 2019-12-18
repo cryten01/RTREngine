@@ -3,14 +3,14 @@
 /**
 *	Creates a shader porgram. Needs at least one shader
 **/
-Shader::Shader(const std::string& vertexFilePath, const std::string& fragmentFilePath, const std::string& geometryFilePath)
+Shader::Shader(const std::string& vertexFileName, const std::string& fragmentFileName, const std::string& geometryFileName)
 {
 	_programID = glCreateProgram();
-	addToProgram(GL_VERTEX_SHADER, vertexFilePath);
-	addToProgram(GL_FRAGMENT_SHADER, fragmentFilePath);
+	addToProgram(GL_VERTEX_SHADER, vertexFileName);
+	addToProgram(GL_FRAGMENT_SHADER, fragmentFileName);
 
-	if (geometryFilePath != "")
-		addToProgram(GL_GEOMETRY_SHADER, geometryFilePath);
+	if (geometryFileName != "")
+		addToProgram(GL_GEOMETRY_SHADER, geometryFileName);
 
 	// Linking and validation
 	glLinkProgram(_programID);
@@ -18,10 +18,10 @@ Shader::Shader(const std::string& vertexFilePath, const std::string& fragmentFil
 }
 
 
-Shader::Shader(const std::string & computeFilePath)
+Shader::Shader(const std::string & computeFileName)
 {
 	_programID = glCreateProgram();
-	addToProgram(GL_COMPUTE_SHADER, computeFilePath);
+	addToProgram(GL_COMPUTE_SHADER, computeFileName);
 
 	// Linking and validation
 	glLinkProgram(_programID);
@@ -36,12 +36,12 @@ Shader::~Shader()
 }
 
 
-void Shader::addToProgram(GLenum shaderType, const std::string& filePath)
+void Shader::addToProgram(GLenum shaderType, const std::string& fileName)
 {
 	GLuint shaderID;
 
 	// Compile shader
-	std::string shaderSource = Utils::readInFile(filePath);
+	std::string shaderSource = Utils::readInFile(SHADER_ROOT_LOCATION + fileName);
 	shaderID = compileShader(shaderSource, shaderType);
 
 	// Attach shader

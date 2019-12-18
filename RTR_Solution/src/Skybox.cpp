@@ -1,7 +1,7 @@
 #include "Skybox.h"
 
 
-Skybox::Skybox(float size, const char* textures[])
+Skybox::Skybox(float size, std::vector<std::string>& textureFileNames)
 {
 	// Create Mesh with material that contains cubemap textures
 	MeshData data = loadMeshData(60.0f);
@@ -28,7 +28,7 @@ Skybox::Skybox(float size, const char* textures[])
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	// Loads textures of the cube map
-	loadTextures(textures);
+	loadTextures(textureFileNames);
 }
 
 
@@ -133,7 +133,7 @@ MeshData Skybox::loadMeshData(float size)
 	return std::move(data);
 }
 
-void Skybox::loadTextures(const char * textures[])
+void Skybox::loadTextures(std::vector<std::string>& texturesFileNames)
 {
 	// Generate reference and bind cube map textures
 	glGenTextures(1, &_cubeMapID);
@@ -143,7 +143,8 @@ void Skybox::loadTextures(const char * textures[])
 	for (unsigned int i = 0; i < 6; i++)
 	{
 		// Load cube map texture
-		unsigned char *texData = stbi_load(textures[i], &width, &height, &nrChannels, 0);
+		const std::string& filePath = SKYBOX_ROOT_LOCATION + texturesFileNames.at(i);
+		unsigned char *texData = stbi_load(filePath.c_str(), &width, &height, &nrChannels, 0);
 
 		// Generate cube map texture
 		if (texData)
@@ -168,7 +169,7 @@ void Skybox::loadTextures(const char * textures[])
 		}
 		else
 		{
-			std::cout << "Cubemap texture failed to load at path: " << textures[i] << std::endl;
+			std::cout << "Cubemap texture failed to load at path: " << filePath << std::endl;
 		}
 
 		// Free the image memory

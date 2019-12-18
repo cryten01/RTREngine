@@ -135,12 +135,12 @@ int main(int argc, char** argv)
 	FrameBuffer hdrBuffer(WIDTH, HEIGHT, FLOAT);
 
 	// Load shaders here (location starts at solution folder)
-	std::shared_ptr<Shader> standardShader = std::make_shared<Shader>("../assets/shader/standard.vert", "../assets/shader/standard.frag", "../assets/shader/standard.geom");
-	std::shared_ptr<Shader> skyboxShader = std::make_shared<Shader>("../assets/shader/skybox.vert", "../assets/shader/skybox.frag");
-	std::shared_ptr<Shader> postProcessShader = std::make_shared<Shader>("../assets/shader/framebuffer.vert", "../assets/shader/framebuffer.frag");
-	std::shared_ptr<Shader> geometryShader = std::make_shared<Shader>("../assets/shader/geometry.vert", "../assets/shader/geometry.frag", "../assets/shader/geometry.geom");
-	std::shared_ptr<Shader> particleRenderShader = std::make_shared<Shader>("../assets/shader/particles.vert", "../assets/shader/particles.frag", "../assets/shader/particles.geom");
-	std::shared_ptr<Shader> particleComputeShader = std::make_shared<Shader>("../assets/shader/particles.comp");
+	std::shared_ptr<Shader> standardShader = std::make_shared<Shader>("standard.vert", "standard.frag", "standard.geom");
+	std::shared_ptr<Shader> skyboxShader = std::make_shared<Shader>("skybox.vert", "skybox.frag");
+	std::shared_ptr<Shader> postProcessShader = std::make_shared<Shader>("framebuffer.vert", "framebuffer.frag");
+	std::shared_ptr<Shader> geometryShader = std::make_shared<Shader>("geometry.vert", "geometry.frag", "geometry.geom");
+	std::shared_ptr<Shader> particleRenderShader = std::make_shared<Shader>("particles.vert", "particles.frag", "particles.geom");
+	std::shared_ptr<Shader> particleComputeShader = std::make_shared<Shader>("particles.comp");
 
 	// For debugging only!
 	Scene scene(standardShader);
@@ -187,15 +187,15 @@ int main(int argc, char** argv)
 	modelLoader.load(nanoMan, "../assets/models/nanosuit/nanosuit.obj");
 
 	// Create skybox here
-	const char* skyboxTextures[] = {
-		"../assets/textures/skybox/right.jpg",
-		"../assets/textures/skybox/left.jpg",
-		"../assets/textures/skybox/top.jpg",
-		"../assets/textures/skybox/bottom.jpg",
-		"../assets/textures/skybox/back.jpg",
-		"../assets/textures/skybox/front.jpg"
+	std::vector<std::string> cubeMapFileNames = {
+		"skybox/right.jpg",
+		"skybox/left.jpg",
+		"skybox/top.jpg",
+		"skybox/bottom.jpg",
+		"skybox/back.jpg",
+		"skybox/front.jpg"
 	};
-	Skybox skybox(60.0f, skyboxTextures);
+	Skybox skybox(60.0f, cubeMapFileNames);
 
 	// Create debug cam here
 	Camera orbitCam(fov, WIDTH / HEIGHT, nearZ, farZ);

@@ -2,6 +2,8 @@
 
 #include "Utils.h"
 
+static const std::string& SHADER_ROOT_LOCATION = "../assets/shader/";
+
 class Shader
 {
 private:
@@ -11,7 +13,7 @@ private:
 	void addToProgram(GLenum shaderType, const std::string& filePath);
 
 public:
-	 Shader(const std::string& vertexFilePath, const std::string& fragmentFilePath, const std::string& geometryFilePath = "");
+	 Shader(const std::string& fileName, const std::string& fragmentFilePath, const std::string& geometryFilePath = "");
 	 Shader(const std::string& computeFilePath);
 	~Shader();
 

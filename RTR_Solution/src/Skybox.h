@@ -4,6 +4,8 @@
 #include "Mesh.h"
 #include "Shader.h"
 
+static const std::string& SKYBOX_ROOT_LOCATION = "../assets/textures/";
+
 class Skybox
 {
 protected:
@@ -14,10 +16,10 @@ protected:
 	unsigned int _elementCount;
 
 	MeshData loadMeshData(float size);
-	void loadTextures(const char* textures[]);
+	void loadTextures(std::vector<std::string>& textureFileNames);
 
 public:
-	 Skybox(float size, const char* textures[]);
+	 Skybox(float size, std::vector<std::string>& textureFileNames);
 	~Skybox();
 
 	void bindTextures(unsigned int unit = 7);

@@ -5,7 +5,9 @@ SceneObject::SceneObject(std::shared_ptr<Shader> shader, glm::mat4 modelMatrix)
 	: _shader(shader)
 {
 	// Defaults
+	_active = true;
 	_transform = std::make_shared<Transform>(modelMatrix);
+
 }
 
 
@@ -101,7 +103,10 @@ void SceneObject::render()
 
 void SceneObject::renderAll()
 {
-	this->render();
+	if (_active) 
+	{
+		this->render();
+	}
 
 	// Render children
 	for (size_t i = 0; i < _children.size(); i++)

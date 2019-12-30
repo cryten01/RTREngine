@@ -11,6 +11,7 @@
 class SceneObject
 {
 private:
+	bool _active;
 	std::vector<std::shared_ptr<SceneObject>> _children;
 	std::shared_ptr<Shader> _shader;
 	std::shared_ptr<Transform> _transform;

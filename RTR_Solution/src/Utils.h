@@ -37,15 +37,14 @@
 using namespace rapidjson;
 
 
-
-
 // Custom error msg
 #define EXIT_WITH_ERROR(err) \
 	std::cout << "ERROR: " << err << std::endl; \
 	system("PAUSE"); \
 	return EXIT_FAILURE;
 
-
+// Get variable name
+#define STRINGIFY(Variable) (#Variable)
 
 
 // Methods

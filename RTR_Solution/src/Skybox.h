@@ -9,6 +9,8 @@ static const std::string& SKYBOX_ROOT_LOCATION = "../assets/textures/";
 class Skybox
 {
 protected:
+	std::shared_ptr<Shader> _shader;
+
 	GLuint _vao;
 	GLuint _vboPositions;
 	GLuint _vboIndices;
@@ -19,10 +21,11 @@ protected:
 	void loadTextures(std::vector<std::string>& textureFileNames);
 
 public:
-	 Skybox(float size, std::vector<std::string>& textureFileNames);
+	 Skybox(std::shared_ptr<Shader> shader, float size, std::vector<std::string>& textureFileNames);
 	~Skybox();
 
 	void bindTextures(unsigned int unit = 7);
-	void render(std::shared_ptr<Shader> shader, glm::mat4 viewMatrix, glm::mat4 projMatrix);
+	void setUniforms(glm::mat4 viewMatrix, glm::mat4 projMatrix);
+	void render(glm::mat4 viewMatrix, glm::mat4 projMatrix);
 };
 

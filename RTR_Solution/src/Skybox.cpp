@@ -1,7 +1,8 @@
 #include "Skybox.h"
 
 
-Skybox::Skybox(float size, std::vector<std::string>& textureFileNames)
+Skybox::Skybox(std::shared_ptr<Shader> shader, float size, std::vector<std::string>& textureFileNames)
+	: _shader(shader)
 {
 	// Create Mesh with material that contains cubemap textures
 	MeshData data = loadMeshData(60.0f);
@@ -42,20 +43,22 @@ void Skybox::bindTextures(unsigned int unit)
 	glBindTexture(GL_TEXTURE_CUBE_MAP, _cubeMapID);
 }
 
-void Skybox::render(std::shared_ptr<Shader> shader, glm::mat4 viewMatrix, glm::mat4 projMatrix)
+void Skybox::setUniforms(glm::mat4 viewMatrix, glm::mat4 projMatrix)
+{
+	_shader->setUniform("viewProjMatrix", projMatrix * viewMatrix);
+}
+
+void Skybox::render(glm::mat4 viewMatrix, glm::mat4 projMatrix)
 {
 	// Remove translation part of view matrix so movement doesn't affect the skybox's position vectors
 	viewMatrix = glm::mat4(glm::mat3(viewMatrix));
 
-
 	// Change depth function so depth test passes when values are <= 1.0 (so all objects are rendered in front of the skybox)
 	glDepthFunc(GL_LEQUAL);
 
+	_shader->use();
 
-	shader->use();
-
-	// Set shader uniforms (view projection matrix)
-	shader->setUniform("viewProjMatrix", projMatrix * viewMatrix);
+	Skybox::setUniforms(viewMatrix, projMatrix);
 
 	// Bind cube map textures
 	bindTextures();
@@ -68,7 +71,7 @@ void Skybox::render(std::shared_ptr<Shader> shader, glm::mat4 viewMatrix, glm::m
 	// Set depth test back to default
 	glDepthFunc(GL_LESS);
 
-	shader->unuse();
+	_shader->unuse();
 }
 
 

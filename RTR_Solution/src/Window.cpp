@@ -29,11 +29,6 @@ const int Window::getHeight()
 
 int Window::create()
 {
-	// Initialize GLFW library
-	if (!glfwInit()) {
-		EXIT_WITH_ERROR("Failed to init GLFW")
-	}
-
 	// Set required options for GLFW
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);

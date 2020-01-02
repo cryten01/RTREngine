@@ -24,8 +24,8 @@ public:
 	glm::mat4 getViewMatrix();
 	glm::mat4 getProjMatrix();
 
-	void update(int x, int y, float zoom, bool dragging, bool strafing, float height);
 	void setUniforms(std::shared_ptr<Shader> shader);
+	void update(int x, int y, float zoom, bool dragging, bool strafing, float height);
 
 	float clamp(float n, float lower, float upper);
 };

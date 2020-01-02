@@ -1,32 +1,28 @@
 #pragma once
 #include "Utils.h"
 #include "Window.h"
-#include "Controls.h"
+#include "Input.h"
+#include "Time.h"
 
-class Framework
+namespace RTREngine
 {
-private:
-	std::unique_ptr<Window> window;
+	class Framework
+	{
+	private:
+		std::unique_ptr<Window> window;
+		std::unique_ptr<Input> input;
+		std::unique_ptr<Time> time;
 
-	float currentTime;
-	float lastTime;
-	float deltaTime;
-	float runTime;
-	int frames;
-	int fps;
+		int init();
+		int destroy();
+		void startRenderLoop();
 
-	void update();
-	void render();
+	public:
+		 Framework();
+		~Framework();
 
-public:
-	 Framework();
-	~Framework();
-
-	int init();
-	int destroy();
-	void startRenderLoop();
-
-	static void APIENTRY DebugCallbackDefault(GLenum source, GLenum textype, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const GLvoid* userParam);
-	static std::string FormatDebugOutput(GLenum source, GLenum textype, GLuint id, GLenum severity, const char* msg);
-};
+		static void APIENTRY DebugCallbackDefault(GLenum source, GLenum textype, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const GLvoid* userParam);
+		static std::string FormatDebugOutput(GLenum source, GLenum textype, GLuint id, GLenum severity, const char* msg);
+	};
+}
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "Utils.h"
 #include "Material.h"
+#include "Interfaces.h"
 
 /** Represents a mesh containing vertex positions, normal vectors, texture coordinates and material*/
 

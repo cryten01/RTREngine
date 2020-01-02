@@ -2,6 +2,7 @@
 #include "Utils.h"
 #include "Skybox.h"
 #include "SceneObject.h"
+#include "Resources.h"
 
 class Scene
 {
@@ -9,13 +10,13 @@ private:
 	std::shared_ptr<Skybox> _skybox;
 	std::vector<std::shared_ptr<SceneObject>> _sceneObjects;
 
-	void setUniforms();
-
 public:
 	 Scene();
 	~Scene();
 
-	void load(const std::string& filePath);
+	void setSkybox(std::shared_ptr<Skybox> skybox);
+	void addSceneObject(std::shared_ptr<SceneObject> sceneObject);
+
 	void update(float deltaTime);
 	void render();
 };

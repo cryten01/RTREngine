@@ -1,5 +1,6 @@
 #pragma once
 #include "Utils.h"
+#include "Interfaces.h"
 #include "Shader.h"
 #include "Material.h"
 
@@ -11,7 +12,7 @@ struct Particle					// Note: assumes identical amounts for positionsTTL and velo
 };
 
 
-class ParticleSystem
+class ParticleSystem : public SceneComponent
 {
 private:
 	const unsigned int MAX_PARTICLES = 10000;
@@ -41,6 +42,7 @@ public:
 	~ParticleSystem();
 
 	void update(float deltaTime);
+	void setUniforms();
 	void render(glm::mat4 viewMatrix, glm::mat4 projMatrix);
 
 	static std::vector<Particle> createStarEmitter(const unsigned int TTL);

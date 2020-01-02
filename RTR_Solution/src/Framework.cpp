@@ -1,89 +1,18 @@
 #include "Framework.h"
 
+using namespace RTREngine;
+
+
 Framework::Framework()
 {
+	this->init();
 }
+
 
 Framework::~Framework()
 {
+	this->destroy();
 }
-
-
-void Framework::startRenderLoop()
-{
-	currentTime = float(glfwGetTime());
-	lastTime = float(glfwGetTime());
-	deltaTime = 0.0f;
-	runTime = 0.0f;
-	frames = 0;
-	fps = 0;
-
-	while (!glfwWindowShouldClose(window->getGLFWWindow()))
-	{
-		update();
-		render();
-
-		// Poll events and swap buffers
-		Controls::key_polling(window->getGLFWWindow(), deltaTime);
-		glfwPollEvents();
-		glfwSwapBuffers(window->getGLFWWindow());
-	}
-}
-
-void Framework::update()
-{
-	// Compute frame time
-	deltaTime = currentTime;
-	currentTime = float(glfwGetTime());
-	deltaTime = currentTime - deltaTime;
-	runTime += deltaTime;
-
-	// FPS counter
-	frames++;
-	if (currentTime - lastTime >= 1.0) {
-		fps = frames;
-		frames = 0;
-		lastTime += 1.0;
-	}
-
-	// Update current scene here (for debugging only!)
-	//testScene.updateScene(deltaTime, controls);
-}
-
-void Framework::render()
-{
-	/********************/
-	//	Preparations
-	/********************/
-
-	// Enable if default buffer is used only!
-	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	/**************************************************************/
-	//	First render pass (render scene into screenQuadBuffer)	
-	/**************************************************************/
-
-	// Set per-frame uniforms
-	//setPerFrameUniforms(standardShader, orbitCam, dirLight, pointLights, spotLights, skybox);
-
-	// Switch to screnQuadBuffer
-	//hdrBuffer.use();
-
-	// Render scene
-	// Scene::render();
-
-	// Switch back to default buffer
-	//hdrBuffer.unuse();
-
-	/**************************************************/
-	//	Second render pass (render buffer to quad)
-	/**************************************************/
-
-	//hdrBuffer.renderScreenQuad(postProcessShader, _hdr, _exposure);
-}
-
-
 
 
 /**
@@ -97,11 +26,9 @@ int Framework::init()
 		EXIT_WITH_ERROR("Failed to init GLFW")
 	}
 
-	// Init window
 	window = std::make_unique<Window>("RTR Engine", 800, 600);
-
-	// Init controls (must be after GLFW window creation)
-	Controls::init(window->getGLFWWindow());
+	input = std::make_unique<Input>(window->getGLFWWindow());
+	time = std::make_unique<Time>();
 
 	// GLEW init
 	glewExperimental = true; // if true GLEW uses a modern approach for retrieving function pointers and extensions
@@ -126,6 +53,8 @@ int Framework::init()
 	// right after an error has occurred. 
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 #endif
+
+	startRenderLoop();
 }
 
 
@@ -140,11 +69,32 @@ int Framework::destroy()
 }
 
 
+/**
+*	Start render loop
+**/
+void Framework::startRenderLoop()
+{
+	// Init render loop
+	while (!glfwWindowShouldClose(window->getGLFWWindow()))
+	{
+		time->update();
+		window->update(time->getDeltaTime());
+		window->render();
+
+		// Poll events and swap buffers
+		input->key_polling(window->getGLFWWindow(), time->getDeltaTime());
+		glfwPollEvents();
+		glfwSwapBuffers(window->getGLFWWindow());
+	}
+}
+
+
 void APIENTRY Framework::DebugCallbackDefault(GLenum source, GLenum textype, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const GLvoid* userParam) {
 	if (id == 131185 || id == 131218) return; // ignore performance warnings (buffer uses GPU memory, shader recompilation) from nvidia
 	std::string error = FormatDebugOutput(source, textype, id, severity, message);
 	std::cout << error << std::endl;
 }
+
 
 std::string Framework::FormatDebugOutput(GLenum source, GLenum textype, GLuint id, GLenum severity, const char* msg) {
 	std::stringstream stringStream;

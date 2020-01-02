@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\Framework.cpp" />
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\ParticleSystem.cpp" />
@@ -162,11 +163,12 @@
     <ClCompile Include="src\Transform.cpp" />
     <ClCompile Include="src\Test.cpp" />
     <ClCompile Include="src\Window.cpp" />
+    <ClCompile Include="src\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\Interfaces.h" />
     <ClInclude Include="src\Framework.h" />
-    <ClInclude Include="src\Controls.h" />
     <ClInclude Include="src\Resources.h" />
     <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\ParticleSystem.h" />
@@ -184,6 +186,7 @@
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\Test.h" />
     <ClInclude Include="src\Window.h" />
+    <ClInclude Include="src\Time.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

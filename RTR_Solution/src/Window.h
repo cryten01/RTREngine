@@ -1,23 +1,29 @@
 #pragma once
 #include "Utils.h"
+#include "Scene.h"
 
-
-class Window
+namespace RTREngine
 {
-private:
-	GLFWwindow* _window;
+	class Window
+	{
+	private:
+		GLFWwindow* _window;
+		const int _WIDTH;
+		const int _HEIGHT;
+		const char* _TITLE;
+		std::shared_ptr<Scene> _activeScene;
 
-	const int WIDTH;
-	const int HEIGHT;
-	const char* TITLE;
+		int init();
 
-	int create();
+	public:
+		Window(const char* title, const int width, const int height);
+		~Window();
 
-public:
-	 Window(const char* title, const int width, const int height);
-	~Window();
-
-	GLFWwindow* getGLFWWindow();
-	const int getWidth();
-	const int getHeight();
-};
+		void setActiveScene(std::shared_ptr<Scene> scene);
+		GLFWwindow* getGLFWWindow();
+		const int getWidth();
+		const int getHeight();
+		void update(float deltaTime);
+		void render();
+	};
+}

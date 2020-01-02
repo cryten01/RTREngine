@@ -37,8 +37,8 @@ void Model::load(std::shared_ptr<SceneObject> target, const std::string filePath
 	// Retrieve the directory path of the given file path
 	_directory = filePath.substr(0, filePath.find_last_of('/'));
 
-	// Set default shader for each sceneObject
-	this->_shader = target->getShader();
+	// Set default shader for each sceneObject (TODO!!)
+	//this->_shader = target->getShader();
 
 	// Recursively process all nodes starting with the root node
 	processNode(target, scene->mRootNode, scene);
@@ -59,15 +59,15 @@ void Model::processNode(std::shared_ptr<SceneObject> target, aiNode *node, const
 		// Load mesh sceneObject
 		std::shared_ptr<Mesh> mesh = loadMesh(aMesh, scene);
 
-		// Add mesh to sceneObject
-		target->addMesh(mesh);
+		// Add mesh to sceneObject (TODO!!!)
+		//target->addComponent(mesh);
 	}
 
 	// Once all meshes are processed recursively do the same for each children
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{
 		// Create child scene object
-		std::shared_ptr<SceneObject> child = std::make_shared<SceneObject>(_shader, glm::mat4(1));
+		std::shared_ptr<SceneObject> child = std::make_shared<SceneObject>(glm::mat4(1));
 
 		// Add child reference to target
 		target->addChild(child);

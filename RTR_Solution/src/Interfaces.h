@@ -1,12 +1,11 @@
 #pragma once
+#include "Shader.h"
 
-// Guarantees functions or variables
-// Access to different object types
+// Guarantees that functions or variables are available
+// Interaction and storing of different object types via same class
 
 class SceneComponent
 {
 public:
-
-private:
-
+	virtual void setUniforms(std::shared_ptr<Shader> shader) = 0;
 };

@@ -1,13 +1,11 @@
 #include "SceneObject.h"
 
 
-SceneObject::SceneObject(std::shared_ptr<Shader> shader, glm::mat4 modelMatrix)
-	: _shader(shader)
+SceneObject::SceneObject(glm::mat4 modelMatrix)
 {
 	// Defaults
 	_active = true;
 	_transform = std::make_shared<Transform>(modelMatrix);
-
 }
 
 
@@ -15,41 +13,14 @@ SceneObject::~SceneObject()
 {
 }
 
-
 std::shared_ptr<Transform> SceneObject::getTransform()
 {
 	return this->_transform;
 }
 
-std::shared_ptr<Shader> SceneObject::getShader()
-{
-	return this->_shader;
-}
-
-std::shared_ptr<Mesh> SceneObject::getMeshAt(int index)
-{
-	return this->_meshes.at(index);
-}
-
-
-void SceneObject::setLight(std::shared_ptr<PointLight> pointLight)
-{
-	this->_light = pointLight;
-}
-
-void SceneObject::setShader(std::shared_ptr<Shader> shader)
-{
-	this->_shader = shader;
-}
-
 void SceneObject::setTransform(std::shared_ptr<Transform> transform)
 {
 	this->_transform = transform;
-}
-
-void SceneObject::addMesh(std::shared_ptr<Mesh> mesh)
-{
-	this->_meshes.push_back(mesh);
 }
 
 
@@ -62,57 +33,59 @@ void SceneObject::addChild(std::shared_ptr<SceneObject> child)
 	child->getTransform()->setParent(this->_transform);
 }
 
-void SceneObject::update()
+void SceneObject::addComponent(std::shared_ptr<SceneComponent> component)
 {
-	_transform->update();
-
-	if (_light != nullptr) 
-	{
-		//std::cout << _transform->getLocalPos().x << " " << _transform->getLocalPos().y << " " << _transform->getLocalPos().z << " " << std::endl;
-
-		// Update light position
-		_light->position = _transform->getLocalPos();
-
-		// Update light direction
-		//_light->direction = _transform->getDirection();
-	}
+	_components.push_back(component);
 }
 
-void SceneObject::updateAll()
+void SceneObject::update(float deltaTime)
 {
-	this->update();
+	if (_active) 
+	{
+		//_transform->update();
+
+		//if (_light != nullptr) 
+		//{
+		//	//std::cout << _transform->getLocalPos().x << " " << _transform->getLocalPos().y << " " << _transform->getLocalPos().z << " " << std::endl;
+
+		//	// Update light position
+		//	_light->position = _transform->getLocalPos();
+
+		//	// Update light direction
+		//	//_light->direction = _transform->getDirection();
+		//}
+	}
 
 	// Update children
 	for (size_t i = 0; i < _children.size(); i++)
 	{
-		_children.at(i)->updateAll();
+		_children.at(i)->update(deltaTime);
 	}
 }
 
-void SceneObject::render()
-{
-	// Set transform uniforms
-	this->_transform->setUniforms(_shader);
 
-	// Render each mesh of this sceneObject
-	for (auto mesh : _meshes)
-	{
-		mesh->render();
-	}
-}
-
-void SceneObject::renderAll()
+void SceneObject::render(std::shared_ptr<Shader> shader)
 {
-	if (_active) 
+	if (_active)
 	{
-		this->render();
+		for (std::shared_ptr<SceneComponent> component : _components) 
+		{
+			component->setUniforms(shader);
+		}
+
+		//// Set transform uniforms
+		//this->_transform->setUniforms(_shader);
+
+		//// Render each mesh of this sceneObject
+		//for (auto mesh : _meshes)
+		//{
+		//	mesh->render();
+		//}
 	}
 
 	// Render children
 	for (size_t i = 0; i < _children.size(); i++)
 	{
-		_children.at(i)->renderAll();
+		_children.at(i)->render(shader);
 	}
 }
-
-

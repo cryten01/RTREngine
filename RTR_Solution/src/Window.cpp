@@ -47,7 +47,6 @@ int Window::create()
 	// Make the window's context current
 	glfwMakeContextCurrent(_window);
 
-
-	// Everything is ok (for debugging only)
+	// Everything is ok
 	return EXIT_SUCCESS;
 }

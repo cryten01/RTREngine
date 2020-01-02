@@ -164,6 +164,7 @@
     <ClCompile Include="src\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Interfaces.h" />
     <ClInclude Include="src\Framework.h" />
     <ClInclude Include="src\Controls.h" />
     <ClInclude Include="src\Resources.h" />

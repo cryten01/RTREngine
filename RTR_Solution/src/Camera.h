@@ -1,8 +1,9 @@
 #pragma once
-
 #include "Utils.h"
+#include "Interfaces.h"
+#include "Shader.h"
 
-class Camera
+class Camera : public SceneComponent
 {
 private:
 	glm::mat4 _viewMatrix;
@@ -24,7 +25,8 @@ public:
 	glm::mat4 getProjMatrix();
 
 	void update(int x, int y, float zoom, bool dragging, bool strafing, float height);
-	float clamp(float n, float lower, float upper);
+	void setUniforms(std::shared_ptr<Shader> shader);
 
+	float clamp(float n, float lower, float upper);
 };
 

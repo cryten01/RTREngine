@@ -45,6 +45,7 @@ void Skybox::bindTextures(unsigned int unit)
 
 void Skybox::setUniforms(glm::mat4 viewMatrix, glm::mat4 projMatrix)
 {
+	_shader->setUniform("skybox", 5);
 	_shader->setUniform("viewProjMatrix", projMatrix * viewMatrix);
 }
 

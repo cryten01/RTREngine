@@ -18,6 +18,13 @@ struct DirectionalLight {
 	bool enabled;
 	glm::vec3 color;
 	glm::vec3 direction;
+
+
+	void setUniforms(std::shared_ptr<Shader> shader)
+	{
+		shader->setUniform("dirL.color", this->color);
+		shader->setUniform("dirL.direction", this->direction);
+	}
 };
 
 
@@ -34,6 +41,15 @@ struct PointLight {
 	glm::vec3 color;
 	glm::vec3 position;
 	glm::vec3 attenuation; // x = constant, y = linear, z = quadratic 
+
+
+	// Index is necessary because light is stored in an array in shader file
+	void setUniforms(std::shared_ptr<Shader> shader, unsigned int index)
+	{
+		shader->setUniform("pointL[" + std::to_string(index) + "].color", this->color);
+		shader->setUniform("pointL[" + std::to_string(index) + "].position", this->position);
+		shader->setUniform("pointL[" + std::to_string(index) + "].attenuation", this->attenuation);
+	}
 };
 
 
@@ -53,4 +69,16 @@ struct SpotLight {
 	glm::vec3 direction;
 	float innerAngle;
 	float outerAngle;
+
+
+	// Index is necessary because light is stored in an array in shader file
+	void setUniforms(std::shared_ptr<Shader> shader, unsigned int index)
+	{
+		shader->setUniform("spotL[" + std::to_string(index) + "].color", this->color);
+		shader->setUniform("spotL[" + std::to_string(index) + "].position", this->position);
+		shader->setUniform("spotL[" + std::to_string(index) + "].attenuation", this->attenuation);
+		shader->setUniform("spotL[" + std::to_string(index) + "].direction", this->direction);
+		shader->setUniform("spotL[" + std::to_string(index) + "].innerAngle", this->innerAngle);
+		shader->setUniform("spotL[" + std::to_string(index) + "].outerAngle", this->outerAngle);
+	}
 };

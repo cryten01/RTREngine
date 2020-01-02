@@ -1,15 +1,89 @@
 #include "Framework.h"
 
-
-
 Framework::Framework()
 {
 }
 
-
 Framework::~Framework()
 {
 }
+
+
+void Framework::startRenderLoop()
+{
+	currentTime = float(glfwGetTime());
+	lastTime = float(glfwGetTime());
+	deltaTime = 0.0f;
+	runTime = 0.0f;
+	frames = 0;
+	fps = 0;
+
+	while (!glfwWindowShouldClose(window->getGLFWWindow()))
+	{
+		update();
+		render();
+
+		// Poll events and swap buffers
+		Controls::key_polling(window->getGLFWWindow(), deltaTime);
+		glfwPollEvents();
+		glfwSwapBuffers(window->getGLFWWindow());
+	}
+}
+
+void Framework::update()
+{
+	// Compute frame time
+	deltaTime = currentTime;
+	currentTime = float(glfwGetTime());
+	deltaTime = currentTime - deltaTime;
+	runTime += deltaTime;
+
+	// FPS counter
+	frames++;
+	if (currentTime - lastTime >= 1.0) {
+		fps = frames;
+		frames = 0;
+		lastTime += 1.0;
+	}
+
+	// Update current scene here (for debugging only!)
+	//testScene.updateScene(deltaTime, controls);
+}
+
+void Framework::render()
+{
+	/********************/
+	//	Preparations
+	/********************/
+
+	// Enable if default buffer is used only!
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	/**************************************************************/
+	//	First render pass (render scene into screenQuadBuffer)	
+	/**************************************************************/
+
+	// Set per-frame uniforms
+	//setPerFrameUniforms(standardShader, orbitCam, dirLight, pointLights, spotLights, skybox);
+
+	// Switch to screnQuadBuffer
+	//hdrBuffer.use();
+
+	// Render scene
+	// Scene::render();
+
+	// Switch back to default buffer
+	//hdrBuffer.unuse();
+
+	/**************************************************/
+	//	Second render pass (render buffer to quad)
+	/**************************************************/
+
+	//hdrBuffer.renderScreenQuad(postProcessShader, _hdr, _exposure);
+}
+
+
 
 
 /**
@@ -63,61 +137,6 @@ int Framework::destroy()
 {
 	glfwTerminate();
 	return EXIT_SUCCESS;
-}
-
-
-/**
-*	Inits scene and render loop
-**/
-void Framework::initRenderLoop()
-{
-	float currentTime = float(glfwGetTime());
-	float lastTime = float(glfwGetTime());
-	float deltaTime = 0.0f;
-	float runTime = 0.0f;
-	int frames = 0;
-	int fps = 0;
-
-	while (!glfwWindowShouldClose(window->getGLFWWindow()))
-	{
-		//**********//
-		//	Update  //
-		//**********//
-
-		// Compute frame time
-		deltaTime = currentTime;
-		currentTime = float(glfwGetTime());
-		deltaTime = currentTime - deltaTime;
-		runTime += deltaTime;
-
-		// FPS counter
-		frames++;
-		if (currentTime - lastTime >= 1.0) {
-			fps = frames;
-			frames = 0;
-			lastTime += 1.0;
-		}
-
-		// Update current scene here (for debugging only!)
-		//testScene.updateScene(deltaTime, controls);
-
-		//**********//
-		//	Render  //
-		//**********//
-
-		// Enable if default buffer is used only!
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		// Render current scene here (for debugging only!)
-		//testScene.renderScene();
-
-		// Poll events and swap buffers
-		Controls::key_polling(window->getGLFWWindow(), deltaTime);
-
-		glfwPollEvents();
-		glfwSwapBuffers(window->getGLFWWindow());
-	}
 }
 
 

@@ -122,5 +122,8 @@
     <ClInclude Include="src\Framework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Interfaces.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

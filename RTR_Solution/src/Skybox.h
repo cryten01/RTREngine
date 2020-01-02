@@ -3,6 +3,7 @@
 #include "Utils.h"
 #include "Mesh.h"
 #include "Shader.h"
+#include "Camera.h"
 
 static const std::string& SKYBOX_ROOT_LOCATION = "../assets/textures/";
 
@@ -10,6 +11,7 @@ class Skybox
 {
 protected:
 	std::shared_ptr<Shader> _shader;
+	std::shared_ptr<Camera> _camera;
 
 	GLuint _vao;
 	GLuint _vboPositions;

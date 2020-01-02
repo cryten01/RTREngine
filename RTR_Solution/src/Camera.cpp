@@ -52,6 +52,12 @@ void Camera::processMouseMovement(int x, int y)
 }
 
 
+void Camera::setUniforms(std::shared_ptr<Shader> shader)
+{
+	shader->setUniform("viewProjMatrix", this->_projMatrix * this->_viewMatrix);
+	shader->setUniform("camera_world", this->_position);
+}
+
 void Camera::update(int x, int y, float zoom, bool dragging, bool strafing, float height)
 {
 	// Update _yaw and _pitch if dragging is activated

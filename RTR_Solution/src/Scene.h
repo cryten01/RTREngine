@@ -4,19 +4,22 @@
 #include "SceneObject.h"
 #include "Resources.h"
 
-class Scene
+namespace RTREngine
 {
-private:
-	std::shared_ptr<Skybox> _skybox;
-	std::vector<std::shared_ptr<SceneObject>> _sceneObjects;
+	class Scene
+	{
+	private:
+		std::shared_ptr<Skybox> _skybox;
+		std::vector<std::shared_ptr<SceneObject>> _sceneObjects;
 
-public:
-	 Scene();
-	~Scene();
+	public:
+		Scene();
+		~Scene();
 
-	void setSkybox(std::shared_ptr<Skybox> skybox);
-	void addSceneObject(std::shared_ptr<SceneObject> sceneObject);
+		void setSkybox(std::shared_ptr<Skybox> skybox);
+		void addSceneObject(std::shared_ptr<SceneObject> sceneObject);
 
-	void update(float deltaTime);
-	void render();
-};
+		void update(float deltaTime);
+		void render();
+	};
+}

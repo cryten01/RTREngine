@@ -1,5 +1,6 @@
 #include "Scene.h"
 
+using namespace RTREngine;
 
 Scene::Scene()
 {
@@ -32,6 +33,6 @@ void Scene::render()
 {
 	for (std::shared_ptr<SceneObject> object : _sceneObjects)
 	{
-		//object->render(Resources::General::standardShader);
+		object->render(Resources::standardShader);
 	}
 }

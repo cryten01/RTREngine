@@ -11,25 +11,45 @@
 #include "Skybox.h"
 #include "Camera.h"
 
+namespace Resources
+{
+	// Create framebuffers here
+	static std::shared_ptr<FrameBuffer> screenQuadBuffer;
+	static std::shared_ptr<FrameBuffer> hdrBuffer;
+
+	// Load shaders here (location starts at solution folder)
+	static std::shared_ptr<Shader> standardShader;
+	static std::shared_ptr<Shader> skyboxShader;
+	static std::shared_ptr<Shader> postProcessShader;
+	static std::shared_ptr<Shader> geometryShader;
+	static std::shared_ptr<Shader> particleRenderShader;
+	static std::shared_ptr<Shader> particleComputeShader;
+
+	// Create model loader here (object files must be in separate directory)
+	static std::shared_ptr<Model> modelLoader;
+
+	// Necessary for lazy loading
+	static void init() 
+	{
+		screenQuadBuffer = std::make_shared<FrameBuffer>(800, 600, DEFAULT);
+		hdrBuffer = std::make_shared<FrameBuffer>(800, 600, FLOAT);
+
+		standardShader = std::make_shared<Shader>("standard.vert", "standard.frag", "standard.geom");
+		skyboxShader = std::make_shared<Shader>("skybox.vert", "skybox.frag");
+		postProcessShader = std::make_shared<Shader>("framebuffer.vert", "framebuffer.frag");
+		geometryShader = std::make_shared<Shader>("geometry.vert", "geometry.frag", "geometry.geom");
+		particleRenderShader = std::make_shared<Shader>("particles.vert", "particles.frag", "particles.geom");
+		particleComputeShader = std::make_shared<Shader>("particles.comp");
+
+		modelLoader = std::make_shared<Model>();
+	}
+};
 
 //namespace Resources 
 //{
 //	namespace General 
 //	{
-//		// Create framebuffers here
-//		FrameBuffer screenQuadBuffer(800, 600, DEFAULT);
-//		FrameBuffer hdrBuffer(800, 600, FLOAT);
-//
-//		// Load shaders here (location starts at solution folder)
-//		std::shared_ptr<Shader> standardShader = std::make_shared<Shader>("standard.vert", "standard.frag", "standard.geom");
-//		std::shared_ptr<Shader> skyboxShader = std::make_shared<Shader>("skybox.vert", "skybox.frag");
-//		std::shared_ptr<Shader> postProcessShader = std::make_shared<Shader>("framebuffer.vert", "framebuffer.frag");
-//		std::shared_ptr<Shader> geometryShader = std::make_shared<Shader>("geometry.vert", "geometry.frag", "geometry.geom");
-//		std::shared_ptr<Shader> particleRenderShader = std::make_shared<Shader>("particles.vert", "particles.frag", "particles.geom");
-//		std::shared_ptr<Shader> particleComputeShader = std::make_shared<Shader>("particles.comp");
-//
-//		// Create model loader here (object files must be in separate directory)
-//		Model modelLoader;
+
 //	}
 //
 //	namespace TestScene 

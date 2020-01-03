@@ -1,5 +1,7 @@
 #include "Input.h"
 
+using namespace RTREngine;
+
 bool Input::_wireframe;
 bool Input::_hdr;
 bool Input::_culling;

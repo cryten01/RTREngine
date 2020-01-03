@@ -1,5 +1,6 @@
 #include "Skybox.h"
 
+using namespace RTREngine;
 
 Skybox::Skybox(std::shared_ptr<Shader> shader, float size, std::vector<std::string>& textureFileNames)
 	: _shader(shader)

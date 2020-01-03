@@ -1,6 +1,6 @@
 #include "Model.h"
 
-
+using namespace RTREngine;
 
 Model::Model()
 {

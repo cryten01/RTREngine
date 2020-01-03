@@ -1,5 +1,6 @@
 #include "FrameBuffer.h"
 
+using namespace RTREngine;
 
 FrameBuffer::FrameBuffer(const GLuint WIDTH, const GLuint HEIGHT, BufferType type)
 	: _type(type), _WIDTH(WIDTH), _HEIGHT(HEIGHT)

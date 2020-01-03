@@ -6,6 +6,7 @@
 #include "Material.h"
 #include "Mesh.h"
 #include "ParticleSystem.h"
+#include "Scene.h"
 #include "SceneObject.h"
 #include "Model.h"
 #include "Skybox.h"
@@ -14,6 +15,9 @@
 
 namespace RTREngine
 {
+	// Put forward declarations here
+	class Scene;
+
 	/**
 	*	Represents the Meyers singleton approach.
 	*	Call variables with Resources::Instance().var
@@ -22,7 +26,7 @@ namespace RTREngine
 	class Resources
 	{
 	private:
-		Resources();
+		 Resources();
 		~Resources();
 
 	public:
@@ -30,7 +34,6 @@ namespace RTREngine
 			static Resources resources;
 			return resources;
 		};
-
 
 		// Create framebuffers here
 		std::shared_ptr<FrameBuffer> screenQuadBuffer = std::make_shared<FrameBuffer>(800, 600, DEFAULT);
@@ -46,7 +49,6 @@ namespace RTREngine
 
 		// Create model loader here (object files must be in separate directory)
 		std::shared_ptr<Model> modelLoader = std::make_shared<Model>();
-
 
 
 		// Load textures here

@@ -1,6 +1,6 @@
 #include "Texture.h"
 
-
+using namespace RTREngine;
 
 Texture::Texture(const char* texFilePath, TextureType type)
 	: _path(texFilePath), _type(type)

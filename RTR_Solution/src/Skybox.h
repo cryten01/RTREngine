@@ -5,29 +5,32 @@
 #include "Shader.h"
 #include "Camera.h"
 
-static const std::string& SKYBOX_ROOT_LOCATION = "../assets/textures/";
 
-class Skybox
+namespace RTREngine 
 {
-protected:
-	std::shared_ptr<Shader> _shader;
-	std::shared_ptr<Camera> _camera;
+	static const std::string& SKYBOX_ROOT_LOCATION = "../assets/textures/";
 
-	GLuint _vao;
-	GLuint _vboPositions;
-	GLuint _vboIndices;
-	GLuint _cubeMapID;
-	unsigned int _elementCount;
+	class Skybox
+	{
+	protected:
+		std::shared_ptr<Shader> _shader;
+		std::shared_ptr<Camera> _camera;
 
-	MeshData loadMeshData(float size);
-	void loadTextures(std::vector<std::string>& textureFileNames);
+		GLuint _vao;
+		GLuint _vboPositions;
+		GLuint _vboIndices;
+		GLuint _cubeMapID;
+		unsigned int _elementCount;
 
-public:
-	 Skybox(std::shared_ptr<Shader> shader, float size, std::vector<std::string>& textureFileNames);
-	~Skybox();
+		MeshData loadMeshData(float size);
+		void loadTextures(std::vector<std::string>& textureFileNames);
 
-	void bindTextures(unsigned int unit = 7);
-	void setUniforms(glm::mat4 viewMatrix, glm::mat4 projMatrix);
-	void render(glm::mat4 viewMatrix, glm::mat4 projMatrix);
-};
+	public:
+		Skybox(std::shared_ptr<Shader> shader, float size, std::vector<std::string>& textureFileNames);
+		~Skybox();
 
+		void bindTextures(unsigned int unit = 7);
+		void setUniforms(glm::mat4 viewMatrix, glm::mat4 projMatrix);
+		void render(glm::mat4 viewMatrix, glm::mat4 projMatrix);
+	};
+}

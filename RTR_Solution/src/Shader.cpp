@@ -1,5 +1,7 @@
 #include "Shader.h"
 
+using namespace RTREngine;
+
 /**
 *	Creates a shader porgram. Needs at least one shader
 **/

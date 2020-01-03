@@ -33,6 +33,6 @@ void Scene::render()
 {
 	for (std::shared_ptr<SceneObject> object : _sceneObjects)
 	{
-		object->render(Resources::Instance().standardShader);
+		//object->render(Resources::Instance().standardShader);
 	}
 }

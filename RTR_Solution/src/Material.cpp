@@ -1,9 +1,10 @@
 #include "Material.h"
 
+using namespace RTREngine;
+
 /* --------------------------------------------- */
 // Base material
 /* --------------------------------------------- */
-
 
 Material::Material(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, glm::vec3 color)
 	: _shader(shader), _reflectionConstants(reflectionConstants), _alpha(alpha), _color(color)

@@ -7,25 +7,27 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-class Model
+namespace RTREngine
 {
-private:
-	std::string _directory;						// Directory of the model
-	std::shared_ptr<Shader> _shader;			// The shader thats needed in sceneObjects, meshes, materials, textures
-	std::vector<Texture> _textures_loaded;		// Textures that are already loaded from the model
+	class Model
+	{
+	private:
+		std::string _directory;						// Directory of the model
+		std::shared_ptr<Shader> _shader;			// The shader thats needed in sceneObjects, meshes, materials, textures
+		std::vector<Texture> _textures_loaded;		// Textures that are already loaded from the model
 
-	void processNode(std::shared_ptr<SceneObject> target, aiNode* node, const aiScene* scene);
+		void processNode(std::shared_ptr<SceneObject> target, aiNode* node, const aiScene* scene);
 
-	std::shared_ptr<Mesh> loadMesh(aiMesh* aMesh, const aiScene* aScene);
-	MeshData loadMeshData(aiMesh* aMesh);
-	std::shared_ptr<Material> loadMaterial(aiMesh* aMesh, const aiScene *aScene);
-	std::vector<Texture> loadTextures(aiMaterial *aMat, aiTextureType aType, TextureType type);
+		std::shared_ptr<Mesh> loadMesh(aiMesh* aMesh, const aiScene* aScene);
+		MeshData loadMeshData(aiMesh* aMesh);
+		std::shared_ptr<Material> loadMaterial(aiMesh* aMesh, const aiScene *aScene);
+		std::vector<Texture> loadTextures(aiMaterial *aMat, aiTextureType aType, TextureType type);
 
 
-public:
-	 Model();
-	~Model();
+	public:
+		Model();
+		~Model();
 
-	void load(std::shared_ptr<SceneObject> target, const std::string filePath);
-};
-
+		void load(std::shared_ptr<SceneObject> target, const std::string filePath);
+	};
+}

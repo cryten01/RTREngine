@@ -2,23 +2,26 @@
 
 #include "Utils.h"
 
-// Necessary for ASSIMP model loader
-enum TextureType 
-{ 
-	TEX_DIFFUSE, 
-	TEX_SPECULAR
-};
-
-class Texture
+namespace RTREngine
 {
-public:
-	GLuint _ID;
-	TextureType _type;
-	std::string _path;
+	// Necessary for ASSIMP model loader
+	enum TextureType
+	{
+		TEX_DIFFUSE,
+		TEX_SPECULAR
+	};
 
-	 Texture(const char* filePath, TextureType type);
-	~Texture();
+	class Texture
+	{
+	public:
+		GLuint _ID;
+		TextureType _type;
+		std::string _path;
 
-	void bind(unsigned int unit);
-};
+		Texture(const char* filePath, TextureType type);
+		~Texture();
+
+		void bind(unsigned int unit);
+	};
+}
 

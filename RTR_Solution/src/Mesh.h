@@ -3,38 +3,40 @@
 #include "Material.h"
 #include "Interfaces.h"
 
-/** Represents a mesh containing vertex positions, normal vectors, texture coordinates and material*/
-
-struct MeshData {
-	std::vector<glm::vec3> positions;
-	std::vector<glm::vec3> normals;
-	std::vector<glm::vec2> uv;
-	std::vector<GLuint> indices;
-};
-
-class Mesh
+namespace RTREngine
 {
-protected:
-	GLuint _vao;
-	GLuint _vboPositions;
-	GLuint _vboNormals;
-	GLuint _vboUV;
-	GLuint _vboIndices;
-	unsigned int _elementCount;
+	/** Represents a mesh containing vertex positions, normal vectors, texture coordinates and material*/
 
-	std::shared_ptr<Material> _material;
+	struct MeshData {
+		std::vector<glm::vec3> positions;
+		std::vector<glm::vec3> normals;
+		std::vector<glm::vec2> uv;
+		std::vector<GLuint> indices;
+	};
 
-public:
-	 Mesh(MeshData data, std::shared_ptr<Material> material);
-	~Mesh();
+	class Mesh
+	{
+	protected:
+		GLuint _vao;
+		GLuint _vboPositions;
+		GLuint _vboNormals;
+		GLuint _vboUV;
+		GLuint _vboIndices;
+		unsigned int _elementCount;
 
-	void render();
-	std::shared_ptr<Material> getMaterial();
+		std::shared_ptr<Material> _material;
 
-	static float normalizeUV(float value, float min, float max);
-	static MeshData createCubeGeometry(float width, float height, float depth);
-	static MeshData createCylinderGeometry(unsigned int segments, float height, float radius);
-	static MeshData createSphereGeometry(unsigned int longitudeSegments, unsigned int latitudeSegments, float radius);
+	public:
+		Mesh(MeshData data, std::shared_ptr<Material> material);
+		~Mesh();
 
-};
+		void render();
+		std::shared_ptr<Material> getMaterial();
+
+		static float normalizeUV(float value, float min, float max);
+		static MeshData createCubeGeometry(float width, float height, float depth);
+		static MeshData createCylinderGeometry(unsigned int segments, float height, float radius);
+		static MeshData createSphereGeometry(unsigned int longitudeSegments, unsigned int latitudeSegments, float radius);
+	};
+}
 

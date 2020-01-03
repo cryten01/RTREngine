@@ -1,5 +1,6 @@
 #include "ParticleSystem.h"
 
+using namespace RTREngine;
 
 /**
 *	HELP

@@ -1,5 +1,6 @@
 #include "Mesh.h"
 
+using namespace RTREngine;
 
 Mesh::Mesh(MeshData data, std::shared_ptr<Material> material)
 	: _elementCount(data.indices.size()), _material(material)

@@ -1,5 +1,7 @@
 #include "SceneObject.h"
 
+using namespace RTREngine;
+
 SceneObject::SceneObject(glm::mat4 modelMatrix)
 {
 	// Defaults

@@ -1,5 +1,6 @@
 #include "Camera.h"
 
+using namespace RTREngine;
 
 Camera::Camera(float fov, float aspect, float near, float far)
 {

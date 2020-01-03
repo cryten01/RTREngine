@@ -1,5 +1,6 @@
 #include "Transform.h"
 
+using namespace RTREngine;
 
 Transform::Transform(glm::mat4 modelMatrix)
 	: _modelMatrix(modelMatrix)

@@ -17,7 +17,7 @@ namespace RTREngine
 		std::shared_ptr<Transform> _transform;
 
 	public:
-		SceneObject(glm::mat4 modelMatrix);
+		SceneObject(glm::mat4 modelMatrix = glm::mat4(1.0f));
 		~SceneObject();
 
 		// Getter & Setter

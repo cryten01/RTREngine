@@ -51,8 +51,6 @@ int Framework::init()
 	// right after an error has occurred. 
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 #endif
-
-	startRenderLoop();
 }
 
 

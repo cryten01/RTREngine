@@ -75,6 +75,10 @@ namespace RTREngine
 		};
 		std::shared_ptr<Skybox> skybox = std::make_shared<Skybox>(skyboxShader, 60.0f, cubeMapFileNames);
 
+		// Create debug cam here
+		float fov = 60.0f, nearZ = 0.1f, farZ = 400.0f; // view frustum dimensions
+		std::shared_ptr<Camera> orbitCam = std::make_shared<Camera>(fov, 800 / 600, nearZ, farZ);
+
 		std::shared_ptr<Scene> loadTestScene();
 	};
 }
@@ -139,9 +143,7 @@ namespace RTREngine
 //
 
 //
-//		// Create debug cam here
-//		float fov = 60.0f, nearZ = 0.1f, farZ = 400.0f; // view frustum dimensions
-//		Camera orbitCam(fov, 800 / 600, nearZ, farZ);
+
 //
 //		void initLights()
 //		{

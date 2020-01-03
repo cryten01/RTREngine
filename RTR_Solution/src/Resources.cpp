@@ -13,8 +13,12 @@ Resources::~Resources()
 std::shared_ptr<Scene> Resources::loadTestScene()
 {
 	std::shared_ptr<Scene> scene = std::make_shared<Scene>();
+	std::shared_ptr<SceneObject> camObj = std::make_shared<SceneObject>();
 
-	scene->setSkybox(Resources::skybox);
+	camObj->addComponent(Resources::orbitCam);
+	scene->addSceneObject(camObj);
+	scene->setActiveCamera(Resources::orbitCam);
+	scene->setActiveSkybox(Resources::skybox);
 
 	return scene;
 };

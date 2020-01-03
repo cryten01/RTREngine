@@ -50,7 +50,7 @@ void Window::render()
 	//hdrBuffer.use();
 
 	// Render scene
-	// Scene::render();
+	_activeScene->render();
 
 	// Switch back to default buffer
 	//hdrBuffer.unuse();

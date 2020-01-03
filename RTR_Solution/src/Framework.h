@@ -16,8 +16,6 @@ namespace RTREngine
 		std::unique_ptr<Input> input;
 		std::unique_ptr<Time> time;
 
-		void startRenderLoop();
-
 	public:
 		static Framework& Instance() {
 			static Framework framework;
@@ -26,7 +24,7 @@ namespace RTREngine
 
 		int init();
 		int destroy();
-
+		void startRenderLoop();
 		std::shared_ptr<Window> getWindow();
 
 		static void APIENTRY DebugCallbackDefault(GLenum source, GLenum textype, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const GLvoid* userParam);

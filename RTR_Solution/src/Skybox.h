@@ -14,7 +14,6 @@ namespace RTREngine
 	{
 	protected:
 		std::shared_ptr<Shader> _shader;
-		std::shared_ptr<Camera> _camera;
 
 		GLuint _vao;
 		GLuint _vboPositions;

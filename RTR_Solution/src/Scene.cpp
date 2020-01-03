@@ -10,12 +10,20 @@ Scene::~Scene()
 {
 }
 
+
 void Scene::addSceneObject(std::shared_ptr<SceneObject> sceneObject)
 {
 	_sceneObjects.push_back(sceneObject);
 }
 
-void Scene::setSkybox(std::shared_ptr<Skybox> skybox)
+
+void Scene::setActiveCamera(std::shared_ptr<Camera> camera)
+{
+	this->_camera = camera;
+}
+
+
+void Scene::setActiveSkybox(std::shared_ptr<Skybox> skybox)
 {
 	_skybox = skybox;
 }
@@ -35,4 +43,6 @@ void Scene::render()
 	{
 		//object->render(Resources::Instance().standardShader);
 	}
+
+	_skybox->render(_camera->getViewMatrix(), _camera->getProjMatrix());
 }

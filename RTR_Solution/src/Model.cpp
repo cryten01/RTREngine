@@ -162,7 +162,7 @@ std::shared_ptr<Material> Model::loadMaterial(aiMesh* aMesh, const aiScene *aSce
 		// Set mesh material to loaded textures if existent, otherwise create default material
 		if (allMaps.size() > 0) 
 		{
-			material = std::make_shared<TextureMaterial>(_shader, glm::vec3(0.0f, 0.7f, 0.0f), 1.0f, allMaps);
+			//material = std::make_shared<TextureMaterial>(_shader, glm::vec3(0.0f, 0.7f, 0.0f), 1.0f, allMaps);
 		}
 		else 
 		{

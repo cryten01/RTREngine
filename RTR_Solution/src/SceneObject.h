@@ -6,9 +6,6 @@
 #include "Mesh.h"
 #include "Light.h"
 
-/**
-* 
-**/
 class SceneObject
 {
 private:
@@ -18,7 +15,7 @@ private:
 	std::shared_ptr<Transform> _transform;
 
 public:
-	 SceneObject(glm::mat4 modelMatrix);
+	SceneObject(glm::mat4 modelMatrix);
 	~SceneObject();
 
 	// Getter & Setter
@@ -32,4 +29,3 @@ public:
 	void update(float deltaTime);
 	void render(std::shared_ptr<Shader> shader);
 };
-

@@ -41,11 +41,11 @@ public:
 class TextureMaterial : public Material
 {
 protected:
-	std::vector<Texture> _textures;
+	std::vector<std::shared_ptr<Texture>> _textures;
 
 public:
-	TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, Texture texture);
-	TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, std::vector<Texture> textures);
+	TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, std::shared_ptr<Texture> texture);
+	TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, std::vector<std::shared_ptr<Texture>> textures);
 	virtual ~TextureMaterial();
 
 	virtual void setUniforms();

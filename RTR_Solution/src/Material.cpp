@@ -58,7 +58,7 @@ void Material::setUniforms()
 // Texture material
 /* --------------------------------------------- */
 
-TextureMaterial::TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, Texture texture)
+TextureMaterial::TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, std::shared_ptr<Texture> texture)
 	: Material(shader, reflectionConstants, alpha, glm::vec3(1.0f, 0.0f, 1.0f))
 {
 	_type = TEXTURE;
@@ -66,7 +66,7 @@ TextureMaterial::TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 refle
 	_textures.push_back(texture);
 }
 
-TextureMaterial::TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, std::vector<Texture> textures)
+TextureMaterial::TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, std::vector<std::shared_ptr<Texture>> textures)
 	: Material(shader, reflectionConstants, alpha, glm::vec3(1.0f, 0.0f, 1.0f)), _textures(textures)
 {
 	_type = TEXTURE;
@@ -88,18 +88,18 @@ void TextureMaterial::setUniforms()
 
 	for (int i = 0; i < _textures.size(); i++)
 	{
-		if (_textures[i]._type == TEX_DIFFUSE) 
+		if (_textures[i]->_type == TEX_DIFFUSE) 
 		{
 			diffuseNr++;
 			_shader->setUniform("material.texture_diffuse" + std::to_string(diffuseNr), i);
 		}
 
-		if (_textures[i]._type == TEX_SPECULAR)
+		if (_textures[i]->_type == TEX_SPECULAR)
 		{
 			specularNr++;
 			_shader->setUniform("material.texture_specular" + std::to_string(specularNr), i);
 		}
 
-		_textures[i].bind(i);
+		_textures[i]->bind(i);
 	}
 }

@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\Framework.cpp" />
+    <ClCompile Include="src\Resources.cpp" />
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\ParticleSystem.cpp" />
     <ClCompile Include="src\FrameBuffer.cpp" />

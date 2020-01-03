@@ -11,60 +11,68 @@
 #include "Skybox.h"
 #include "Camera.h"
 
-namespace Resources
+
+namespace RTREngine
 {
-	// Create framebuffers here
-	static std::shared_ptr<FrameBuffer> screenQuadBuffer;
-	static std::shared_ptr<FrameBuffer> hdrBuffer;
-
-	// Load shaders here (location starts at solution folder)
-	static std::shared_ptr<Shader> standardShader;
-	static std::shared_ptr<Shader> skyboxShader;
-	static std::shared_ptr<Shader> postProcessShader;
-	static std::shared_ptr<Shader> geometryShader;
-	static std::shared_ptr<Shader> particleRenderShader;
-	static std::shared_ptr<Shader> particleComputeShader;
-
-	// Create model loader here (object files must be in separate directory)
-	static std::shared_ptr<Model> modelLoader;
-
-	// Necessary for lazy loading
-	static void init() 
+	/**
+	*	Represents the Meyers singleton approach.
+	*	Call variables with Resources::Instance().var
+	*	Call functions with Resources::Instance().func()
+	**/
+	class Resources
 	{
-		screenQuadBuffer = std::make_shared<FrameBuffer>(800, 600, DEFAULT);
-		hdrBuffer = std::make_shared<FrameBuffer>(800, 600, FLOAT);
+	private:
+		Resources();
+		~Resources();
 
-		standardShader = std::make_shared<Shader>("standard.vert", "standard.frag", "standard.geom");
-		skyboxShader = std::make_shared<Shader>("skybox.vert", "skybox.frag");
-		postProcessShader = std::make_shared<Shader>("framebuffer.vert", "framebuffer.frag");
-		geometryShader = std::make_shared<Shader>("geometry.vert", "geometry.frag", "geometry.geom");
-		particleRenderShader = std::make_shared<Shader>("particles.vert", "particles.frag", "particles.geom");
-		particleComputeShader = std::make_shared<Shader>("particles.comp");
+	public:
+		static Resources& Instance() {
+			static Resources resources;
+			return resources;
+		};
 
-		modelLoader = std::make_shared<Model>();
-	}
-};
 
-//namespace Resources 
-//{
-//	namespace General 
-//	{
+		// Create framebuffers here
+		std::shared_ptr<FrameBuffer> screenQuadBuffer = std::make_shared<FrameBuffer>(800, 600, DEFAULT);
+		std::shared_ptr<FrameBuffer> hdrBuffer = std::make_shared<FrameBuffer>(800, 600, FLOAT);
 
-//	}
+		// Load shaders here (location starts at solution folder)
+		std::shared_ptr<Shader> standardShader = std::make_shared<Shader>("standard.vert", "standard.frag", "standard.geom");
+		std::shared_ptr<Shader> skyboxShader = std::make_shared<Shader>("skybox.vert", "skybox.frag");
+		std::shared_ptr<Shader> postProcessShader = std::make_shared<Shader>("framebuffer.vert", "framebuffer.frag");
+		std::shared_ptr<Shader> geometryShader = std::make_shared<Shader>("geometry.vert", "geometry.frag", "geometry.geom");
+		std::shared_ptr<Shader> particleRenderShader = std::make_shared<Shader>("particles.vert", "particles.frag", "particles.geom");
+		std::shared_ptr<Shader> particleComputeShader = std::make_shared<Shader>("particles.comp");
+
+		// Create model loader here (object files must be in separate directory)
+		std::shared_ptr<Model> modelLoader = std::make_shared<Model>();
+
+
+
+		// Load textures here
+		std::shared_ptr<Texture> leatherTexture = std::make_shared<Texture>("../assets/textures/leather.jpg", TEX_DIFFUSE);
+		std::shared_ptr<Texture> floorTexture = std::make_shared<Texture>("../assets/textures/floor.jpg", TEX_DIFFUSE);
+		std::shared_ptr<Texture> snowflakeTexture = std::make_shared<Texture>("../assets/textures/snowflake.png", TEX_DIFFUSE);
+
+		// Create materials here
+		std::shared_ptr<Material> singleColorMaterial = std::make_shared<Material>(standardShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+		std::shared_ptr<Material> iceMaterial = std::make_shared<Material>(standardShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+		std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, leatherTexture);
+		std::shared_ptr<Material> floorMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, floorTexture);
+		std::shared_ptr<Material> snowflakeMaterial = std::make_shared<TextureMaterial>(particleRenderShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, snowflakeTexture);
+	};
+}
+
+
+
+
+
 //
 //	namespace TestScene 
 //	{
-//		// Load textures here
-//		Texture leatherTexture("../assets/textures/leather.jpg", TEX_DIFFUSE);
-//		Texture floorTexture("../assets/textures/floor.jpg", TEX_DIFFUSE);
-//		Texture snowflakeTexture("../assets/textures/snowflake.png", TEX_DIFFUSE);
+
 //
-//		// Create materials here
-//		std::shared_ptr<Material> singleColorMaterial = std::make_shared<Material>(standardShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-//		std::shared_ptr<Material> iceMaterial = std::make_shared<Material>(standardShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-//		std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, leatherTexture);
-//		std::shared_ptr<Material> floorMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, floorTexture);
-//		std::shared_ptr<Material> snowflakeMaterial = std::make_shared<TextureMaterial>(particleRenderShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, snowflakeTexture);
+
 //
 //		// Create meshes here
 //		std::shared_ptr<Mesh> sphere1Mesh = std::make_shared<Mesh>(

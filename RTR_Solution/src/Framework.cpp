@@ -5,13 +5,11 @@ using namespace RTREngine;
 
 Framework::Framework()
 {
-	this->init();
 }
 
 
 Framework::~Framework()
 {
-	this->destroy();
 }
 
 

@@ -26,7 +26,7 @@ namespace RTREngine
 	class Resources
 	{
 	private:
-		 Resources();
+		Resources();
 		~Resources();
 
 	public:
@@ -62,6 +62,20 @@ namespace RTREngine
 		std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, leatherTexture);
 		std::shared_ptr<Material> floorMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, floorTexture);
 		std::shared_ptr<Material> snowflakeMaterial = std::make_shared<TextureMaterial>(particleRenderShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, snowflakeTexture);
+
+
+		// Create skybox here
+		std::vector<std::string> cubeMapFileNames = {
+			"skybox/right.jpg",
+			"skybox/left.jpg",
+			"skybox/top.jpg",
+			"skybox/bottom.jpg",
+			"skybox/back.jpg",
+			"skybox/front.jpg"
+		};
+		std::shared_ptr<Skybox> skybox = std::make_shared<Skybox>(skyboxShader, 60.0f, cubeMapFileNames);
+
+		std::shared_ptr<Scene> loadTestScene();
 	};
 }
 
@@ -123,16 +137,7 @@ namespace RTREngine
 //		// Create spot lights here
 //		std::vector<std::shared_ptr<SpotLight>> spotLights;
 //
-//		// Create skybox here
-//		std::vector<std::string> cubeMapFileNames = {
-//			"skybox/right.jpg",
-//			"skybox/left.jpg",
-//			"skybox/top.jpg",
-//			"skybox/bottom.jpg",
-//			"skybox/back.jpg",
-//			"skybox/front.jpg"
-//		};
-//		Skybox skybox(skyboxShader, 60.0f, cubeMapFileNames);
+
 //
 //		// Create debug cam here
 //		float fov = 60.0f, nearZ = 0.1f, farZ = 400.0f; // view frustum dimensions

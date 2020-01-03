@@ -24,7 +24,7 @@ int Framework::init()
 		EXIT_WITH_ERROR("Failed to init GLFW")
 	}
 
-	window = std::make_unique<Window>("RTR Engine", 800, 600);
+	window = std::make_shared<Window>("RTR Engine", 800, 600);
 	input = std::make_unique<Input>(window->getGLFWWindow());
 	time = std::make_unique<Time>();
 
@@ -64,6 +64,11 @@ int Framework::destroy()
 {
 	glfwTerminate();
 	return EXIT_SUCCESS;
+}
+
+std::shared_ptr<Window> Framework::getWindow()
+{
+	return this->window;
 }
 
 

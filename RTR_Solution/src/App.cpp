@@ -10,9 +10,12 @@ int main(int argc, char** argv)
 	Framework& framework = Framework::Instance();
 	framework.init();
 
-	// Load test scene
-	std::shared_ptr<Window> window = framework.getWindow();
+	// Load resources
 	Resources& resources = Resources::Instance();
+	resources.init();
+
+	// Load test scene into window
+	std::shared_ptr<Window> window = framework.getWindow();
 	window->setActiveScene(resources.loadTestScene());
 
 	//Start render loop

@@ -22,9 +22,6 @@ namespace RTREngine
 		static float _height;
 		static bool _freezeScene;
 
-		// Post processing controls
-		static bool _hdr;
-		static float _exposure;
 
 	public:
 		Input(GLFWwindow* window);
@@ -32,6 +29,11 @@ namespace RTREngine
 
 		static double& get_mouse_x();
 		static double& get_mouse_y();
+
+		// Post processing controls
+		static bool _hdr;
+		static float _exposure;
+
 
 		static void update(GLFWwindow* window);
 

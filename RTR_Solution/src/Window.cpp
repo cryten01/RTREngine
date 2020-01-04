@@ -88,21 +88,24 @@ void Window::render()
 	//	First render pass (render scene into screenQuadBuffer)	
 	/**************************************************************/
 
-	// Set per-frame uniforms
-	//setPerFrameUniforms(standardShader, orbitCam, dirLight, pointLights, spotLights, skybox);
+	Resources& resources = Resources::Instance();
 
 	// Switch to screnQuadBuffer
-	//hdrBuffer.use();
+	resources.hdrBuffer->use();
 
 	// Render scene
-	_activeScene->render(Resources::Instance().standardShader);
+	_activeScene->render(resources.standardShader);
 
 	// Switch back to default buffer
-	//hdrBuffer.unuse();
+	resources.hdrBuffer->unuse();
 
 	/**************************************************/
 	//	Second render pass (render buffer to quad)
 	/**************************************************/
 
-	//hdrBuffer.renderScreenQuad(postProcessShader, _hdr, _exposure);
+	// Variables for debugging only!
+	bool hdr = true;
+	bool exposure = false;
+
+	Resources::Instance().hdrBuffer->renderScreenQuad(resources.postProcessShader, hdr, exposure);
 }

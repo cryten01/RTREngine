@@ -13,7 +13,7 @@ namespace RTREngine
 		~Framework();
 
 		std::shared_ptr<Window> window;
-		std::unique_ptr<Input> input;
+		std::shared_ptr<Input> input;
 		std::unique_ptr<Time> time;
 
 	public:
@@ -25,7 +25,9 @@ namespace RTREngine
 		int init();
 		int destroy();
 		void startRenderLoop();
+
 		std::shared_ptr<Window> getWindow();
+		std::shared_ptr<Input> getInput();
 
 		static void APIENTRY DebugCallbackDefault(GLenum source, GLenum textype, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const GLvoid* userParam);
 		static std::string FormatDebugOutput(GLenum source, GLenum textype, GLuint id, GLenum severity, const char* msg);

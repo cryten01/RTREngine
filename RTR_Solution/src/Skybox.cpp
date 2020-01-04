@@ -2,11 +2,11 @@
 
 using namespace RTREngine;
 
-Skybox::Skybox(std::shared_ptr<Shader> shader, float size, std::vector<std::string>& textureFileNames)
-	: _shader(shader)
+Skybox::Skybox(std::shared_ptr<Camera> camera, float size, std::vector<std::string>& textureFileNames)
+	: _camera(camera)
 {
 	// Create Mesh with material that contains cubemap textures
-	MeshData data = loadMeshData(60.0f);
+	MeshData data = createBoxGeometry(60.0f);
 	_elementCount = data.indices.size();
 
 	// Create VAO
@@ -44,14 +44,12 @@ void Skybox::bindTextures(unsigned int unit)
 	glBindTexture(GL_TEXTURE_CUBE_MAP, _cubeMapID);
 }
 
-void Skybox::setUniforms(glm::mat4 viewMatrix, glm::mat4 projMatrix)
-{
-	_shader->setUniform("skybox", 5);
-	_shader->setUniform("viewProjMatrix", projMatrix * viewMatrix);
-}
 
-void Skybox::render(std::shared_ptr<Shader> shader, glm::mat4 viewMatrix, glm::mat4 projMatrix)
+void Skybox::render(std::shared_ptr<Shader> shader)
 {
+	glm::mat4 projMatrix = _camera->getProjMatrix();
+	glm::mat4 viewMatrix = _camera->getViewMatrix();
+
 	// Remove translation part of view matrix so movement doesn't affect the skybox's position vectors
 	viewMatrix = glm::mat4(glm::mat3(viewMatrix));
 
@@ -60,7 +58,9 @@ void Skybox::render(std::shared_ptr<Shader> shader, glm::mat4 viewMatrix, glm::m
 
 	shader->use();
 
-	Skybox::setUniforms(viewMatrix, projMatrix);
+	// Set uniforms
+	shader->setUniform("skybox", 5);
+	shader->setUniform("viewProjMatrix", projMatrix * viewMatrix);
 
 	// Bind cube map textures
 	bindTextures();
@@ -77,7 +77,7 @@ void Skybox::render(std::shared_ptr<Shader> shader, glm::mat4 viewMatrix, glm::m
 }
 
 
-MeshData Skybox::loadMeshData(float size)
+MeshData Skybox::createBoxGeometry(float size)
 {
 	MeshData data;
 

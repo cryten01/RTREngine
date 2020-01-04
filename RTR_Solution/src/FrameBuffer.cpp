@@ -54,6 +54,7 @@ void FrameBuffer::addTexture(GLenum texFormat, GLenum dataFormat)
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, _textureID, 0);						// Attach texture to framebuffer (as colour attachement #0) 
 }
 
+
 void FrameBuffer::addRBO()
 {
 	// Create renderBuffer object for depth
@@ -63,6 +64,7 @@ void FrameBuffer::addRBO()
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _rbo);		// Attach RBO to framebuffer
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
+
 
 void FrameBuffer::loadScreenQuad()
 {
@@ -110,12 +112,14 @@ void FrameBuffer::use()
 	glEnable(GL_DEPTH_TEST);
 }
 
+
 void FrameBuffer::unuse()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
+
 
 void FrameBuffer::renderScreenQuad(std::shared_ptr<Shader> shader, bool hdr, float exposure)
 {

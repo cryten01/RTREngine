@@ -31,4 +31,3 @@ namespace RTREngine
 		static std::string FormatDebugOutput(GLenum source, GLenum textype, GLuint id, GLenum severity, const char* msg);
 	};
 }
-

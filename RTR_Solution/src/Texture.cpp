@@ -12,7 +12,6 @@ Texture::Texture(const char* texFilePath, TextureType type)
 	// Load texture
 	int width, height, nrChannels;
 	unsigned char *texData = stbi_load(texFilePath, &width, &height, &nrChannels, STBI_rgb_alpha);
-	//unsigned char *texData = SOIL_load_image(texFilePath, &width, &height, &nrChannels, SOIL_LOAD_RGBA);
 
 	// Generate texture
 	if (texData)
@@ -34,7 +33,6 @@ Texture::Texture(const char* texFilePath, TextureType type)
 
 	// Free the image memory
 	stbi_image_free(texData);
-	//SOIL_free_image_data(texData);
 
 	// Unbinds texture
 	glBindTexture(GL_TEXTURE_2D, 0);

@@ -44,6 +44,10 @@ std::shared_ptr<Scene> Resources::loadTestScene()
 	std::shared_ptr<Material> floorMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, floorTexture);
 	std::shared_ptr<Material> snowflakeMaterial = std::make_shared<TextureMaterial>(particleRenderShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, snowflakeTexture);
 
+	// Create debug cam here
+	float fov = 60.0f, nearZ = 0.1f, farZ = 400.0f; // view frustum dimensions
+	std::shared_ptr<Camera> orbitCam = std::make_shared<Camera>(fov, 800 / 600, nearZ, farZ);
+
 	// Create skybox here
 	std::vector<std::string> cubeMapFileNames = {
 		"skybox/right.jpg",
@@ -53,15 +57,7 @@ std::shared_ptr<Scene> Resources::loadTestScene()
 		"skybox/back.jpg",
 		"skybox/front.jpg"
 	};
-	std::shared_ptr<Skybox> skybox = std::make_shared<Skybox>(skyboxShader, 60.0f, cubeMapFileNames);
-
-	// Create debug cam here
-	float fov = 60.0f, nearZ = 0.1f, farZ = 400.0f; // view frustum dimensions
-	std::shared_ptr<Camera> orbitCam = std::make_shared<Camera>(fov, 800 / 600, nearZ, farZ);
-
-
-
-
+	std::shared_ptr<Skybox> skybox = std::make_shared<Skybox>(orbitCam, 60.0f, cubeMapFileNames);
 
 	// Load sceneObjects
 	std::shared_ptr<SceneObject> camObj = std::make_shared<SceneObject>();
@@ -70,7 +66,6 @@ std::shared_ptr<Scene> Resources::loadTestScene()
 	// Load scene
 	std::shared_ptr<Scene> scene = std::make_shared<Scene>();
 	scene->addSceneObject(camObj);
-	scene->setActiveCamera(orbitCam);
 	scene->setActiveSkybox(skybox);
 
 	return scene;

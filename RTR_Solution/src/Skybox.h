@@ -13,7 +13,7 @@ namespace RTREngine
 	class Skybox
 	{
 	protected:
-		std::shared_ptr<Shader> _shader;
+		std::shared_ptr<Camera> _camera;
 
 		GLuint _vao;
 		GLuint _vboPositions;
@@ -21,15 +21,14 @@ namespace RTREngine
 		GLuint _cubeMapID;
 		unsigned int _elementCount;
 
-		MeshData loadMeshData(float size);
+		MeshData createBoxGeometry(float size);
 		void loadTextures(std::vector<std::string>& textureFileNames);
+		void bindTextures(unsigned int unit = 7);
 
 	public:
-		Skybox(std::shared_ptr<Shader> shader, float size, std::vector<std::string>& textureFileNames);
+		 Skybox(std::shared_ptr<Camera> camera, float size, std::vector<std::string>& textureFileNames);
 		~Skybox();
 
-		void bindTextures(unsigned int unit = 7);
-		void setUniforms(glm::mat4 viewMatrix, glm::mat4 projMatrix);
-		void render(std::shared_ptr<Shader> shader, glm::mat4 viewMatrix, glm::mat4 projMatrix);
+		void render(std::shared_ptr<Shader> shader);
 	};
 }

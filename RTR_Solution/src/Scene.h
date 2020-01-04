@@ -10,18 +10,16 @@ namespace RTREngine
 	{
 	private:
 		std::shared_ptr<Skybox> _skybox;
-		std::shared_ptr<Camera> _camera;
 		std::vector<std::shared_ptr<SceneObject>> _sceneObjects;
 
 	public:
 		Scene();
 		~Scene();
 
-		void setActiveCamera(std::shared_ptr<Camera> camera);
 		void setActiveSkybox(std::shared_ptr<Skybox> skybox);
 		void addSceneObject(std::shared_ptr<SceneObject> sceneObject);
 
 		void update(float deltaTime);
-		void render();
+		void render(std::shared_ptr<Shader> shader);
 	};
 }

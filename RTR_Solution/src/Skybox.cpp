@@ -59,6 +59,7 @@ void Skybox::render(std::shared_ptr<Shader> shader)
 	shader->use();
 
 	// Set uniforms
+	shader->setUniform("testColor", glm::vec3(1.0, 0.0, 1.0)); // For debugging only
 	shader->setUniform("skybox", 5);
 	shader->setUniform("viewProjMatrix", projMatrix * viewMatrix);
 

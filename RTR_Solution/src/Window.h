@@ -5,6 +5,8 @@
 
 namespace RTREngine
 {
+	class Scene;
+
 	class Window
 	{
 	private:

@@ -7,8 +7,10 @@ in VertexData {
 out vec4 color;
 
 uniform samplerCube skybox;
+uniform vec3 testColor;
 
 void main()
 {    
-    color = texture(skybox, vert.uv);
+//    color = texture(skybox, vert.uv);
+	color = vec4(testColor, 1.0);
 }

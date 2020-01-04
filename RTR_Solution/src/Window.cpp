@@ -91,13 +91,13 @@ void Window::render()
 	Resources& resources = Resources::Instance();
 
 	// Switch to screnQuadBuffer
-	resources.hdrBuffer->use();
+	//resources.hdrBuffer->use();
 
 	// Render scene
 	_activeScene->render(resources.standardShader);
 
 	// Switch back to default buffer
-	resources.hdrBuffer->unuse();
+	//resources.hdrBuffer->unuse();
 
 	/**************************************************/
 	//	Second render pass (render buffer to quad)
@@ -107,5 +107,5 @@ void Window::render()
 	bool hdr = true;
 	bool exposure = false;
 
-	Resources::Instance().hdrBuffer->renderScreenQuad(resources.postProcessShader, hdr, exposure);
+	//Resources::Instance().hdrBuffer->renderScreenQuad(resources.postProcessShader, hdr, exposure);
 }

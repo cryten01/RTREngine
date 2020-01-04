@@ -11,6 +11,7 @@
 #include "Model.h"
 #include "Skybox.h"
 #include "Camera.h"
+#include "Input.h"
 
 
 namespace RTREngine
@@ -52,7 +53,7 @@ namespace RTREngine
 
 		// Methods
 		void init();
-		std::shared_ptr<Scene> loadTestScene();
+		std::shared_ptr<Scene> loadTestScene(std::shared_ptr<Input> input);
 	};
 }
 

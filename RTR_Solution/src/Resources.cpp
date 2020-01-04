@@ -30,7 +30,7 @@ void Resources::init()
 	modelLoader = std::make_shared<Model>();
 }
 
-std::shared_ptr<Scene> Resources::loadTestScene()
+std::shared_ptr<Scene> Resources::loadTestScene(std::shared_ptr<Input> input)
 {
 	// Load textures here
 	std::shared_ptr<Texture> leatherTexture = std::make_shared<Texture>("../assets/textures/leather.jpg", TEX_DIFFUSE);
@@ -46,7 +46,7 @@ std::shared_ptr<Scene> Resources::loadTestScene()
 
 	// Create debug cam here
 	float fov = 60.0f, nearZ = 0.1f, farZ = 400.0f; // view frustum dimensions
-	std::shared_ptr<Camera> orbitCam = std::make_shared<Camera>(fov, 800 / 600, nearZ, farZ);
+	std::shared_ptr<Camera> orbitCam = std::make_shared<Camera>(fov, 800 / 600, nearZ, farZ, input);
 
 	// Create skybox here
 	std::vector<std::string> cubeMapFileNames = {

@@ -40,20 +40,12 @@ Input::~Input()
 {
 }
 
-double & RTREngine::Input::get_mouse_x()
-{
-	return mouse_x;
-}
-
-double & RTREngine::Input::get_mouse_y()
-{
-	return mouse_y;
-}
 
 void Input::update(GLFWwindow* window)
 {
 	glfwGetCursorPos(window, &mouse_x, &mouse_y);
 }
+
 
 void Input::key_polling(GLFWwindow* window, float deltaTime)
 {

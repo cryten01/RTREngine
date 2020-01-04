@@ -2,7 +2,8 @@
 
 using namespace RTREngine;
 
-Camera::Camera(float fov, float aspect, float near, float far)
+Camera::Camera(float fov, float aspect, float near, float far, std::shared_ptr<Input> input)
+	:_input(input)
 {
 	// Creates a new projection matrix
 	_projMatrix = glm::perspective(
@@ -61,12 +62,11 @@ void Camera::render(std::shared_ptr<Shader> shader)
 
 void Camera::update(float deltaTime)
 {
-	int x = 10;
-	int y = 10;
-	float zoom = 3; 
-	bool dragging = true; 
-	bool strafing = false; 
-	float height = 4.0;
+	int x = _input->mouse_x;
+	int y = _input->mouse_y;
+	float zoom = _input->_zoom; 
+	bool dragging = _input->_dragging;
+	float height = _input->_height;
 
 
 	// Update _yaw and _pitch if dragging is activated

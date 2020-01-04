@@ -9,9 +9,16 @@ namespace RTREngine
 	**/
 	class Input
 	{
-	private:
+	public:
+		Input(GLFWwindow* window);
+		~Input();
+
 		// Mouse controls
 		static double mouse_x, mouse_y;
+
+		// Post processing controls
+		static bool _hdr;
+		static float _exposure;
 
 		// Camera controls
 		static bool _wireframe;
@@ -21,18 +28,6 @@ namespace RTREngine
 		static float _zoom;
 		static float _height;
 		static bool _freezeScene;
-
-
-	public:
-		Input(GLFWwindow* window);
-		~Input();
-
-		static double& get_mouse_x();
-		static double& get_mouse_y();
-
-		// Post processing controls
-		static bool _hdr;
-		static float _exposure;
 
 
 		static void update(GLFWwindow* window);

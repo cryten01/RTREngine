@@ -30,6 +30,11 @@ namespace RTREngine
 		Input(GLFWwindow* window);
 		~Input();
 
+		static double& get_mouse_x();
+		static double& get_mouse_y();
+
+		static void update(GLFWwindow* window);
+
 		static void key_polling(GLFWwindow* window, float deltaTime);
 		static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 		static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);

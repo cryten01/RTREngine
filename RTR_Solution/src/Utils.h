@@ -90,4 +90,11 @@ namespace Utils
 	{
 		std::cout << typeid(var).name() << std::endl;
 	}
+
+
+	template <typename T>
+	static void debug(T var) 
+	{
+		std::cout << var << std::endl;
+	}
 }

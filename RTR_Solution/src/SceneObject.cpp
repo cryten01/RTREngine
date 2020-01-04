@@ -61,10 +61,10 @@ void SceneObject::render(std::shared_ptr<Shader> shader)
 {
 	if (_active)
 	{
-		//for (std::shared_ptr<SceneComponent> component : _components) 
-		//{
-		//	component->setUniforms(shader);
-		//}
+		for (std::shared_ptr<SceneComponent> component : _components) 
+		{
+			//component->render(shader);
+		}
 
 		//// Set transform uniforms
 		//this->_transform->setUniforms(_shader);

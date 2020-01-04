@@ -75,13 +75,16 @@ std::shared_ptr<Window> Framework::getWindow()
 **/
 void Framework::startRenderLoop()
 {
+	GLFWwindow* gWindow = window->getGLFWWindow();
+
 	// Init render loop
-	while (!glfwWindowShouldClose(window->getGLFWWindow()))
+	while (!glfwWindowShouldClose(gWindow))
 	{
 		// Update
 		time->update();
 		float deltaTime = time->getDeltaTime();
 		window->update(deltaTime);
+		input->update(gWindow);
 
 		// Render
 		window->render();

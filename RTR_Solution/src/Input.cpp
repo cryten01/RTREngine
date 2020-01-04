@@ -11,6 +11,8 @@ float Input::_zoom;
 float Input::_height;
 bool Input::_freezeScene;
 float Input::_exposure;
+double Input::mouse_x;
+double Input::mouse_y;
 
 Input::Input(GLFWwindow* window)
 {
@@ -36,6 +38,21 @@ Input::Input(GLFWwindow* window)
 
 Input::~Input()
 {
+}
+
+double & RTREngine::Input::get_mouse_x()
+{
+	return mouse_x;
+}
+
+double & RTREngine::Input::get_mouse_y()
+{
+	return mouse_y;
+}
+
+void Input::update(GLFWwindow* window)
+{
+	glfwGetCursorPos(window, &mouse_x, &mouse_y);
 }
 
 void Input::key_polling(GLFWwindow* window, float deltaTime)

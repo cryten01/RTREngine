@@ -27,7 +27,7 @@ void Scene::update(float deltaTime)
 {
 	for (std::shared_ptr<SceneObject> object : _sceneObjects)
 	{
-		//object->update(deltaTime);
+		object->update(deltaTime);
 	}
 }
 
@@ -36,7 +36,7 @@ void Scene::render(std::shared_ptr<Shader> shader)
 {
 	for (std::shared_ptr<SceneObject> object : _sceneObjects)
 	{
-		//object->render(shader);
+		object->render(shader);
 	}
 
 	_skybox->render(Resources::Instance().skyboxShader);

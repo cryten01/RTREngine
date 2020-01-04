@@ -25,7 +25,7 @@ void RTREngine::Window::setActiveScene(std::shared_ptr<Scene> scene)
 **/
 void Window::update(float deltaTime)
 {
-	//_activeScene->update(deltaTime);
+	_activeScene->update(deltaTime);
 }
 
 

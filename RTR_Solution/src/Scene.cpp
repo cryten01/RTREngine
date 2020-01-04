@@ -44,5 +44,5 @@ void Scene::render()
 		//object->render(Resources::Instance().standardShader);
 	}
 
-	_skybox->render(_camera->getViewMatrix(), _camera->getProjMatrix());
+	_skybox->render(Resources::Instance().skyboxShader, _camera->getViewMatrix(), _camera->getProjMatrix());
 }

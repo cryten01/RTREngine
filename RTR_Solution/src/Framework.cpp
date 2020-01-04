@@ -78,8 +78,12 @@ void Framework::startRenderLoop()
 	// Init render loop
 	while (!glfwWindowShouldClose(window->getGLFWWindow()))
 	{
+		// Update
 		time->update();
-		window->update(time->getDeltaTime());
+		float deltaTime = time->getDeltaTime();
+		window->update(deltaTime);
+
+		// Render
 		window->render();
 
 		// Poll events and swap buffers

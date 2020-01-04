@@ -13,7 +13,7 @@ namespace RTREngine
 	};
 
 
-	class ParticleSystem : public SceneComponent
+	class ParticleSystem
 	{
 	private:
 		const unsigned int MAX_PARTICLES = 10000;
@@ -43,7 +43,6 @@ namespace RTREngine
 		~ParticleSystem();
 
 		void update(float deltaTime);
-		void setUniforms();
 		void render(glm::mat4 viewMatrix, glm::mat4 projMatrix);
 
 		static std::vector<Particle> createStarEmitter(const unsigned int TTL);

@@ -1,9 +1,11 @@
 #pragma once
 #include "Utils.h"
+#include "Interfaces.h"
 #include "Shader.h"
 
-namespace RTREngine {
-	class Transform
+namespace RTREngine 
+{
+	class Transform : public SceneComponent
 	{
 	private:
 		std::shared_ptr<Transform> _parent;
@@ -46,7 +48,8 @@ namespace RTREngine {
 		// Methods
 		void resetModelMatrix();
 		void transform(glm::mat4 transformation);
-		void setUniforms(std::shared_ptr<Shader> shader);
-		void update();
+
+		void render(std::shared_ptr<Shader> shader) override;
+		void update(float deltaTime) override;
 	};
 }

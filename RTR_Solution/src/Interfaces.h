@@ -6,8 +6,9 @@
 namespace RTREngine
 {
 	class SceneComponent
-	{
+	{	
 	public:
-		virtual void setUniforms(std::shared_ptr<Shader> shader) = 0;
+		virtual void render(std::shared_ptr<Shader> shader) = 0;
+		virtual void update(float deltaTime) = 0;
 	};
 }

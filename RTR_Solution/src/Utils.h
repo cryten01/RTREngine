@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <list>
 #include <map> 
+#include <typeinfo>
 
 // GLEW
 #define GLEW_STATIC
@@ -69,4 +70,24 @@ namespace Utils
 		fileStream.close();
 		return fileContent;
 	};
+
+
+	static float clamp(float n, float lower, float upper)
+	{
+		return std::max(lower, std::min(n, upper));
+	}
+
+
+	template <typename T, typename U>
+	static bool compareType(T var1, U var2) 
+	{
+		return typeid(var1) == typeid(var2);
+	}
+
+
+	template <typename T>
+	static void printType(T var) 
+	{
+		std::cout << typeid(var).name() << std::endl;
+	}
 }

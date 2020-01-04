@@ -112,14 +112,14 @@ void Transform::resetModelMatrix()
 	this->_modelMatrix = glm::mat4(1);
 }
 
-void Transform::setUniforms(std::shared_ptr<Shader> shader)
+void Transform::render(std::shared_ptr<Shader> shader)
 {
 	// Set uniforms
 	shader->setUniform("modelMatrix", _modelMatrix);
 	shader->setUniform("normalMatrix", glm::mat3(glm::transpose(glm::inverse(_modelMatrix)))); // Fixes non uniform scaling issues, done on CPU for performance reasons
 }
 
-void Transform::update()
+void Transform::update(float deltaTime)
 {
 	applyLocalTRS();
 	applyGlobalTRS();

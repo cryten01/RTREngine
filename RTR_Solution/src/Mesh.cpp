@@ -55,11 +55,11 @@ Mesh::~Mesh()
 	glDeleteVertexArrays(1, &_vao);
 }
 
-void Mesh::render()
+void Mesh::render(std::shared_ptr<Shader> shader)
 {
 	// Select shader
-	Shader* shader = _material->getShader();
-	shader->use();
+	Shader* _shader = _material->getShader();
+	_shader->use();
 
 	// Set uniforms
 	_material->setUniforms();
@@ -68,6 +68,10 @@ void Mesh::render()
 	glBindVertexArray(_vao);
 	glDrawElements(GL_TRIANGLES, _elementCount, GL_UNSIGNED_INT, NULL);
 	glBindVertexArray(0);
+}
+
+void Mesh::update(float deltaTime)
+{
 }
 
 

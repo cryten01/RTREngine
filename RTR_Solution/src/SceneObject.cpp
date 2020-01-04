@@ -41,20 +41,12 @@ void SceneObject::addComponent(std::shared_ptr<SceneComponent> component)
 
 void SceneObject::update(float deltaTime)
 {
-	if (_active) 
+	if (_active)
 	{
-		//_transform->update();
-
-		//if (_light != nullptr) 
-		//{
-		//	//std::cout << _transform->getLocalPos().x << " " << _transform->getLocalPos().y << " " << _transform->getLocalPos().z << " " << std::endl;
-
-		//	// Update light position
-		//	_light->position = _transform->getLocalPos();
-
-		//	// Update light direction
-		//	//_light->direction = _transform->getDirection();
-		//}
+		for (std::shared_ptr<SceneComponent> component : _components)
+		{
+			component->update(deltaTime);
+		}
 	}
 
 	// Update children

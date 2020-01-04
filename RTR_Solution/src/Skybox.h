@@ -30,6 +30,6 @@ namespace RTREngine
 
 		void bindTextures(unsigned int unit = 7);
 		void setUniforms(glm::mat4 viewMatrix, glm::mat4 projMatrix);
-		void render(glm::mat4 viewMatrix, glm::mat4 projMatrix);
+		void render(std::shared_ptr<Shader> shader, glm::mat4 viewMatrix, glm::mat4 projMatrix);
 	};
 }

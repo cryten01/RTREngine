@@ -3,6 +3,7 @@
 #include "Interfaces.h"
 #include "Shader.h"
 
+
 namespace RTREngine
 {
 	class Camera : public SceneComponent
@@ -17,18 +18,15 @@ namespace RTREngine
 
 		void processMouseMovement(int x, int y);
 
-
 	public:
-		Camera(float fov, float aspect, float near, float far);
+		 Camera(float fov, float aspect, float near, float far);
 		~Camera();
 
 		glm::vec3 getPosition();
 		glm::mat4 getViewMatrix();
 		glm::mat4 getProjMatrix();
 
-		void setUniforms(std::shared_ptr<Shader> shader);
-		void update(int x, int y, float zoom, bool dragging, bool strafing, float height);
-
-		float clamp(float n, float lower, float upper);
+		void render(std::shared_ptr<Shader> shader) override;
+		void update(float deltaTime) override;
 	};
 }

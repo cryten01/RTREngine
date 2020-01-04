@@ -49,18 +49,26 @@ void Camera::processMouseMovement(int x, int y)
 	_pitch += (_mouseY - y);
 
 	// Clamp pitch to prevent camera inversion
-	_pitch = clamp(_pitch, -90.0f, 90.0f);
+	_pitch = Utils::clamp(_pitch, -90.0f, 90.0f);
 }
 
 
-void Camera::setUniforms(std::shared_ptr<Shader> shader)
+void Camera::render(std::shared_ptr<Shader> shader)
 {
 	shader->setUniform("viewProjMatrix", this->_projMatrix * this->_viewMatrix);
 	shader->setUniform("camera_world", this->_position);
 }
 
-void Camera::update(int x, int y, float zoom, bool dragging, bool strafing, float height)
+void Camera::update(float deltaTime)
 {
+	int x = 10;
+	int y = 10;
+	float zoom = 3; 
+	bool dragging = true; 
+	bool strafing = false; 
+	float height = 4.0;
+
+
 	// Update _yaw and _pitch if dragging is activated
 	if (dragging)
 	{
@@ -89,12 +97,6 @@ void Camera::update(int x, int y, float zoom, bool dragging, bool strafing, floa
 	_mouseX = x;
 	_mouseY = y;
 };
-
-
-float Camera::clamp(float n, float lower, float upper)
-{
-	return std::max(lower, std::min(n, upper));
-}
 
 Camera::~Camera()
 {

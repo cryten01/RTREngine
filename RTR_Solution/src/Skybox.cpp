@@ -60,11 +60,11 @@ void Skybox::render(std::shared_ptr<Shader> shader)
 
 	// Set uniforms
 	shader->setUniform("testColor", glm::vec3(1.0, 0.0, 1.0)); // For debugging only
-	shader->setUniform("skybox", 5);
+	shader->setUniform("skybox", CUBEMAP_UNIT);
 	shader->setUniform("viewProjMatrix", projMatrix * viewMatrix);
 
 	// Bind cube map textures
-	bindTextures();
+	bindTextures(CUBEMAP_UNIT);
 
 	// Bind _vao
 	glBindVertexArray(_vao);

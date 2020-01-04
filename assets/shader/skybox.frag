@@ -11,6 +11,5 @@ uniform vec3 testColor;
 
 void main()
 {    
-//    color = texture(skybox, vert.uv);
-	color = vec4(testColor, 1.0);
+    color = texture(skybox, vert.uv);
 }

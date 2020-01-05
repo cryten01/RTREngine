@@ -14,7 +14,7 @@ namespace RTREngine
 		std::vector<GLuint> indices;
 	};
 
-	class Mesh : public SceneComponent
+	class Mesh : public SceneComponent, Renderable
 	{
 	protected:
 		GLuint _vao;

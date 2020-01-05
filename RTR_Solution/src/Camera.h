@@ -6,7 +6,7 @@
 
 namespace RTREngine
 {
-	class Camera : public SceneComponent
+	class Camera : public SceneComponent, Uniformable
 	{
 	private:
 		std::shared_ptr<Input> _input;
@@ -28,7 +28,7 @@ namespace RTREngine
 		glm::mat4 getViewMatrix();
 		glm::mat4 getProjMatrix();
 
-		void render(std::shared_ptr<Shader> shader) override;
+		void setUniforms(std::shared_ptr<Shader> shader);
 		void update(float deltaTime) override;
 	};
 }

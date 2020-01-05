@@ -141,7 +141,7 @@ void ParticleSystem::render(glm::mat4 viewMatrix, glm::mat4 projMatrix)
 	_renderShader->setUniform("projectionMatrix", projMatrix);
 
 	// Set material uniforms
-	_emitterMaterial->setUniforms();
+	_emitterMaterial->setUniforms(_renderShader);
 
 	glBindVertexArray(_vaos[_pingPongIndex]);		// bind current VAO
 	glDrawArrays(GL_POINTS, 0, _particleCount);		// draw particles (points are necessary for generating quads

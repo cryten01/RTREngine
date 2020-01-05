@@ -54,7 +54,7 @@ void Camera::processMouseMovement(int x, int y)
 }
 
 
-void Camera::render(std::shared_ptr<Shader> shader)
+void Camera::setUniforms(std::shared_ptr<Shader> shader)
 {
 	shader->setUniform("viewProjMatrix", this->_projMatrix * this->_viewMatrix);
 	shader->setUniform("camera_world", this->_position);

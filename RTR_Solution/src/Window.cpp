@@ -94,6 +94,7 @@ void Window::render()
 	//resources.hdrBuffer->use();
 
 	// Render scene
+	_activeScene->setUniforms(resources.standardShader);
 	_activeScene->render(resources.standardShader);
 
 	// Switch back to default buffer

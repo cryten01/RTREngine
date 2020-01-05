@@ -38,6 +38,29 @@ Skybox::~Skybox()
 {
 }
 
+
+void Skybox::setUniforms(std::shared_ptr<Shader> shader)
+{
+	glm::mat4 projMatrix = _camera->getProjMatrix();
+	glm::mat4 viewMatrix = _camera->getViewMatrix();
+
+
+	// Remove translation part of view matrix so movement doesn't affect the skybox's position vectors
+	if (true) 
+	{
+		viewMatrix = glm::mat4(glm::mat3(viewMatrix));
+	}
+
+	// Set uniforms
+	shader->setUniform("testColor", glm::vec3(1.0, 0.0, 1.0)); // For debugging only
+	shader->setUniform("skybox", CUBEMAP_UNIT);
+	shader->setUniform("viewProjMatrix", projMatrix * viewMatrix);
+
+	// Bind cube map textures
+	bindTextures(CUBEMAP_UNIT);
+}
+
+
 void Skybox::bindTextures(unsigned int unit)
 {
 	glActiveTexture(GL_TEXTURE0 + unit);
@@ -47,24 +70,10 @@ void Skybox::bindTextures(unsigned int unit)
 
 void Skybox::render(std::shared_ptr<Shader> shader)
 {
-	glm::mat4 projMatrix = _camera->getProjMatrix();
-	glm::mat4 viewMatrix = _camera->getViewMatrix();
-
-	// Remove translation part of view matrix so movement doesn't affect the skybox's position vectors
-	viewMatrix = glm::mat4(glm::mat3(viewMatrix));
-
 	// Change depth function so depth test passes when values are <= 1.0 (so all objects are rendered in front of the skybox)
 	glDepthFunc(GL_LEQUAL);
 
 	shader->use();
-
-	// Set uniforms
-	shader->setUniform("testColor", glm::vec3(1.0, 0.0, 1.0)); // For debugging only
-	shader->setUniform("skybox", CUBEMAP_UNIT);
-	shader->setUniform("viewProjMatrix", projMatrix * viewMatrix);
-
-	// Bind cube map textures
-	bindTextures(CUBEMAP_UNIT);
 
 	// Bind _vao
 	glBindVertexArray(_vao);

@@ -5,7 +5,7 @@
 
 namespace RTREngine 
 {
-	class Transform : public SceneComponent
+	class Transform : public SceneComponent, Uniformable
 	{
 	private:
 		std::shared_ptr<Transform> _parent;
@@ -49,7 +49,7 @@ namespace RTREngine
 		void resetModelMatrix();
 		void transform(glm::mat4 transformation);
 
-		void render(std::shared_ptr<Shader> shader) override;
+		void setUniforms(std::shared_ptr<Shader> shader) override;
 		void update(float deltaTime) override;
 	};
 }

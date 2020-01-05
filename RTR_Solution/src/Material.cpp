@@ -44,7 +44,7 @@ void Material::setIsReflective(bool state)
 	this->_isReflective = state;
 }
 
-void Material::setUniforms()
+void Material::setUniforms(std::shared_ptr<Shader> _shader)
 {
 	_shader->setUniform("material.type", _type);
 	_shader->setUniform("material.light", _reflectionConstants);
@@ -79,10 +79,10 @@ TextureMaterial::~TextureMaterial()
 }
 
 
-void TextureMaterial::setUniforms()
+void TextureMaterial::setUniforms(std::shared_ptr<Shader> _shader)
 {
 	// Set all non texture related uniforms
-	Material::setUniforms();
+	Material::setUniforms(_shader);
 
 	GLuint diffuseNr = 1;
 	GLuint specularNr = 1;

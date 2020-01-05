@@ -3,6 +3,7 @@
 #include "Utils.h"
 #include "Shader.h"
 #include "Texture.h"
+#include "Interfaces.h"
 
 namespace RTREngine
 {
@@ -13,7 +14,7 @@ namespace RTREngine
 	};
 
 
-	class Material
+	class Material : public Uniformable
 	{
 	protected:
 		std::shared_ptr<Shader> _shader;
@@ -35,12 +36,12 @@ namespace RTREngine
 		void setIsRefractive(bool state);
 		void setIsReflective(bool state);
 
-		virtual void setUniforms();
+		void setUniforms(std::shared_ptr<Shader> shader) override;
 	};
 
 
 
-	class TextureMaterial : public Material
+	class TextureMaterial : public Material, Uniformable
 	{
 	protected:
 		std::vector<std::shared_ptr<Texture>> _textures;
@@ -50,6 +51,6 @@ namespace RTREngine
 		TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, std::vector<std::shared_ptr<Texture>> textures);
 		virtual ~TextureMaterial();
 
-		virtual void setUniforms();
+		void setUniforms(std::shared_ptr<Shader> _shader) override;
 	};
 }

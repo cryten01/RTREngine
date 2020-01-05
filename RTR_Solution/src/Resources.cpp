@@ -66,6 +66,8 @@ std::shared_ptr<Scene> Resources::loadTestScene(std::shared_ptr<Input> input)
 	// Load scene
 	std::shared_ptr<Scene> scene = std::make_shared<Scene>();
 	scene->addSceneObject(camObj);
+	scene->addRenderable(skybox);
+	
 	scene->setActiveSkybox(skybox);
 
 	return scene;

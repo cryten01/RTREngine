@@ -60,7 +60,7 @@ std::shared_ptr<Scene> Resources::loadTestScene(std::shared_ptr<Input> input)
 	std::shared_ptr<Skybox> skybox = std::make_shared<Skybox>(orbitCam, 60.0f, cubeMapFileNames);
 
 	// Create meshes here
-	std::shared_ptr<Mesh> sphere1Mesh = std::make_shared<Mesh>(Mesh::createSphereGeometry(24, 24, 0.7f), iceMaterial);
+	std::shared_ptr<Mesh> sphere1Mesh = std::make_shared<Mesh>(Mesh::createSphereGeometry(24, 24, 0.7f), leatherMaterial);
 	std::shared_ptr<Mesh> sphere2Mesh = std::make_shared<Mesh>(Mesh::createSphereGeometry(24, 24, 0.7f), iceMaterial);
 	std::shared_ptr<Mesh> sphere3Mesh = std::make_shared<Mesh>(Mesh::createSphereGeometry(24, 24, 0.7f), iceMaterial);
 	std::shared_ptr<Mesh> cubeMesh = std::make_shared<Mesh>(Mesh::createCubeGeometry(1.0f, 1.0f, 2.5f), singleColorMaterial);
@@ -80,17 +80,22 @@ std::shared_ptr<Scene> Resources::loadTestScene(std::shared_ptr<Input> input)
 	std::shared_ptr<SceneObject> floorObj = std::make_shared<SceneObject>();
 	floorObj->addComponent(floorMesh);
 
+	std::shared_ptr<SceneObject> cubeObj = std::make_shared<SceneObject>();
+	cubeObj->addComponent(sphere1Mesh);
+	cubeObj->getTransform()->setLocalPos(glm::vec3(-8.0f, 10.0, 0.0));
+
 	std::shared_ptr<SceneObject> snowObj = std::make_shared<SceneObject>();
 	snowObj->addComponent(snow);
 
+	// Add sceneObjects
 	scene->addSceneObject(camObj);
 	scene->addSceneObject(floorObj);
 	scene->addSceneObject(snowObj);
+	scene->addSceneObject(cubeObj);
 
-	scene->addRenderable(floorMesh);
-	scene->addRenderable(snow);
-
+	// Set active skybox and camera
 	scene->setActiveSkybox(skybox);
+	scene->setActiveCamera(orbitCam);
 
 	scene->_particles = snow; // For debugging only!
 

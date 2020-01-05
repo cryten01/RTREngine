@@ -147,20 +147,17 @@ void ParticleSystem::setUniforms(std::shared_ptr<Shader> shader)
 	// Set material uniforms
 	_emitterMaterial->setUniforms(shader);
 
+	// Render particles
+	render(shader);
+
 	shader->unuse();
 }
 
 void ParticleSystem::render(std::shared_ptr<Shader> shader)
 {
-	shader = _renderShader; // Override because specific shader is needed
-
-	shader->use();
-
 	glBindVertexArray(_vaos[_pingPongIndex]);		// bind current VAO
 	glDrawArrays(GL_POINTS, 0, _particleCount);		// draw particles (points are necessary for generating quads
 	glBindVertexArray(0);							// stop binding
-
-	shader->unuse();
 }
 
 

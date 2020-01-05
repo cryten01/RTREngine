@@ -42,12 +42,9 @@ void SceneObject::addComponent(std::shared_ptr<SceneComponent> component)
 
 void SceneObject::update(float deltaTime)
 {
-	if (_active)
+	for (std::shared_ptr<SceneComponent> component : _components)
 	{
-		for (std::shared_ptr<SceneComponent> component : _components)
-		{
-			component->update(deltaTime);
-		}
+		component->update(deltaTime);
 	}
 
 	// Update children

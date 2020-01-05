@@ -60,15 +60,6 @@ namespace RTREngine
 
 
 
-//		// Create scene objects here
-//		std::shared_ptr<SceneObject> sphere1 = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
-//		std::shared_ptr<SceneObject> sphere2 = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
-//		std::shared_ptr<SceneObject> sphere3 = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
-//		std::shared_ptr<SceneObject> cube = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
-//		std::shared_ptr<SceneObject> podium = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
-//		std::shared_ptr<SceneObject> nanoMan = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
-//		std::shared_ptr<SceneObject> floorObj = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
-//
 //		// Create directional lights here
 //		DirectionalLight dirLight(glm::vec3(1.0f), glm::vec3(0, -1, 0));
 //

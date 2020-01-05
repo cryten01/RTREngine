@@ -28,6 +28,11 @@ void Scene::setActiveSkybox(std::shared_ptr<Skybox> skybox)
 	_skybox = skybox;
 }
 
+void Scene::setActiveCamera(std::shared_ptr<Camera> camera)
+{
+	_camera = camera;
+}
+
 
 void Scene::update(float deltaTime) 
 {
@@ -35,14 +40,20 @@ void Scene::update(float deltaTime)
 	{
 		object->update(deltaTime);
 	}
-
-	// For debugging only!
-	//Resources::Instance().particleRenderShader->use();
-	//_particles->update(deltaTime);
-	//Resources::Instance().particleRenderShader->unuse();
 }
 
-void Scene::setUniforms(std::shared_ptr<Shader> shader)
+void Scene::setPerFrameUniforms(std::shared_ptr<Shader> shader)
+{
+	shader->use();
+
+	_skybox->setUniforms(shader);
+	_camera->setUniforms(shader);
+
+	shader->unuse();
+}
+
+
+void Scene::render(std::shared_ptr<Shader> shader)
 {
 	shader->use();
 
@@ -53,30 +64,6 @@ void Scene::setUniforms(std::shared_ptr<Shader> shader)
 
 	shader->unuse();
 
-	// For debugging only!
-	//Resources::Instance().particleRenderShader->use();
-	//_particles->setUniforms(Resources::Instance().particleRenderShader);
-	//Resources::Instance().particleRenderShader->unuse();
-
 	_skybox->setUniforms(Resources::Instance().skyboxShader);
-}
-
-
-void Scene::render(std::shared_ptr<Shader> shader)
-{
-	shader->use();
-
-	for (std::shared_ptr<Renderable> object : _renderObjects)
-	{
-		object->render(shader);
-	}
-
-	shader->unuse();
-
-	// For debugging only!
-	//Resources::Instance().particleRenderShader->use();
-	//_particles->render(Resources::Instance().particleRenderShader);
-	//Resources::Instance().particleRenderShader->unuse();
-
 	_skybox->render(Resources::Instance().skyboxShader);
 }

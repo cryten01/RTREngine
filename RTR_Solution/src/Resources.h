@@ -18,6 +18,7 @@ namespace RTREngine
 {
 	// Put forward declarations here
 	class Scene;
+	class Skybox;
 
 	/**
 	*	Represents the Meyers singleton approach.
@@ -49,10 +50,58 @@ namespace RTREngine
 		std::shared_ptr<Shader> particleComputeShader;
 
 		// Create model loader here (object files must be in separate directory)
-		std::shared_ptr<Model> modelLoader = std::make_shared<Model>();
+		std::shared_ptr<Model> modelLoader;
+
 
 		// Methods
 		void init();
+	};
+
+
+	class SceneResources
+	{
+	private:
+		SceneResources();
+		~SceneResources();
+
+	public:
+		static SceneResources& Instance() {
+			static SceneResources sceneResources;
+			return sceneResources;
+		};
+
+		// Load textures here
+		std::shared_ptr<Texture> leatherTexture;
+		std::shared_ptr<Texture> floorTexture;
+		std::shared_ptr<Texture> snowflakeTexture;
+
+		// Create materials here
+		std::shared_ptr<Material> singleColorMaterial;
+		std::shared_ptr<Material> iceMaterial;
+		std::shared_ptr<Material> leatherMaterial;
+		std::shared_ptr<Material> floorMaterial;
+		std::shared_ptr<Material> snowflakeMaterial;
+
+		// Create debug cam here
+		std::shared_ptr<Camera> orbitCam;
+
+		// Create skybox here
+		std::shared_ptr<Skybox> skybox;
+
+		// Create meshes here
+		std::shared_ptr<Mesh> sphere1Mesh;
+		std::shared_ptr<Mesh> sphere2Mesh;
+		std::shared_ptr<Mesh> sphere3Mesh;
+		std::shared_ptr<Mesh> cubeMesh;
+		std::shared_ptr<Mesh> floorMesh;
+		std::shared_ptr<Mesh> podiumMesh;
+
+		// Create particle systems here
+		std::shared_ptr<ParticleSystem> snow;
+
+
+		// Methods
+		void init(std::shared_ptr<Input> input);
 		std::shared_ptr<Scene> loadTestScene(std::shared_ptr<Input> input);
 	};
 }

@@ -19,7 +19,9 @@ int main(int argc, char** argv)
 	std::shared_ptr<Window> window = framework.getWindow();
 	std::shared_ptr<Input> input = framework.getInput();
 
-	window->setActiveScene(resources.loadTestScene(input));
+	SceneResources& sceneResources = SceneResources::Instance();
+	sceneResources.init(input);
+	window->setActiveScene(sceneResources.loadTestScene(input));
 
 	//Start render loop
 	framework.startRenderLoop();

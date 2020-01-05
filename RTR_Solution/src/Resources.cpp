@@ -30,25 +30,42 @@ void Resources::init()
 	modelLoader = std::make_shared<Model>();
 }
 
-std::shared_ptr<Scene> Resources::loadTestScene(std::shared_ptr<Input> input)
+
+
+
+SceneResources::SceneResources()
 {
-	// Load textures here
-	std::shared_ptr<Texture> leatherTexture = std::make_shared<Texture>("../assets/textures/leather.jpg", TEX_DIFFUSE);
-	std::shared_ptr<Texture> floorTexture = std::make_shared<Texture>("../assets/textures/floor.jpg", TEX_DIFFUSE);
-	std::shared_ptr<Texture> snowflakeTexture = std::make_shared<Texture>("../assets/textures/snowflake.png", TEX_DIFFUSE);
+}
 
-	// Create materials here
-	std::shared_ptr<Material> singleColorMaterial = std::make_shared<Material>(standardShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-	std::shared_ptr<Material> iceMaterial = std::make_shared<Material>(standardShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-	std::shared_ptr<Material> leatherMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, leatherTexture);
-	std::shared_ptr<Material> floorMaterial = std::make_shared<TextureMaterial>(standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, floorTexture);
-	std::shared_ptr<Material> snowflakeMaterial = std::make_shared<TextureMaterial>(particleRenderShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, snowflakeTexture);
 
-	// Create debug cam here
+SceneResources::~SceneResources()
+{
+}
+
+
+/* --------------------------------------------- */
+// Scene resources
+/* --------------------------------------------- */
+
+void SceneResources::init(std::shared_ptr<Input> input)
+{
+	// Textures
+	leatherTexture = std::make_shared<Texture>("../assets/textures/leather.jpg", TEX_DIFFUSE);
+	floorTexture = std::make_shared<Texture>("../assets/textures/floor.jpg", TEX_DIFFUSE);
+	snowflakeTexture = std::make_shared<Texture>("../assets/textures/snowflake.png", TEX_DIFFUSE);
+
+	// Materials
+	singleColorMaterial = std::make_shared<Material>(Resources::Instance().standardShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+	iceMaterial = std::make_shared<Material>(Resources::Instance().standardShader, glm::vec3(0.2f, 0.4f, 0.8f), 1.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+	leatherMaterial = std::make_shared<TextureMaterial>(Resources::Instance().standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, leatherTexture);
+	floorMaterial = std::make_shared<TextureMaterial>(Resources::Instance().standardShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, floorTexture);
+	snowflakeMaterial = std::make_shared<TextureMaterial>(Resources::Instance().particleRenderShader, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f, snowflakeTexture);
+
+	// Debug cam
 	float fov = 60.0f, nearZ = 0.1f, farZ = 400.0f; // view frustum dimensions
-	std::shared_ptr<Camera> orbitCam = std::make_shared<Camera>(fov, 800 / 600, nearZ, farZ, input);
+	orbitCam = std::make_shared<Camera>(fov, 800 / 600, nearZ, farZ, input);
 
-	// Create skybox here
+	// Skybox
 	std::vector<std::string> cubeMapFileNames = {
 		"skybox/right.jpg",
 		"skybox/left.jpg",
@@ -57,20 +74,24 @@ std::shared_ptr<Scene> Resources::loadTestScene(std::shared_ptr<Input> input)
 		"skybox/back.jpg",
 		"skybox/front.jpg"
 	};
-	std::shared_ptr<Skybox> skybox = std::make_shared<Skybox>(orbitCam, 60.0f, cubeMapFileNames);
 
-	// Create meshes here
-	std::shared_ptr<Mesh> sphere1Mesh = std::make_shared<Mesh>(Mesh::createSphereGeometry(24, 24, 0.7f), leatherMaterial);
-	std::shared_ptr<Mesh> sphere2Mesh = std::make_shared<Mesh>(Mesh::createSphereGeometry(24, 24, 0.7f), iceMaterial);
-	std::shared_ptr<Mesh> sphere3Mesh = std::make_shared<Mesh>(Mesh::createSphereGeometry(24, 24, 0.7f), iceMaterial);
-	std::shared_ptr<Mesh> cubeMesh = std::make_shared<Mesh>(Mesh::createCubeGeometry(1.0f, 1.0f, 2.5f), singleColorMaterial);
-	std::shared_ptr<Mesh> floorMesh = std::make_shared<Mesh>(Mesh::createCubeGeometry(40.0f, 0.5f, 40.0f), floorMaterial);
-	std::shared_ptr<Mesh> podiumMesh = std::make_shared<Mesh>(Mesh::createCylinderGeometry(24.0f, 2.0f, 3.0f), singleColorMaterial);
+	skybox = std::make_shared<Skybox>(orbitCam, 60.0f, cubeMapFileNames);
 
-	// Create particle systems here
-	std::shared_ptr<ParticleSystem> snow = std::make_shared<ParticleSystem>(ParticleSystem::createSnowEmitter(), snowflakeMaterial, particleComputeShader, particleRenderShader, orbitCam);
+	// Meshes
+	sphere1Mesh = std::make_shared<Mesh>(Mesh::createSphereGeometry(24, 24, 0.7f), leatherMaterial);
+	sphere2Mesh = std::make_shared<Mesh>(Mesh::createSphereGeometry(24, 24, 0.7f), iceMaterial);
+	sphere3Mesh = std::make_shared<Mesh>(Mesh::createSphereGeometry(24, 24, 0.7f), iceMaterial);
+	cubeMesh = std::make_shared<Mesh>(Mesh::createCubeGeometry(1.0f, 1.0f, 2.5f), singleColorMaterial);
+	floorMesh = std::make_shared<Mesh>(Mesh::createCubeGeometry(40.0f, 0.5f, 40.0f), floorMaterial);
+	podiumMesh = std::make_shared<Mesh>(Mesh::createCylinderGeometry(24.0f, 2.0f, 3.0f), singleColorMaterial);
 
-	// SCENE CREATION
+	// Particle systems
+	snow = std::make_shared<ParticleSystem>(ParticleSystem::createSnowEmitter(), snowflakeMaterial, Resources::Instance().particleComputeShader, Resources::Instance().particleRenderShader, orbitCam);
+}
+
+
+std::shared_ptr<Scene> SceneResources::loadTestScene(std::shared_ptr<Input> input)
+{
 	std::shared_ptr<Scene> scene = std::make_shared<Scene>();
 
 	// Load sceneObjects

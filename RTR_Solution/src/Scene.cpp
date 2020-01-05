@@ -16,14 +16,10 @@ void Scene::addSceneObject(std::shared_ptr<SceneObject> sceneObject)
 	_sceneObjects.push_back(sceneObject);
 }
 
+
 void Scene::addRenderable(std::shared_ptr<Renderable> renderObject)
 {
 	_renderObjects.push_back(renderObject);
-}
-
-void Scene::addUniformable(std::shared_ptr<Uniformable> uniformObject)
-{
-	_uniformObjects.push_back(uniformObject);
 }
 
 
@@ -39,23 +35,31 @@ void Scene::update(float deltaTime)
 	{
 		object->update(deltaTime);
 	}
+
+	// For debugging only!
+	Resources::Instance().particleRenderShader->use();
+	_particles->update(deltaTime);
+	Resources::Instance().particleRenderShader->unuse();
 }
 
 void Scene::setUniforms(std::shared_ptr<Shader> shader)
 {
 	shader->use();
 
-	for (std::shared_ptr<Uniformable> object : _uniformObjects)
+	for (std::shared_ptr<SceneObject> object : _sceneObjects)
 	{
 		object->setUniforms(shader);
 	}
 
 	shader->unuse();
 
+	// For debugging only!
+	Resources::Instance().particleRenderShader->use();
+	_particles->setUniforms(Resources::Instance().particleRenderShader);
+	Resources::Instance().particleRenderShader->unuse();
+
 	Resources::Instance().skyboxShader->use();
-
 	_skybox->setUniforms(Resources::Instance().skyboxShader);
-
 	Resources::Instance().skyboxShader->unuse();
 }
 
@@ -71,5 +75,12 @@ void Scene::render(std::shared_ptr<Shader> shader)
 
 	shader->unuse();
 
+	// For debugging only!
+	Resources::Instance().particleRenderShader->use();
+	_particles->render(Resources::Instance().particleRenderShader);
+	Resources::Instance().particleRenderShader->unuse();
+
+	Resources::Instance().skyboxShader->use();
 	_skybox->render(Resources::Instance().skyboxShader);
+	Resources::Instance().skyboxShader->unuse();
 }

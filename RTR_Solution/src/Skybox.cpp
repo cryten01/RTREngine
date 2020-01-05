@@ -46,13 +46,12 @@ void Skybox::setUniforms(std::shared_ptr<Shader> shader)
 
 
 	// Remove translation part of view matrix so movement doesn't affect the skybox's position vectors
-	if (true) 
+	if (shader == Resources::Instance().skyboxShader) 
 	{
 		viewMatrix = glm::mat4(glm::mat3(viewMatrix));
 	}
 
 	// Set uniforms
-	shader->setUniform("testColor", glm::vec3(1.0, 0.0, 1.0)); // For debugging only
 	shader->setUniform("skybox", CUBEMAP_UNIT);
 	shader->setUniform("viewProjMatrix", projMatrix * viewMatrix);
 
@@ -73,8 +72,6 @@ void Skybox::render(std::shared_ptr<Shader> shader)
 	// Change depth function so depth test passes when values are <= 1.0 (so all objects are rendered in front of the skybox)
 	glDepthFunc(GL_LEQUAL);
 
-	shader->use();
-
 	// Bind _vao
 	glBindVertexArray(_vao);
 	glDrawElements(GL_TRIANGLES, _elementCount, GL_UNSIGNED_INT, 0);
@@ -82,8 +79,6 @@ void Skybox::render(std::shared_ptr<Shader> shader)
 
 	// Set depth test back to default
 	glDepthFunc(GL_LESS);
-
-	shader->unuse();
 }
 
 

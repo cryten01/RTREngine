@@ -27,7 +27,7 @@ namespace RTREngine
 		void addComponent(std::shared_ptr<SceneComponent> component);
 
 		// Render & Update
-		void render(std::shared_ptr<Shader> shader);
 		void update(float deltaTime);
+		void setUniforms(std::shared_ptr<Shader> shader);
 	};
 }

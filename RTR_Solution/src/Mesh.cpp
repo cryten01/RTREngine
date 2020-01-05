@@ -56,23 +56,23 @@ Mesh::~Mesh()
 }
 
 
+void Mesh::update(float deltaTime)
+{
+}
+
+
+void Mesh::setUniforms(std::shared_ptr<Shader> shader)
+{
+	_material->setUniforms(shader);
+}
+
+
 void Mesh::render(std::shared_ptr<Shader> shader)
 {
-	// Select shader
-	Shader* _shader = _material->getShader();
-	_shader->use();
-
-	// Set uniforms
-	_material->setUniforms(shader);
-	
 	// Bind _vao
 	glBindVertexArray(_vao);
 	glDrawElements(GL_TRIANGLES, _elementCount, GL_UNSIGNED_INT, NULL);
 	glBindVertexArray(0);
-}
-
-void Mesh::update(float deltaTime)
-{
 }
 
 

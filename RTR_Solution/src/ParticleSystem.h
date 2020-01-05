@@ -3,6 +3,7 @@
 #include "Interfaces.h"
 #include "Shader.h"
 #include "Material.h"
+#include "Camera.h"
 
 namespace RTREngine 
 {
@@ -13,12 +14,13 @@ namespace RTREngine
 	};
 
 
-	class ParticleSystem
+	class ParticleSystem : public SceneComponent, public Renderable
 	{
 	private:
 		const unsigned int MAX_PARTICLES = 10000;
 		const double SPAWN_RATE_PER_SECOND = 50;
 
+		std::shared_ptr<Camera> _camera;
 		std::shared_ptr<Shader> _computeShader;
 		std::shared_ptr<Shader> _renderShader;
 		std::shared_ptr<Material> _emitterMaterial;
@@ -37,13 +39,13 @@ namespace RTREngine
 		GLuint getReadyToSpawn(float deltaTime);
 		void addEmittersToActiveSSBO(std::vector<Particle> emitters);
 
-
 	public:
-		ParticleSystem(std::vector<Particle> emitters, std::shared_ptr<Material> emitterMaterial, std::shared_ptr<Shader> computeShader, std::shared_ptr<Shader> renderShader);
+		ParticleSystem(std::vector<Particle> emitters, std::shared_ptr<Material> emitterMaterial, std::shared_ptr<Shader> computeShader, std::shared_ptr<Shader> renderShader, std::shared_ptr<Camera> _camera);
 		~ParticleSystem();
 
-		void update(float deltaTime);
-		void render(glm::mat4 viewMatrix, glm::mat4 projMatrix);
+		void update(float deltaTime) override;
+		void setUniforms(std::shared_ptr<Shader> shader) override;
+		void render(std::shared_ptr<Shader> shader) override;
 
 		static std::vector<Particle> createStarEmitter(const unsigned int TTL);
 		static std::vector<Particle> createSnowEmitter();

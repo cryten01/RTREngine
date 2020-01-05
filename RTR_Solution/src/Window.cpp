@@ -105,7 +105,7 @@ void Window::render()
 	/**************************************************/
 
 	// Variables for debugging only!
-	bool hdr = true;
+	bool hdr = false;
 	bool exposure = false;
 
 	//Resources::Instance().hdrBuffer->renderScreenQuad(resources.postProcessShader, hdr, exposure);

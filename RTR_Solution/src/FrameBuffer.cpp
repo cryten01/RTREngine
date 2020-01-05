@@ -133,4 +133,6 @@ void FrameBuffer::renderScreenQuad(std::shared_ptr<Shader> shader, bool hdr, flo
 	glBindTexture(GL_TEXTURE_2D, _textureID);
 	glBindVertexArray(_quadVAO);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	shader->unuse();
 }

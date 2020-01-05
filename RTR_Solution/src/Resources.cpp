@@ -7,7 +7,7 @@ Resources::Resources()
 }
 
 
-Resources::~Resources() 
+Resources::~Resources()
 {
 }
 
@@ -59,16 +59,35 @@ std::shared_ptr<Scene> Resources::loadTestScene(std::shared_ptr<Input> input)
 	};
 	std::shared_ptr<Skybox> skybox = std::make_shared<Skybox>(orbitCam, 60.0f, cubeMapFileNames);
 
+	// Create meshes here
+	std::shared_ptr<Mesh> sphere1Mesh = std::make_shared<Mesh>(Mesh::createSphereGeometry(24, 24, 0.7f), iceMaterial);
+	std::shared_ptr<Mesh> sphere2Mesh = std::make_shared<Mesh>(Mesh::createSphereGeometry(24, 24, 0.7f), iceMaterial);
+	std::shared_ptr<Mesh> sphere3Mesh = std::make_shared<Mesh>(Mesh::createSphereGeometry(24, 24, 0.7f), iceMaterial);
+	std::shared_ptr<Mesh> cubeMesh = std::make_shared<Mesh>(Mesh::createCubeGeometry(1.0f, 1.0f, 2.5f), singleColorMaterial);
+	std::shared_ptr<Mesh> floorMesh = std::make_shared<Mesh>(Mesh::createCubeGeometry(40.0f, 0.5f, 40.0f), floorMaterial);
+	std::shared_ptr<Mesh> podiumMesh = std::make_shared<Mesh>(Mesh::createCylinderGeometry(24.0f, 2.0f, 3.0f), singleColorMaterial);
+
+	// Create particle systems here
+	std::shared_ptr<ParticleSystem> snow = std::make_shared<ParticleSystem>(ParticleSystem::createSnowEmitter(), snowflakeMaterial, particleComputeShader, particleRenderShader, orbitCam);
+
+	// SCENE CREATION
+	std::shared_ptr<Scene> scene = std::make_shared<Scene>();
+
 	// Load sceneObjects
 	std::shared_ptr<SceneObject> camObj = std::make_shared<SceneObject>();
 	camObj->addComponent(orbitCam);
 
-	// Load scene
-	std::shared_ptr<Scene> scene = std::make_shared<Scene>();
+	std::shared_ptr<SceneObject> floorObj = std::make_shared<SceneObject>();
+	floorObj->addComponent(floorMesh);
+
+
 	scene->addSceneObject(camObj);
-	scene->addRenderable(skybox);
-	
+	scene->addSceneObject(floorObj);
+
+	scene->addRenderable(floorMesh);
 	scene->setActiveSkybox(skybox);
+
+	scene->_particles = snow; // For debugging only!
 
 	return scene;
 };

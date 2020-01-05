@@ -6,7 +6,7 @@
 
 namespace RTREngine
 {
-	class Camera : public SceneComponent, Uniformable
+	class Camera : public SceneComponent
 	{
 	private:
 		std::shared_ptr<Input> _input;

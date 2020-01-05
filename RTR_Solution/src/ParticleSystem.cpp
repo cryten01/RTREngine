@@ -10,8 +10,8 @@ using namespace RTREngine;
 *	glBufferdata		Define data-structure (defines how big the buffer is and what data it contains)
 *	GL_DYNAMIC_DRAW		Content of data-storage gets repeatedly declared by application.
 **/
-ParticleSystem::ParticleSystem(std::vector<Particle> emitters, std::shared_ptr<Material> emitterMaterial, std::shared_ptr<Shader> computeShader, std::shared_ptr<Shader> renderShader)
-	: _emitterMaterial(emitterMaterial), _computeShader(computeShader), _renderShader(renderShader)
+ParticleSystem::ParticleSystem(std::vector<Particle> emitters, std::shared_ptr<Material> emitterMaterial, std::shared_ptr<Shader> computeShader, std::shared_ptr<Shader> renderShader, std::shared_ptr<Camera> camera)
+	: _emitterMaterial(emitterMaterial), _computeShader(computeShader), _renderShader(renderShader), _camera(camera)
 {
 	// Init values
 	_pingPongIndex = 0;
@@ -132,21 +132,25 @@ void ParticleSystem::update(float deltaTime)
 	glMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
 }
 
-void ParticleSystem::render(glm::mat4 viewMatrix, glm::mat4 projMatrix)
+void ParticleSystem::setUniforms(std::shared_ptr<Shader> shader)
 {
+	glm::mat4 projMatrix = _camera->getProjMatrix();
+	glm::mat4 viewMatrix = _camera->getViewMatrix();
 
-	// Set particle systems uniforms
-	_renderShader->use();
-	_renderShader->setUniform("modelViewMatrix", viewMatrix * glm::mat4(1.0f));
-	_renderShader->setUniform("projectionMatrix", projMatrix);
+	shader->setUniform("modelViewMatrix", viewMatrix * glm::mat4(1.0f));
+	shader->setUniform("projectionMatrix", projMatrix);
 
 	// Set material uniforms
-	_emitterMaterial->setUniforms(_renderShader);
+	_emitterMaterial->setUniforms(shader);
+}
+
+void ParticleSystem::render(std::shared_ptr<Shader> shader)
+{
+	_renderShader->use();
 
 	glBindVertexArray(_vaos[_pingPongIndex]);		// bind current VAO
 	glDrawArrays(GL_POINTS, 0, _particleCount);		// draw particles (points are necessary for generating quads
 	glBindVertexArray(0);							// stop binding
-
 
 	_renderShader->unuse();
 }

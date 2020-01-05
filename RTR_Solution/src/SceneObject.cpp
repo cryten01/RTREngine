@@ -7,6 +7,7 @@ SceneObject::SceneObject(glm::mat4 modelMatrix)
 	// Defaults
 	_active = true;
 	_transform = std::make_shared<Transform>(modelMatrix);
+	this->addComponent(_transform);
 }
 
 
@@ -56,29 +57,16 @@ void SceneObject::update(float deltaTime)
 	}
 }
 
-
-void SceneObject::render(std::shared_ptr<Shader> shader)
+void SceneObject::setUniforms(std::shared_ptr<Shader> shader)
 {
-	if (_active)
+	for (std::shared_ptr<SceneComponent> component : _components)
 	{
-		for (std::shared_ptr<SceneComponent> component : _components) 
-		{
-			//component->render(shader);
-		}
-
-		//// Set transform uniforms
-		//this->_transform->setUniforms(_shader);
-
-		//// Render each mesh of this sceneObject
-		//for (auto mesh : _meshes)
-		//{
-		//	mesh->render();
-		//}
+		component->setUniforms(shader);
 	}
 
-	// Render children
+	// setUniforms in children
 	for (size_t i = 0; i < _children.size(); i++)
 	{
-		_children.at(i)->render(shader);
+		_children.at(i)->setUniforms(shader);
 	}
 }

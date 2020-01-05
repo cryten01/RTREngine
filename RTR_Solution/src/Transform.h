@@ -5,7 +5,7 @@
 
 namespace RTREngine 
 {
-	class Transform : public SceneComponent, Uniformable
+	class Transform : public SceneComponent
 	{
 	private:
 		std::shared_ptr<Transform> _parent;

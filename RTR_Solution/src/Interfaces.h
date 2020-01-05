@@ -11,17 +11,12 @@ namespace RTREngine
 	{	
 	public:
 		virtual void update(float deltaTime) = 0;
+		virtual void setUniforms(std::shared_ptr<Shader> shader) = 0;
 	};
 
 	class Renderable 
 	{
 	public:
 		virtual void render(std::shared_ptr<Shader> shader) = 0;
-	};
-	
-	class Uniformable 
-	{
-	public:
-		virtual void setUniforms(std::shared_ptr<Shader> shader) = 0;
 	};
 }

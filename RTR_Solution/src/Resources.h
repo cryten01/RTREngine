@@ -60,43 +60,6 @@ namespace RTREngine
 
 
 
-
-//
-//	namespace TestScene 
-//	{
-
-//
-
-//
-//		// Create meshes here
-//		std::shared_ptr<Mesh> sphere1Mesh = std::make_shared<Mesh>(
-//			Mesh::createSphereGeometry(24, 24, 0.7f),
-//			iceMaterial
-//			);
-//		std::shared_ptr<Mesh> sphere2Mesh = std::make_shared<Mesh>(
-//			Mesh::createSphereGeometry(24, 24, 0.7f),
-//			iceMaterial
-//			);
-//		std::shared_ptr<Mesh> sphere3Mesh = std::make_shared<Mesh>(
-//			Mesh::createSphereGeometry(24, 24, 0.7f),
-//			iceMaterial
-//			);
-//		std::shared_ptr<Mesh> cubeMesh = std::make_shared<Mesh>(
-//			Mesh::createCubeGeometry(1.0f, 1.0f, 2.5f),
-//			singleColorMaterial
-//			);
-//		std::shared_ptr<Mesh> floorMesh = std::make_shared<Mesh>(
-//			Mesh::createCubeGeometry(40.0f, 0.5f, 40.0f),
-//			floorMaterial
-//			);
-//		std::shared_ptr<Mesh> podiumMesh = std::make_shared<Mesh>(
-//			Mesh::createCylinderGeometry(24.0f, 2.0f, 3.0f),
-//			singleColorMaterial
-//			);
-//
-//		// Create particle systems here
-//		std::shared_ptr<ParticleSystem> snow = std::make_shared<ParticleSystem>(ParticleSystem::createSnowEmitter(), snowflakeMaterial, particleComputeShader, particleRenderShader);
-//	
 //		// Create scene objects here
 //		std::shared_ptr<SceneObject> sphere1 = std::make_shared<SceneObject>(standardShader, glm::mat4(1));
 //		std::shared_ptr<SceneObject> sphere2 = std::make_shared<SceneObject>(standardShader, glm::mat4(1));

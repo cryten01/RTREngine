@@ -5,13 +5,14 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "Interfaces.h"
+#include "Resources.h"
 
 namespace RTREngine 
 {
 	static const std::string& SKYBOX_ROOT_LOCATION = "../assets/textures/";
 	static const int CUBEMAP_UNIT = 5;
 
-	class Skybox : public Renderable, Uniformable
+	class Skybox : public Renderable
 	{
 	protected:
 		std::shared_ptr<Camera> _camera;
@@ -30,7 +31,7 @@ namespace RTREngine
 		 Skybox(std::shared_ptr<Camera> camera, float size, std::vector<std::string>& textureFileNames);
 		~Skybox();
 
-		void setUniforms(std::shared_ptr<Shader> shader) override;
+		void setUniforms(std::shared_ptr<Shader> shader);
 		void render(std::shared_ptr<Shader> shader) override;
 	};
 }

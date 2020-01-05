@@ -14,7 +14,7 @@ namespace RTREngine
 		std::vector<GLuint> indices;
 	};
 
-	class Mesh : public SceneComponent, Renderable
+	class Mesh : public Renderable, public SceneComponent
 	{
 	protected:
 		GLuint _vao;
@@ -30,8 +30,9 @@ namespace RTREngine
 		Mesh(MeshData data, std::shared_ptr<Material> material);
 		~Mesh();
 
-		void render(std::shared_ptr<Shader> shader) override;
 		void update(float deltaTime) override;
+		void setUniforms(std::shared_ptr<Shader> shader) override;
+		void render(std::shared_ptr<Shader> shader) override;
 
 		std::shared_ptr<Material> getMaterial();
 

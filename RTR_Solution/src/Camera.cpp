@@ -56,8 +56,10 @@ void Camera::processMouseMovement(int x, int y)
 
 void Camera::setUniforms(std::shared_ptr<Shader> shader)
 {
+	shader->use();
 	shader->setUniform("viewProjMatrix", this->_projMatrix * this->_viewMatrix);
 	shader->setUniform("camera_world", this->_position);
+	shader->unuse();
 }
 
 void Camera::update(float deltaTime)

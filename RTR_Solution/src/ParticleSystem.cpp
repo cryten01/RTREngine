@@ -134,6 +134,10 @@ void ParticleSystem::update(float deltaTime)
 
 void ParticleSystem::setUniforms(std::shared_ptr<Shader> shader)
 {
+	shader = _renderShader; // Override because specific shader is needed
+
+	shader->use();
+
 	glm::mat4 projMatrix = _camera->getProjMatrix();
 	glm::mat4 viewMatrix = _camera->getViewMatrix();
 
@@ -142,17 +146,21 @@ void ParticleSystem::setUniforms(std::shared_ptr<Shader> shader)
 
 	// Set material uniforms
 	_emitterMaterial->setUniforms(shader);
+
+	shader->unuse();
 }
 
 void ParticleSystem::render(std::shared_ptr<Shader> shader)
 {
-	_renderShader->use();
+	shader = _renderShader; // Override because specific shader is needed
+
+	shader->use();
 
 	glBindVertexArray(_vaos[_pingPongIndex]);		// bind current VAO
 	glDrawArrays(GL_POINTS, 0, _particleCount);		// draw particles (points are necessary for generating quads
 	glBindVertexArray(0);							// stop binding
 
-	_renderShader->unuse();
+	shader->unuse();
 }
 
 

@@ -114,9 +114,10 @@ void Transform::resetModelMatrix()
 
 void Transform::setUniforms(std::shared_ptr<Shader> shader)
 {
-	// Set uniforms
+	shader->use();
 	shader->setUniform("modelMatrix", _modelMatrix);
 	shader->setUniform("normalMatrix", glm::mat3(glm::transpose(glm::inverse(_modelMatrix)))); // Fixes non uniform scaling issues, done on CPU for performance reasons
+	shader->unuse();
 }
 
 void Transform::update(float deltaTime)

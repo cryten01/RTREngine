@@ -41,9 +41,10 @@ Skybox::~Skybox()
 
 void Skybox::setUniforms(std::shared_ptr<Shader> shader)
 {
+	shader->use();
+
 	glm::mat4 projMatrix = _camera->getProjMatrix();
 	glm::mat4 viewMatrix = _camera->getViewMatrix();
-
 
 	// Remove translation part of view matrix so movement doesn't affect the skybox's position vectors
 	if (shader == Resources::Instance().skyboxShader) 
@@ -57,6 +58,8 @@ void Skybox::setUniforms(std::shared_ptr<Shader> shader)
 
 	// Bind cube map textures
 	bindTextures(CUBEMAP_UNIT);
+
+	shader->unuse();
 }
 
 
@@ -69,6 +72,8 @@ void Skybox::bindTextures(unsigned int unit)
 
 void Skybox::render(std::shared_ptr<Shader> shader)
 {
+	shader->use();
+
 	// Change depth function so depth test passes when values are <= 1.0 (so all objects are rendered in front of the skybox)
 	glDepthFunc(GL_LEQUAL);
 
@@ -79,6 +84,8 @@ void Skybox::render(std::shared_ptr<Shader> shader)
 
 	// Set depth test back to default
 	glDepthFunc(GL_LESS);
+
+	shader->unuse();
 }
 
 

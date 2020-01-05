@@ -63,16 +63,22 @@ void Mesh::update(float deltaTime)
 
 void Mesh::setUniforms(std::shared_ptr<Shader> shader)
 {
+	shader->use();
 	_material->setUniforms(shader);
+	shader->unuse();
 }
 
 
 void Mesh::render(std::shared_ptr<Shader> shader)
 {
+	shader->use();
+
 	// Bind _vao
 	glBindVertexArray(_vao);
 	glDrawElements(GL_TRIANGLES, _elementCount, GL_UNSIGNED_INT, NULL);
 	glBindVertexArray(0);
+
+	shader->unuse();
 }
 
 

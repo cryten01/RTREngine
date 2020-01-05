@@ -37,9 +37,9 @@ void Scene::update(float deltaTime)
 	}
 
 	// For debugging only!
-	Resources::Instance().particleRenderShader->use();
-	_particles->update(deltaTime);
-	Resources::Instance().particleRenderShader->unuse();
+	//Resources::Instance().particleRenderShader->use();
+	//_particles->update(deltaTime);
+	//Resources::Instance().particleRenderShader->unuse();
 }
 
 void Scene::setUniforms(std::shared_ptr<Shader> shader)
@@ -54,13 +54,11 @@ void Scene::setUniforms(std::shared_ptr<Shader> shader)
 	shader->unuse();
 
 	// For debugging only!
-	Resources::Instance().particleRenderShader->use();
-	_particles->setUniforms(Resources::Instance().particleRenderShader);
-	Resources::Instance().particleRenderShader->unuse();
+	//Resources::Instance().particleRenderShader->use();
+	//_particles->setUniforms(Resources::Instance().particleRenderShader);
+	//Resources::Instance().particleRenderShader->unuse();
 
-	Resources::Instance().skyboxShader->use();
 	_skybox->setUniforms(Resources::Instance().skyboxShader);
-	Resources::Instance().skyboxShader->unuse();
 }
 
 
@@ -76,11 +74,9 @@ void Scene::render(std::shared_ptr<Shader> shader)
 	shader->unuse();
 
 	// For debugging only!
-	Resources::Instance().particleRenderShader->use();
-	_particles->render(Resources::Instance().particleRenderShader);
-	Resources::Instance().particleRenderShader->unuse();
+	//Resources::Instance().particleRenderShader->use();
+	//_particles->render(Resources::Instance().particleRenderShader);
+	//Resources::Instance().particleRenderShader->unuse();
 
-	Resources::Instance().skyboxShader->use();
 	_skybox->render(Resources::Instance().skyboxShader);
-	Resources::Instance().skyboxShader->unuse();
 }

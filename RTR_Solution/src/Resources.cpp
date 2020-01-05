@@ -80,11 +80,16 @@ std::shared_ptr<Scene> Resources::loadTestScene(std::shared_ptr<Input> input)
 	std::shared_ptr<SceneObject> floorObj = std::make_shared<SceneObject>();
 	floorObj->addComponent(floorMesh);
 
+	std::shared_ptr<SceneObject> snowObj = std::make_shared<SceneObject>();
+	snowObj->addComponent(snow);
 
 	scene->addSceneObject(camObj);
 	scene->addSceneObject(floorObj);
+	scene->addSceneObject(snowObj);
 
 	scene->addRenderable(floorMesh);
+	scene->addRenderable(snow);
+
 	scene->setActiveSkybox(skybox);
 
 	scene->_particles = snow; // For debugging only!

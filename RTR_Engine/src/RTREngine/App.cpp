@@ -1,4 +1,5 @@
 #include "App.h"
+#include "../Legacy/LegacyApp.h"
 
 
 namespace RTREngine 
@@ -13,6 +14,9 @@ namespace RTREngine
 
 	void App::Run() 
 	{
-		while (true);
+		while (true)
+		{
+
+		}
 	}
 }

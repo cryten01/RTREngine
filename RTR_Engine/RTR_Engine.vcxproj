@@ -92,7 +92,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)external\RAPIDJSON\include\rapidjson;$(SolutionDir)external\STB\include;$(SolutionDir)external\ASSIMP\include;$(SolutionDir)external\SOIL2\include;$(SolutionDir)external\GLM;$(SolutionDir)external\GLEW\include;$(SolutionDir)external\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)external\SPDLOG\include;$(SolutionDir)external\RAPIDJSON\include\rapidjson;$(SolutionDir)external\STB\include;$(SolutionDir)external\ASSIMP\include;$(SolutionDir)external\SOIL2\include;$(SolutionDir)external\GLM;$(SolutionDir)external\GLEW\include;$(SolutionDir)external\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -121,7 +121,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)external\RAPIDJSON\include\rapidjson;$(SolutionDir)external\STB\include;$(SolutionDir)external\ASSIMP\include;$(SolutionDir)external\SOIL2\include;$(SolutionDir)external\GLM;$(SolutionDir)external\GLEW\include;$(SolutionDir)external\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)external\SPDLOG\include;$(SolutionDir)external\RAPIDJSON\include\rapidjson;$(SolutionDir)external\STB\include;$(SolutionDir)external\ASSIMP\include;$(SolutionDir)external\SOIL2\include;$(SolutionDir)external\GLM;$(SolutionDir)external\GLEW\include;$(SolutionDir)external\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -149,6 +149,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\RTREngine\Log.cpp" />
+    <ClCompile Include="src\Legacy\LegacyApp.cpp" />
     <ClCompile Include="src\RTREngine\App.cpp" />
     <ClCompile Include="src\Legacy\Input.cpp" />
     <ClCompile Include="src\Legacy\Framework.cpp" />
@@ -159,7 +161,7 @@
     <ClCompile Include="src\Legacy\SceneObject.cpp" />
     <ClCompile Include="src\Legacy\Skybox.cpp" />
     <ClCompile Include="src\Legacy\Model.cpp" />
-    <ClCompile Include="src\Legacy\LegacyApp.cpp" />
+    <ClCompile Include="src\Legacy\LegacyApp.h" />
     <ClCompile Include="src\Legacy\Camera.cpp" />
     <ClCompile Include="src\Legacy\Mesh.cpp" />
     <ClCompile Include="src\Legacy\Material.cpp" />
@@ -170,6 +172,7 @@
     <ClCompile Include="src\Legacy\Time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\RTREngine\Log.h" />
     <ClInclude Include="src\RTR.h" />
     <ClInclude Include="src\RTREngine\App.h" />
     <ClInclude Include="src\Legacy\Input.h" />

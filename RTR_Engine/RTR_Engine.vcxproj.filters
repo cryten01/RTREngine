@@ -69,7 +69,13 @@
     <ClCompile Include="src\RTREngine\App.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Legacy\LegacyApp.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\Legacy\LegacyApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RTREngine\Log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -144,6 +150,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\RTREngine\EntryPoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RTREngine\Log.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -34,8 +34,8 @@
 #include <stb_image.h>
 
 // RAPIDJSON
-#include "document.h"
-using namespace rapidjson;
+//#include "document.h"
+//using namespace rapidjson;
 
 
 // Custom error msg

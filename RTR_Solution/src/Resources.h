@@ -11,6 +11,7 @@
 #include "Model.h"
 #include "Skybox.h"
 #include "Camera.h"
+#include "Light.h"
 #include "Input.h"
 
 
@@ -99,6 +100,16 @@ namespace RTREngine
 		// Create particle systems here
 		std::shared_ptr<ParticleSystem> snow;
 
+		// Create directional lights here
+		std::shared_ptr<DirectionalLight> dirLight;
+
+		// Create point lights here
+		std::vector<std::shared_ptr<PointLight>> pointLights;
+
+		// Create spot lights here
+		std::vector<std::shared_ptr<SpotLight>> spotLights;
+
+
 
 		// Methods
 		void init(std::shared_ptr<Input> input);
@@ -107,40 +118,6 @@ namespace RTREngine
 }
 
 
-
-
-//		// Create directional lights here
-//		DirectionalLight dirLight(glm::vec3(1.0f), glm::vec3(0, -1, 0));
-//
-//		// Create point lights here
-//		std::vector<std::shared_ptr<PointLight>> pointLights;
-//
-//		// Create spot lights here
-//		std::vector<std::shared_ptr<SpotLight>> spotLights;
-//
-
-//
-
-//
-//		void initLights()
-//		{
-//			pointLights.push_back(std::make_shared<PointLight>(
-//				glm::vec3(1.0f),
-//				glm::vec3(0.0f, 1.0f, 0.0f),
-//				glm::vec3(1.0f, 0.4f, 0.1f)
-//				));
-//
-//			spotLights.push_back(std::make_shared<SpotLight>(
-//				glm::vec3(1.0f),
-//				glm::vec3(0.0f, 12.0f, 4.0f),
-//				glm::vec3(1.0f, 0.4f, 0.1f),
-//				glm::vec3(0.0f, 0.0f, -1.0f),
-//				glm::cos(glm::radians(10.5f)),
-//				glm::cos(glm::radians(12.5f))
-//				));
-//		}
-//
-//
 //		void initSceneObjects()
 //		{
 //			// Load models here
@@ -230,40 +207,12 @@ namespace RTREngine
 //{
 //	shader->use();
 //
-//	//**********//
-//	//	Skybox  //
-//	//**********//
-//
-//	//skybox.bindTextures(5);
-//	//shader->setUniform("skybox", 5);
-//
-//	// Binds skybox textures and sets uniforms for target shader
-//	skybox.setUniforms(camera.getViewMatrix(), camera.getProjMatrix());
-//
-//
-//	//**********//
-//	//	Camera  //
-//	//**********//
-//
-//	// Sets all necessary camera variables for target shader
-//	camera.setUniforms(shader);
-//
-//
-//	//*******************//
-//	//	Geometry Shader	 //
-//	//*******************//
-//
-//	// Sets all necessary variables for geometry shader
-//	shader->setUniform("time", (float)glfwGetTime());
-//	shader->setUniform("enableGeometryShader", false);
-//
-//
+
 //	//***********//
 //	//	Lights	 //
 //	//***********//
 //
-//	// Sets all necessary light variables for target shader
-//	shader->setUniform("param.illuminated", true);
+
 //
 //	// Directional light
 //	dirLight.setUniforms(shader);

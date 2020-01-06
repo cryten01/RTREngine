@@ -31,7 +31,9 @@ void Resources::init()
 }
 
 
-
+/* --------------------------------------------- */
+// Scene resources
+/* --------------------------------------------- */
 
 SceneResources::SceneResources()
 {
@@ -42,10 +44,6 @@ SceneResources::~SceneResources()
 {
 }
 
-
-/* --------------------------------------------- */
-// Scene resources
-/* --------------------------------------------- */
 
 void SceneResources::init(std::shared_ptr<Input> input)
 {
@@ -78,15 +76,35 @@ void SceneResources::init(std::shared_ptr<Input> input)
 	skybox = std::make_shared<Skybox>(orbitCam, 60.0f, cubeMapFileNames);
 
 	// Meshes
-	sphere1Mesh = std::make_shared<Mesh>(Mesh::createSphereGeometry(24, 24, 0.7f), leatherMaterial);
+	sphere1Mesh = std::make_shared<Mesh>(Mesh::createSphereGeometry(24, 24, 0.7f), iceMaterial);
 	sphere2Mesh = std::make_shared<Mesh>(Mesh::createSphereGeometry(24, 24, 0.7f), iceMaterial);
 	sphere3Mesh = std::make_shared<Mesh>(Mesh::createSphereGeometry(24, 24, 0.7f), iceMaterial);
-	cubeMesh = std::make_shared<Mesh>(Mesh::createCubeGeometry(1.0f, 1.0f, 2.5f), singleColorMaterial);
+	cubeMesh = std::make_shared<Mesh>(Mesh::createCubeGeometry(2.0f, 2.0f, 2.0f), singleColorMaterial);
 	floorMesh = std::make_shared<Mesh>(Mesh::createCubeGeometry(40.0f, 0.5f, 40.0f), floorMaterial);
 	podiumMesh = std::make_shared<Mesh>(Mesh::createCylinderGeometry(24.0f, 2.0f, 3.0f), singleColorMaterial);
 
 	// Particle systems
 	snow = std::make_shared<ParticleSystem>(ParticleSystem::createSnowEmitter(), snowflakeMaterial, Resources::Instance().particleComputeShader, Resources::Instance().particleRenderShader, orbitCam);
+
+	// Directional light
+	dirLight = std::make_shared<DirectionalLight>(glm::vec3(1.0f), glm::vec3(1, -1, 0));
+
+	// Point lights
+	pointLights.push_back(std::make_shared<PointLight>(
+		glm::vec3(1.0f),
+		glm::vec3(0.0f, 1.0f, 0.0f),
+		glm::vec3(1.0f, 0.4f, 0.1f)
+		));
+
+	// Spot lights
+	spotLights.push_back(std::make_shared<SpotLight>(
+		glm::vec3(1.0f),
+		glm::vec3(0.0f, 12.0f, 4.0f),
+		glm::vec3(1.0f, 0.4f, 0.1f),
+		glm::vec3(0.0f, 0.0f, -1.0f),
+		glm::cos(glm::radians(10.5f)),
+		glm::cos(glm::radians(12.5f))
+		));
 }
 
 
@@ -102,23 +120,27 @@ std::shared_ptr<Scene> SceneResources::loadTestScene(std::shared_ptr<Input> inpu
 	floorObj->addComponent(floorMesh);
 
 	std::shared_ptr<SceneObject> cubeObj = std::make_shared<SceneObject>();
-	cubeObj->addComponent(sphere1Mesh);
-	cubeObj->getTransform()->setLocalPos(glm::vec3(-8.0f, 10.0, 0.0));
+	cubeObj->addComponent(cubeMesh);
+	cubeObj->getTransform()->setLocalPos(glm::vec3(0.0f, 10.0, 0.0));
 
 	std::shared_ptr<SceneObject> snowObj = std::make_shared<SceneObject>();
 	snowObj->addComponent(snow);
+
+	std::shared_ptr<SceneObject> dirLightObj = std::make_shared<SceneObject>();
+	dirLightObj->addComponent(dirLight);
+
 
 	// Add sceneObjects
 	scene->addSceneObject(camObj);
 	scene->addSceneObject(floorObj);
 	scene->addSceneObject(snowObj);
 	scene->addSceneObject(cubeObj);
+	scene->addSceneObject(dirLightObj);
 
-	// Set active skybox and camera
+	// Add per-frame resource pointers
 	scene->setActiveSkybox(skybox);
-	scene->setActiveCamera(orbitCam);
-
-	scene->_particles = snow; // For debugging only!
+	//scene->setActiveCamera(orbitCam);
+	//scene->setActiveDirLight(dirLight);
 
 	return scene;
 };

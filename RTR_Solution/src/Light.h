@@ -8,7 +8,8 @@
 
 namespace RTREngine 
 {
-	struct DirectionalLight {
+	struct DirectionalLight : public SceneComponent
+	{
 		DirectionalLight() {
 			enabled = false;
 		}
@@ -22,15 +23,22 @@ namespace RTREngine
 		glm::vec3 direction;
 
 
-		void setUniforms(std::shared_ptr<Shader> shader)
+		void setUniforms(std::shared_ptr<Shader> shader) override
 		{
+			shader->use();
 			shader->setUniform("dirL.color", this->color);
 			shader->setUniform("dirL.direction", this->direction);
+			shader->unuse();
 		}
+
+		void update(float deltaTime) override 
+		{
+		};
 	};
 
 
-	struct PointLight {
+	struct PointLight 
+	{
 		PointLight() {
 			enabled = false;
 		}
@@ -55,14 +63,17 @@ namespace RTREngine
 	};
 
 
-	struct SpotLight {
+	struct SpotLight 
+	{
 		SpotLight() {
 			enabled = false;
 		}
 
 		SpotLight(glm::vec3 color, glm::vec3 position, glm::vec3 attenuation, glm::vec3 direction, float innerAngle, float outerAngle, bool enabled = true)
 			: color(color), position(position), attenuation(attenuation), direction(direction), innerAngle(innerAngle), outerAngle(outerAngle), enabled(enabled)
-		{}
+		{
+			
+		}
 
 		bool enabled;
 		glm::vec3 color;

@@ -1,5 +1,6 @@
 #pragma once
 #include "Utils.h"
+#include "Shader.h"
 
 namespace RTREngine
 {
@@ -28,7 +29,6 @@ namespace RTREngine
 		static float _zoom;
 		static float _height;
 		static bool _freezeScene;
-
 
 		static void update(GLFWwindow* window);
 

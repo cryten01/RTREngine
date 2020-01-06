@@ -33,8 +33,13 @@ void Scene::setActiveCamera(std::shared_ptr<Camera> camera)
 	_camera = camera;
 }
 
+void Scene::setActiveDirLight(std::shared_ptr<DirectionalLight> dirlight)
+{
+	_dirlight = dirlight;
+}
 
-void Scene::update(float deltaTime) 
+
+void Scene::update(float deltaTime)
 {
 	for (std::shared_ptr<SceneObject> object : _sceneObjects)
 	{
@@ -42,12 +47,24 @@ void Scene::update(float deltaTime)
 	}
 }
 
+
+/**
+*	Set all Uniforms that must be existent before objects are rendered
+**/
 void Scene::setPerFrameUniforms(std::shared_ptr<Shader> shader)
 {
 	shader->use();
 
+	// Control params
+	shader->setUniform("param.illuminated", true);
+
+	// Geometry shader (explosion effect)
+	shader->setUniform("time", (float)glfwGetTime());
+	shader->setUniform("enableGeometryShader", false);
+
 	_skybox->setUniforms(shader);
-	_camera->setUniforms(shader);
+	//_camera->setUniforms(shader);
+	//_dirlight->setUniforms(shader);
 
 	shader->unuse();
 }

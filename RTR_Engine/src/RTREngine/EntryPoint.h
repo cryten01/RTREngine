@@ -9,7 +9,7 @@ int main(int argc, char** argv)
 	RTREngine::Log::Init();
 
 	RTR_CORE_INFO("Initialized Log");
-	RTR_INFO("Hello var={0}", 10);
+	RTR_CORE_TRACE("Hello var={0}", 10);
 
 	auto app = RTREngine::CreateApp();
 	app->Run();

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -9,53 +9,39 @@
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|x64">
-      <Configuration>Debug</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|x64">
-      <Configuration>Release</Configuration>
-      <Platform>x64</Platform>
+    <ProjectConfiguration Include="Distribution|Win32">
+      <Configuration>Distribution</Configuration>
+      <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{42F3AACC-3775-4CEC-AD87-AAF03E486282}</ProjectGuid>
-    <RootNamespace>RTRSolution</RootNamespace>
+    <ProjectGuid>{F2EECCA0-DEA6-0EEE-47AE-E7493385A9DE}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>RTR_Engine</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
-    <ProjectName>RTR_Engine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v141</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v141</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
-  <ImportGroup Label="Shared">
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -63,140 +49,148 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Distribution|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
-    <IntDir>$(SolutionDir)build\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\bin\Debug-windows-x86\RTR_Engine\</OutDir>
+    <IntDir>..\build\Debug-windows-x86\RTR_Engine\</IntDir>
+    <TargetName>RTR_Engine</TargetName>
+    <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
-    <IntDir>$(SolutionDir)build\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\bin\Release-windows-x86\RTR_Engine\</OutDir>
+    <IntDir>..\build\Release-windows-x86\RTR_Engine\</IntDir>
+    <TargetName>RTR_Engine</TargetName>
+    <TargetExt>.dll</TargetExt>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\</OutDir>
-    <IntDir>$(SolutionDir)build\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\</OutDir>
-    <IntDir>$(SolutionDir)build\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\bin\Distribution-windows-x86\RTR_Engine\</OutDir>
+    <IntDir>..\build\Distribution-windows-x86\RTR_Engine\</IntDir>
+    <TargetName>RTR_Engine</TargetName>
+    <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_BUILD_DLL;RTR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\external\SPDLOG\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)external\SPDLOG\include;$(SolutionDir)external\RAPIDJSON\include\rapidjson;$(SolutionDir)external\STB\include;$(SolutionDir)external\ASSIMP\include;$(SolutionDir)external\SOIL2\include;$(SolutionDir)external\GLM;$(SolutionDir)external\GLEW\include;$(SolutionDir)external\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)external\ASSIMP\lib;$(SolutionDir)external\SOIL2\lib;$(SolutionDir)external\GLFW\lib-vc2017;$(SolutionDir)external\GLEW\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;assimp-vc141-mtd.lib;soil2-debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImportLibrary>..\bin\Debug-windows-x86\RTR_Engine\RTR_Engine.lib</ImportLibrary>
     </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)external\STB\include;$(SolutionDir)external\ASSIMP\include;$(SolutionDir)external\SOIL2\include;$(SolutionDir)external\GLM;$(SolutionDir)external\GLEW\include;$(SolutionDir)external\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
-    <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)external\ASSIMP\lib;$(SolutionDir)external\SOIL2\lib;$(SolutionDir)external\GLFW\lib-vc2017;$(SolutionDir)external\GLEW\Win64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;assimp-vc141-mtd.lib;soil2-debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST ..\bin\Debug-windows-x86\RTR_Engine\RTR_Engine.dll\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86\RTR_Engine\RTR_Engine.dll ..\bin\Debug-windows-x86\RTR_Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86\RTR_Engine\RTR_Engine.dll ..\bin\Debug-windows-x86\RTR_Sandbox &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_BUILD_DLL;RTR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\external\SPDLOG\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)external\SPDLOG\include;$(SolutionDir)external\RAPIDJSON\include\rapidjson;$(SolutionDir)external\STB\include;$(SolutionDir)external\ASSIMP\include;$(SolutionDir)external\SOIL2\include;$(SolutionDir)external\GLM;$(SolutionDir)external\GLEW\include;$(SolutionDir)external\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)external\ASSIMP\lib;$(SolutionDir)external\SOIL2\lib;$(SolutionDir)external\GLFW\lib-vc2017;$(SolutionDir)external\GLEW\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;assimp-vc141-mtd.lib;soil2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>..\bin\Release-windows-x86\RTR_Engine\RTR_Engine.lib</ImportLibrary>
     </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST ..\bin\Release-windows-x86\RTR_Engine\RTR_Engine.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86\RTR_Engine\RTR_Engine.dll ..\bin\Release-windows-x86\RTR_Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86\RTR_Engine\RTR_Engine.dll ..\bin\Release-windows-x86\RTR_Sandbox &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|Win32'">
     <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_BUILD_DLL;RTR_DISTRIBUTION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\external\SPDLOG\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)external\STB\include;$(SolutionDir)external\ASSIMP\include;$(SolutionDir)external\SOIL2\include;$(SolutionDir)external\GLM;$(SolutionDir)external\GLEW\include;$(SolutionDir)external\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)external\ASSIMP\lib;$(SolutionDir)external\SOIL2\lib;$(SolutionDir)external\GLFW\lib-vc2017;$(SolutionDir)external\GLEW\Win64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32s.lib;glfw3.lib;assimp-vc141-mtd.lib;assimp-vc141-mtd.lib;soil2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>..\bin\Distribution-windows-x86\RTR_Engine\RTR_Engine.lib</ImportLibrary>
     </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST ..\bin\Distribution-windows-x86\RTR_Engine\RTR_Engine.dll\ (xcopy /Q /E /Y /I ..\bin\Distribution-windows-x86\RTR_Engine\RTR_Engine.dll ..\bin\Distribution-windows-x86\RTR_Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Distribution-windows-x86\RTR_Engine\RTR_Engine.dll ..\bin\Distribution-windows-x86\RTR_Sandbox &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\RTREngine\Log.cpp" />
-    <ClCompile Include="src\Legacy\LegacyApp.cpp" />
-    <ClCompile Include="src\RTREngine\App.cpp" />
-    <ClCompile Include="src\Legacy\Input.cpp" />
-    <ClCompile Include="src\Legacy\Framework.cpp" />
-    <ClCompile Include="src\Legacy\Resources.cpp" />
-    <ClCompile Include="src\Legacy\Scene.cpp" />
-    <ClCompile Include="src\Legacy\ParticleSystem.cpp" />
-    <ClCompile Include="src\Legacy\FrameBuffer.cpp" />
-    <ClCompile Include="src\Legacy\SceneObject.cpp" />
-    <ClCompile Include="src\Legacy\Skybox.cpp" />
-    <ClCompile Include="src\Legacy\Model.cpp" />
-    <ClCompile Include="src\Legacy\LegacyApp.h" />
-    <ClCompile Include="src\Legacy\Camera.cpp" />
-    <ClCompile Include="src\Legacy\Mesh.cpp" />
-    <ClCompile Include="src\Legacy\Material.cpp" />
-    <ClCompile Include="src\Legacy\Shader.cpp" />
-    <ClCompile Include="src\Legacy\Texture.cpp" />
-    <ClCompile Include="src\Legacy\Transform.cpp" />
-    <ClCompile Include="src\Legacy\Window.cpp" />
-    <ClCompile Include="src\Legacy\Time.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\RTREngine\Log.h" />
-    <ClInclude Include="src\RTR.h" />
-    <ClInclude Include="src\RTREngine\App.h" />
+    <ClInclude Include="src\Legacy\Camera.h" />
+    <ClInclude Include="src\Legacy\FrameBuffer.h" />
+    <ClInclude Include="src\Legacy\Framework.h" />
     <ClInclude Include="src\Legacy\Input.h" />
     <ClInclude Include="src\Legacy\Interfaces.h" />
-    <ClInclude Include="src\Legacy\Framework.h" />
-    <ClInclude Include="src\Legacy\Resources.h" />
-    <ClInclude Include="src\RTREngine\Core.h" />
-    <ClInclude Include="src\Legacy\Scene.h" />
-    <ClInclude Include="src\Legacy\ParticleSystem.h" />
-    <ClInclude Include="src\Legacy\FrameBuffer.h" />
+    <ClInclude Include="src\Legacy\LegacyApp.h" />
     <ClInclude Include="src\Legacy\Light.h" />
-    <ClInclude Include="src\Legacy\SceneObject.h" />
-    <ClInclude Include="src\Legacy\Skybox.h" />
-    <ClInclude Include="src\Legacy\Model.h" />
-    <ClInclude Include="src\Legacy\Camera.h" />
-    <ClInclude Include="src\Legacy\Mesh.h" />
     <ClInclude Include="src\Legacy\Material.h" />
+    <ClInclude Include="src\Legacy\Mesh.h" />
+    <ClInclude Include="src\Legacy\Model.h" />
+    <ClInclude Include="src\Legacy\ParticleSystem.h" />
+    <ClInclude Include="src\Legacy\Resources.h" />
+    <ClInclude Include="src\Legacy\Scene.h" />
+    <ClInclude Include="src\Legacy\SceneObject.h" />
     <ClInclude Include="src\Legacy\Shader.h" />
+    <ClInclude Include="src\Legacy\Skybox.h" />
+    <ClInclude Include="src\Legacy\Texture.h" />
+    <ClInclude Include="src\Legacy\Time.h" />
     <ClInclude Include="src\Legacy\Transform.h" />
     <ClInclude Include="src\Legacy\Utils.h" />
-    <ClInclude Include="src\Legacy\Texture.h" />
     <ClInclude Include="src\Legacy\Window.h" />
-    <ClInclude Include="src\Legacy\Time.h" />
+    <ClInclude Include="src\RTR.h" />
+    <ClInclude Include="src\RTREngine\App.h" />
+    <ClInclude Include="src\RTREngine\Core.h" />
     <ClInclude Include="src\RTREngine\EntryPoint.h" />
+    <ClInclude Include="src\RTREngine\Log.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Legacy\Camera.cpp" />
+    <ClCompile Include="src\Legacy\FrameBuffer.cpp" />
+    <ClCompile Include="src\Legacy\Framework.cpp" />
+    <ClCompile Include="src\Legacy\Input.cpp" />
+    <ClCompile Include="src\Legacy\LegacyApp.cpp" />
+    <ClCompile Include="src\Legacy\Material.cpp" />
+    <ClCompile Include="src\Legacy\Mesh.cpp" />
+    <ClCompile Include="src\Legacy\Model.cpp" />
+    <ClCompile Include="src\Legacy\ParticleSystem.cpp" />
+    <ClCompile Include="src\Legacy\Resources.cpp" />
+    <ClCompile Include="src\Legacy\Scene.cpp" />
+    <ClCompile Include="src\Legacy\SceneObject.cpp" />
+    <ClCompile Include="src\Legacy\Shader.cpp" />
+    <ClCompile Include="src\Legacy\Skybox.cpp" />
+    <ClCompile Include="src\Legacy\Texture.cpp" />
+    <ClCompile Include="src\Legacy\Time.cpp" />
+    <ClCompile Include="src\Legacy\Transform.cpp" />
+    <ClCompile Include="src\Legacy\Window.cpp" />
+    <ClCompile Include="src\RTREngine\App.cpp" />
+    <ClCompile Include="src\RTREngine\Log.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

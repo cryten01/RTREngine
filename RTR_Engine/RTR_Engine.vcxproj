@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_BUILD_DLL;RTR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\external\SPDLOG\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\external\SPDLOG\include;..\external\GLFW\include;..\external\GLEW\include;..\external\ASSIMP\include;..\external\GLM\glm;..\external\STB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -88,6 +88,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;assimp-vc141-mtd.lib;msvcmrt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\external\ASSIMP\lib;..\external\GLEW\lib\win32;..\external\GLFW\lib-vc2017;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\Debug-windows-x86\RTR_Engine\RTR_Engine.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
@@ -99,7 +101,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_BUILD_DLL;RTR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\external\SPDLOG\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\external\SPDLOG\include;..\external\GLFW\include;..\external\GLEW\include;..\external\ASSIMP\include;..\external\GLM\glm;..\external\STB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -112,6 +114,8 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;assimp-vc141-mtd.lib;msvcmrt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\external\ASSIMP\lib;..\external\GLEW\lib\win32;..\external\GLFW\lib-vc2017;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\Release-windows-x86\RTR_Engine\RTR_Engine.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
@@ -123,7 +127,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_BUILD_DLL;RTR_DISTRIBUTION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\external\SPDLOG\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\external\SPDLOG\include;..\external\GLFW\include;..\external\GLEW\include;..\external\ASSIMP\include;..\external\GLM\glm;..\external\STB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -136,6 +140,8 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;assimp-vc141-mtd.lib;msvcmrt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\external\ASSIMP\lib;..\external\GLEW\lib\win32;..\external\GLFW\lib-vc2017;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>..\bin\Distribution-windows-x86\RTR_Engine\RTR_Engine.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
@@ -143,6 +149,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\external\STB\include\stb_image.h" />
     <ClInclude Include="src\Legacy\Camera.h" />
     <ClInclude Include="src\Legacy\FrameBuffer.h" />
     <ClInclude Include="src\Legacy\Framework.h" />
@@ -171,6 +178,7 @@
     <ClInclude Include="src\RTREngine\Log.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\external\STB\include\stb_image.cpp" />
     <ClCompile Include="src\Legacy\Camera.cpp" />
     <ClCompile Include="src\Legacy\FrameBuffer.cpp" />
     <ClCompile Include="src\Legacy\Framework.cpp" />

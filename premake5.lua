@@ -1,5 +1,8 @@
 workspace "RTR_Solution"
+
+	-- System architecture (either 32 or 64 bit)
 	architecture "x86"
+	startproject "RTR_Sandbox"
 
 	configurations
 	{
@@ -8,7 +11,17 @@ workspace "RTR_Solution"
 		"Distribution"
 	}
 
+-- Output directories
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+
+-- Include directories relative to root folder (solution directory)
+IncludeDir = {}
+IncludeDir["GLFW"] = "external/GLFW/include"
+IncludeDir["GLEW"] = "external/GLEW/include"
+IncludeDir["ASSIMP"] = "external/ASSIMP/include"
+IncludeDir["GLM"] = "external/GLM/glm"
+IncludeDir["stb_image"] = "external/STB/include"
+
 
 project "RTR_Engine"
 	location "RTR_Engine"
@@ -20,17 +33,41 @@ project "RTR_Engine"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("build/" .. outputdir .. "/%{prj.name}")
 
+	-- Adds files to a project
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/src/**.cpp"
 	}
 
+	-- Specifies the include file search paths for the compiler
 	includedirs
 	{
 		"external/SPDLOG/include";	
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.GLEW}",
+		"%{IncludeDir.ASSIMP}",
+		"%{IncludeDir.GLM}",
+		"%{IncludeDir.stb_image}"
 	}
 
+	-- Sets additional dependencies (.lib files)
+	links 
+	{ 
+		"opengl32",	
+		"glew32",
+		"glfw3",
+		"assimp-vc141-mtd"
+	}
+
+	 -- For 32 bit use these library paths
+    libdirs { 
+		"external/ASSIMP/lib",
+		"external/GLEW/lib/win32",
+		"external/GLFW/lib-vc2017"
+	 }
+
+	-- Build settings for windows
 	filter "system:windows"
 		systemversion "latest"
 
@@ -46,6 +83,7 @@ project "RTR_Engine"
 			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/RTR_Sandbox")
 		}
 
+	-- Build configurations
 	filter "configurations:Debug"
 		defines "RTR_DEBUG"
 		runtime "Debug"
@@ -72,12 +110,13 @@ project "RTR_Sandbox"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("build/" .. outputdir .. "/%{prj.name}")
 
-		files
+	files
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
 	}
 
+	-- Specifies the include file search paths for the compiler
 	includedirs
 	{
 		"external/SPDLOG/include";
@@ -89,6 +128,7 @@ project "RTR_Sandbox"
 		"RTR_Engine"
 	}
 
+	-- Build settings for windows
 	filter "system:windows"
 		systemversion "latest"
 
@@ -97,6 +137,7 @@ project "RTR_Sandbox"
 			"RTR_PLATFORM_WINDOWS"
 		}
 
+	-- Build configurations
 	filter "configurations:Debug"
 		defines "RTR_DEBUG"
 		runtime "Debug"

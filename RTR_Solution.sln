@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RTR_Engine", "RTR_Engine\RTR_Engine.vcxproj", "{F2EECCA0-DEA6-0EEE-47AE-E7493385A9DE}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RTR_Sandbox", "RTR_Sandbox\RTR_Sandbox.vcxproj", "{EBCB42D2-5781-BBC7-E075-B59E4C2AB2CB}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RTR_Engine", "RTR_Engine\RTR_Engine.vcxproj", "{F2EECCA0-DEA6-0EEE-47AE-E7493385A9DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,18 +12,18 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F2EECCA0-DEA6-0EEE-47AE-E7493385A9DE}.Debug|Win32.ActiveCfg = Debug|Win32
-		{F2EECCA0-DEA6-0EEE-47AE-E7493385A9DE}.Debug|Win32.Build.0 = Debug|Win32
-		{F2EECCA0-DEA6-0EEE-47AE-E7493385A9DE}.Distribution|Win32.ActiveCfg = Distribution|Win32
-		{F2EECCA0-DEA6-0EEE-47AE-E7493385A9DE}.Distribution|Win32.Build.0 = Distribution|Win32
-		{F2EECCA0-DEA6-0EEE-47AE-E7493385A9DE}.Release|Win32.ActiveCfg = Release|Win32
-		{F2EECCA0-DEA6-0EEE-47AE-E7493385A9DE}.Release|Win32.Build.0 = Release|Win32
 		{EBCB42D2-5781-BBC7-E075-B59E4C2AB2CB}.Debug|Win32.ActiveCfg = Debug|Win32
 		{EBCB42D2-5781-BBC7-E075-B59E4C2AB2CB}.Debug|Win32.Build.0 = Debug|Win32
 		{EBCB42D2-5781-BBC7-E075-B59E4C2AB2CB}.Distribution|Win32.ActiveCfg = Distribution|Win32
 		{EBCB42D2-5781-BBC7-E075-B59E4C2AB2CB}.Distribution|Win32.Build.0 = Distribution|Win32
 		{EBCB42D2-5781-BBC7-E075-B59E4C2AB2CB}.Release|Win32.ActiveCfg = Release|Win32
 		{EBCB42D2-5781-BBC7-E075-B59E4C2AB2CB}.Release|Win32.Build.0 = Release|Win32
+		{F2EECCA0-DEA6-0EEE-47AE-E7493385A9DE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F2EECCA0-DEA6-0EEE-47AE-E7493385A9DE}.Debug|Win32.Build.0 = Debug|Win32
+		{F2EECCA0-DEA6-0EEE-47AE-E7493385A9DE}.Distribution|Win32.ActiveCfg = Distribution|Win32
+		{F2EECCA0-DEA6-0EEE-47AE-E7493385A9DE}.Distribution|Win32.Build.0 = Distribution|Win32
+		{F2EECCA0-DEA6-0EEE-47AE-E7493385A9DE}.Release|Win32.ActiveCfg = Release|Win32
+		{F2EECCA0-DEA6-0EEE-47AE-E7493385A9DE}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

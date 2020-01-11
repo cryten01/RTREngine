@@ -13,22 +13,18 @@
 #include <typeinfo>
 
 // GLEW
-#define GLEW_STATIC
 #include <GL/glew.h>
 
 // GLFW (must be after GLEW)
 #include <GLFW/glfw3.h>
 
 // GLM
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm\gtc\matrix_transform.hpp>
+#include <glm.hpp>
+#include <gtc/type_ptr.hpp>
+#include <gtc/matrix_transform.hpp>
 
 // ASSIMP
 #include <assimp\scene.h>
-
-// SOIL2
-#include <SOIL2.h>
 
 // STBI
 #include <stb_image.h>

@@ -143,6 +143,13 @@ project "RTR_Sandbox"
 			"RTR_PLATFORM_WINDOWS"
 		}
 
+		postbuildcommands
+		{
+			-- copies assimp-vc141-mtd.dll into RTR_Sandbox executable folder
+			("{COPY} %{wks.location}external/ASSIMP/lib/assimp-vc141-mtd.dll %{cfg.targetdir}")
+		}
+
+
 	-- Build configurations
 	filter "configurations:Debug"
 		defines "RTR_DEBUG"

@@ -3,7 +3,7 @@
 
 #include "RTREngine/Core/Core.h"
 
-namespace Hazel {
+namespace RTREngine {
 
 	// Events in the RTREngine are currently blocking, meaning when an event occurs it
 	// immediately gets dispatched and must be dealt with right then an there.

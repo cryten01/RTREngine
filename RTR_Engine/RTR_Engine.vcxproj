@@ -159,6 +159,7 @@
     <ClInclude Include="src\RTREngine\Core\EntryPoint.h" />
     <ClInclude Include="src\RTREngine\Core\Input.h" />
     <ClInclude Include="src\RTREngine\Core\Log.h" />
+    <ClInclude Include="src\RTREngine\Events\Event.h" />
     <ClInclude Include="src\RTREngine\Legacy\Camera.h" />
     <ClInclude Include="src\RTREngine\Legacy\FrameBuffer.h" />
     <ClInclude Include="src\RTREngine\Legacy\Framework.h" />

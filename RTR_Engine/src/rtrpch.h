@@ -2,6 +2,7 @@
 
 //--------------------------------------------------------------------------
 // A pre-compiled header file for all required includes (former Utils.h)
+// that is useful for reducing compile times.
 //--------------------------------------------------------------------------
 
 #include <iostream>

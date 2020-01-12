@@ -19,6 +19,12 @@
     <Filter Include="src\RTREngine">
       <UniqueIdentifier>{8A316958-F6F1-E48E-BF2C-2E0C2BAC296B}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\RTREngine\Core">
+      <UniqueIdentifier>{22DC3094-0EC0-F1E9-7720-EC3C6323DC6B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\RTREngine\Events">
+      <UniqueIdentifier>{2E7EFA68-1A0D-8432-C32B-982DAF9994D8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\external\STB\include\stb_image.h">
@@ -87,20 +93,23 @@
     <ClInclude Include="src\Legacy\Window.h">
       <Filter>src\Legacy</Filter>
     </ClInclude>
-    <ClInclude Include="src\RTR.h">
+    <ClInclude Include="src\RTREngine\Core\App.h">
+      <Filter>src\RTREngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RTREngine\Core\Core.h">
+      <Filter>src\RTREngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RTREngine\Core\EntryPoint.h">
+      <Filter>src\RTREngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RTREngine\Core\Input.h">
+      <Filter>src\RTREngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RTREngine\Core\Log.h">
+      <Filter>src\RTREngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RTREngine\RTR.h">
       <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\App.h">
-      <Filter>src\RTREngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\Core.h">
-      <Filter>src\RTREngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\EntryPoint.h">
-      <Filter>src\RTREngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\Log.h">
-      <Filter>src\RTREngine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -161,11 +170,14 @@
     <ClCompile Include="src\Legacy\Window.cpp">
       <Filter>src\Legacy</Filter>
     </ClCompile>
-    <ClCompile Include="src\RTREngine\App.cpp">
-      <Filter>src\RTREngine</Filter>
+    <ClCompile Include="src\RTREngine\Core\App.cpp">
+      <Filter>src\RTREngine\Core</Filter>
     </ClCompile>
-    <ClCompile Include="src\RTREngine\Log.cpp">
-      <Filter>src\RTREngine</Filter>
+    <ClCompile Include="src\RTREngine\Core\Input.cpp">
+      <Filter>src\RTREngine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RTREngine\Core\Log.cpp">
+      <Filter>src\RTREngine\Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

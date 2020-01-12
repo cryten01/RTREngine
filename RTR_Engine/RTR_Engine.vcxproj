@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_BUILD_DLL;RTR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\external\SPDLOG\include;..\external\GLFW\include;..\external\GLEW\include;..\external\ASSIMP\include;..\external\GLM\glm;..\external\STB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\external\SPDLOG\include;..\external\GLFW\include;..\external\GLEW\include;..\external\ASSIMP\include;..\external\GLM\glm;..\external\STB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -101,7 +101,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_BUILD_DLL;RTR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\external\SPDLOG\include;..\external\GLFW\include;..\external\GLEW\include;..\external\ASSIMP\include;..\external\GLM\glm;..\external\STB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\external\SPDLOG\include;..\external\GLFW\include;..\external\GLEW\include;..\external\ASSIMP\include;..\external\GLM\glm;..\external\STB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -127,7 +127,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_BUILD_DLL;RTR_DISTRIBUTION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\external\SPDLOG\include;..\external\GLFW\include;..\external\GLEW\include;..\external\ASSIMP\include;..\external\GLM\glm;..\external\STB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\external\SPDLOG\include;..\external\GLFW\include;..\external\GLEW\include;..\external\ASSIMP\include;..\external\GLM\glm;..\external\STB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -171,11 +171,12 @@
     <ClInclude Include="src\Legacy\Transform.h" />
     <ClInclude Include="src\Legacy\Utils.h" />
     <ClInclude Include="src\Legacy\Window.h" />
-    <ClInclude Include="src\RTR.h" />
-    <ClInclude Include="src\RTREngine\App.h" />
-    <ClInclude Include="src\RTREngine\Core.h" />
-    <ClInclude Include="src\RTREngine\EntryPoint.h" />
-    <ClInclude Include="src\RTREngine\Log.h" />
+    <ClInclude Include="src\RTREngine\RTR.h" />
+    <ClInclude Include="src\RTREngine\Core\App.h" />
+    <ClInclude Include="src\RTREngine\Core\Core.h" />
+    <ClInclude Include="src\RTREngine\Core\EntryPoint.h" />
+    <ClInclude Include="src\RTREngine\Core\Input.h" />
+    <ClInclude Include="src\RTREngine\Core\Log.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\external\STB\include\stb_image.cpp" />
@@ -197,8 +198,11 @@
     <ClCompile Include="src\Legacy\Time.cpp" />
     <ClCompile Include="src\Legacy\Transform.cpp" />
     <ClCompile Include="src\Legacy\Window.cpp" />
-    <ClCompile Include="src\RTREngine\App.cpp" />
-    <ClCompile Include="src\RTREngine\Log.cpp" />
+    <ClCompile Include="src\RTREngine\Core\App.cpp" />
+    <ClCompile Include="src\RTREngine\Core\Input.cpp">
+      <ObjectFileName>$(IntDir)\Input1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\RTREngine\Core\Log.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\external\GLFW\GLFW.vcxproj">

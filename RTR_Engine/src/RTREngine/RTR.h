@@ -1,12 +1,12 @@
 #pragma once
 
 // Used only for RTR applications
-#include "RTREngine/App.h"
-#include "RTREngine/Log.h"
+#include "RTREngine/Core/App.h"
+#include "RTREngine/Core/Log.h"
 
 
 //-----------------------------------
 // Entry point
 //-----------------------------------
 
-#include "RTREngine/Entrypoint.h"
+#include "RTREngine/Core/Entrypoint.h"

@@ -1,6 +1,4 @@
-#include "App.h"
-#include "../Legacy/LegacyApp.h"
-
+#include "RTREngine/Core/App.h"
 
 namespace RTREngine 
 {

@@ -1,6 +1,5 @@
 #pragma once
-
-#include "Core.h"
+#include "RTREngine/Core/Core.h"
 
 namespace RTREngine 
 {

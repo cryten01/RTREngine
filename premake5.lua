@@ -49,6 +49,7 @@ project "RTR_Engine"
 	-- Specifies the include file search paths for the compiler
 	includedirs
 	{
+		"%{prj.name}/src",			-- Included so that headers can be included from the source
 		"%{IncludeDir.SPDLOG}",	
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLEW}",

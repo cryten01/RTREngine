@@ -76,7 +76,8 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>rtrpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_BUILD_DLL;RTR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;..\external\SPDLOG\include;..\external\GLFW\include;..\external\GLEW\include;..\external\ASSIMP\include;..\external\GLM\glm;..\external\STB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -98,7 +99,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>rtrpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_BUILD_DLL;RTR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;..\external\SPDLOG\include;..\external\GLFW\include;..\external\GLEW\include;..\external\ASSIMP\include;..\external\GLM\glm;..\external\STB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -124,7 +126,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|Win32'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>rtrpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_BUILD_DLL;RTR_DISTRIBUTION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;..\external\SPDLOG\include;..\external\GLFW\include;..\external\GLEW\include;..\external\ASSIMP\include;..\external\GLM\glm;..\external\STB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -150,59 +153,63 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\external\STB\include\stb_image.h" />
-    <ClInclude Include="src\Legacy\Camera.h" />
-    <ClInclude Include="src\Legacy\FrameBuffer.h" />
-    <ClInclude Include="src\Legacy\Framework.h" />
-    <ClInclude Include="src\Legacy\Input.h" />
-    <ClInclude Include="src\Legacy\Interfaces.h" />
-    <ClInclude Include="src\Legacy\LegacyApp.h" />
-    <ClInclude Include="src\Legacy\Light.h" />
-    <ClInclude Include="src\Legacy\Material.h" />
-    <ClInclude Include="src\Legacy\Mesh.h" />
-    <ClInclude Include="src\Legacy\Model.h" />
-    <ClInclude Include="src\Legacy\ParticleSystem.h" />
-    <ClInclude Include="src\Legacy\Resources.h" />
-    <ClInclude Include="src\Legacy\Scene.h" />
-    <ClInclude Include="src\Legacy\SceneObject.h" />
-    <ClInclude Include="src\Legacy\Shader.h" />
-    <ClInclude Include="src\Legacy\Skybox.h" />
-    <ClInclude Include="src\Legacy\Texture.h" />
-    <ClInclude Include="src\Legacy\Time.h" />
-    <ClInclude Include="src\Legacy\Transform.h" />
-    <ClInclude Include="src\Legacy\Utils.h" />
-    <ClInclude Include="src\Legacy\Window.h" />
-    <ClInclude Include="src\RTREngine\RTR.h" />
+    <ClInclude Include="src\RTR.h" />
     <ClInclude Include="src\RTREngine\Core\App.h" />
     <ClInclude Include="src\RTREngine\Core\Core.h" />
     <ClInclude Include="src\RTREngine\Core\EntryPoint.h" />
     <ClInclude Include="src\RTREngine\Core\Input.h" />
     <ClInclude Include="src\RTREngine\Core\Log.h" />
+    <ClInclude Include="src\RTREngine\Legacy\Camera.h" />
+    <ClInclude Include="src\RTREngine\Legacy\FrameBuffer.h" />
+    <ClInclude Include="src\RTREngine\Legacy\Framework.h" />
+    <ClInclude Include="src\RTREngine\Legacy\Input.h" />
+    <ClInclude Include="src\RTREngine\Legacy\Interfaces.h" />
+    <ClInclude Include="src\RTREngine\Legacy\LegacyApp.h" />
+    <ClInclude Include="src\RTREngine\Legacy\Light.h" />
+    <ClInclude Include="src\RTREngine\Legacy\Material.h" />
+    <ClInclude Include="src\RTREngine\Legacy\Mesh.h" />
+    <ClInclude Include="src\RTREngine\Legacy\Model.h" />
+    <ClInclude Include="src\RTREngine\Legacy\ParticleSystem.h" />
+    <ClInclude Include="src\RTREngine\Legacy\Resources.h" />
+    <ClInclude Include="src\RTREngine\Legacy\Scene.h" />
+    <ClInclude Include="src\RTREngine\Legacy\SceneObject.h" />
+    <ClInclude Include="src\RTREngine\Legacy\Shader.h" />
+    <ClInclude Include="src\RTREngine\Legacy\Skybox.h" />
+    <ClInclude Include="src\RTREngine\Legacy\Texture.h" />
+    <ClInclude Include="src\RTREngine\Legacy\Time.h" />
+    <ClInclude Include="src\RTREngine\Legacy\Transform.h" />
+    <ClInclude Include="src\RTREngine\Legacy\Utils.h" />
+    <ClInclude Include="src\RTREngine\Legacy\Window.h" />
+    <ClInclude Include="src\rtrpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\external\STB\include\stb_image.cpp" />
-    <ClCompile Include="src\Legacy\Camera.cpp" />
-    <ClCompile Include="src\Legacy\FrameBuffer.cpp" />
-    <ClCompile Include="src\Legacy\Framework.cpp" />
-    <ClCompile Include="src\Legacy\Input.cpp" />
-    <ClCompile Include="src\Legacy\LegacyApp.cpp" />
-    <ClCompile Include="src\Legacy\Material.cpp" />
-    <ClCompile Include="src\Legacy\Mesh.cpp" />
-    <ClCompile Include="src\Legacy\Model.cpp" />
-    <ClCompile Include="src\Legacy\ParticleSystem.cpp" />
-    <ClCompile Include="src\Legacy\Resources.cpp" />
-    <ClCompile Include="src\Legacy\Scene.cpp" />
-    <ClCompile Include="src\Legacy\SceneObject.cpp" />
-    <ClCompile Include="src\Legacy\Shader.cpp" />
-    <ClCompile Include="src\Legacy\Skybox.cpp" />
-    <ClCompile Include="src\Legacy\Texture.cpp" />
-    <ClCompile Include="src\Legacy\Time.cpp" />
-    <ClCompile Include="src\Legacy\Transform.cpp" />
-    <ClCompile Include="src\Legacy\Window.cpp" />
     <ClCompile Include="src\RTREngine\Core\App.cpp" />
-    <ClCompile Include="src\RTREngine\Core\Input.cpp">
+    <ClCompile Include="src\RTREngine\Core\Input.cpp" />
+    <ClCompile Include="src\RTREngine\Core\Log.cpp" />
+    <ClCompile Include="src\RTREngine\Legacy\Camera.cpp" />
+    <ClCompile Include="src\RTREngine\Legacy\FrameBuffer.cpp" />
+    <ClCompile Include="src\RTREngine\Legacy\Framework.cpp" />
+    <ClCompile Include="src\RTREngine\Legacy\Input.cpp">
       <ObjectFileName>$(IntDir)\Input1.obj</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="src\RTREngine\Core\Log.cpp" />
+    <ClCompile Include="src\RTREngine\Legacy\LegacyApp.cpp" />
+    <ClCompile Include="src\RTREngine\Legacy\Material.cpp" />
+    <ClCompile Include="src\RTREngine\Legacy\Mesh.cpp" />
+    <ClCompile Include="src\RTREngine\Legacy\Model.cpp" />
+    <ClCompile Include="src\RTREngine\Legacy\ParticleSystem.cpp" />
+    <ClCompile Include="src\RTREngine\Legacy\Resources.cpp" />
+    <ClCompile Include="src\RTREngine\Legacy\Scene.cpp" />
+    <ClCompile Include="src\RTREngine\Legacy\SceneObject.cpp" />
+    <ClCompile Include="src\RTREngine\Legacy\Shader.cpp" />
+    <ClCompile Include="src\RTREngine\Legacy\Skybox.cpp" />
+    <ClCompile Include="src\RTREngine\Legacy\Texture.cpp" />
+    <ClCompile Include="src\RTREngine\Legacy\Time.cpp" />
+    <ClCompile Include="src\RTREngine\Legacy\Transform.cpp" />
+    <ClCompile Include="src\RTREngine\Legacy\Window.cpp" />
+    <ClCompile Include="src\rtrpch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\external\GLFW\GLFW.vcxproj">

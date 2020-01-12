@@ -1,3 +1,4 @@
+#include "rtrpch.h"
 #include "Framework.h"
 
 using namespace RTREngine;

@@ -1,3 +1,4 @@
+#include "rtrpch.h"
 #include "Camera.h"
 
 using namespace RTREngine;
@@ -6,12 +7,16 @@ Camera::Camera(float fov, float aspect, float near, float far, std::shared_ptr<I
 	:_input(input)
 {
 	// Creates a new projection matrix
-	_projMatrix = glm::perspective(
-		glm::radians(fov),
-		aspect,
-		near,
-		far
-	);
+	//_projMatrix = glm::perspective(
+	//	glm::radians(fov),
+	//	aspect,
+	//	near,
+	//	far
+	//);
+
+
+	// For debugging only
+	_projMatrix = glm::mat4(1.0f);
 
 	// Initial values
 	_position = glm::vec3(0.0f, 0.0f, 0.0f);

@@ -1,3 +1,4 @@
+#include "rtrpch.h"
 #include "Time.h"
 
 using namespace RTREngine;

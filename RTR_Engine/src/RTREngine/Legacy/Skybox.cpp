@@ -1,3 +1,4 @@
+#include "rtrpch.h"
 #include "Skybox.h"
 
 using namespace RTREngine;

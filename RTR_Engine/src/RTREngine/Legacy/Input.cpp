@@ -1,3 +1,4 @@
+#include "rtrpch.h"
 #include "Input.h"
 
 using namespace RTREngine;

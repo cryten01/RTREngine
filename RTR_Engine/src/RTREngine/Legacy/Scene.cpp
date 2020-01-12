@@ -1,3 +1,4 @@
+#include "rtrpch.h"
 #include "Scene.h"
 
 using namespace RTREngine;

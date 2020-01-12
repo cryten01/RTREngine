@@ -1,3 +1,4 @@
+#include "rtrpch.h"
 #include "LegacyApp.h"
 
 using namespace RTREngine;

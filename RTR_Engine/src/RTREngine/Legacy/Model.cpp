@@ -1,3 +1,4 @@
+#include "rtrpch.h"
 #include "Model.h"
 
 using namespace RTREngine;

@@ -1,3 +1,4 @@
+#include "rtrpch.h"
 #include "ParticleSystem.h"
 
 using namespace RTREngine;

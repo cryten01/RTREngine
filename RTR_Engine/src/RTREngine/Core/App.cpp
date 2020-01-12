@@ -1,3 +1,4 @@
+#include "rtrpch.h"
 #include "RTREngine/Core/App.h"
 
 namespace RTREngine 

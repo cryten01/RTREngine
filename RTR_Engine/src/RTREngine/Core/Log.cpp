@@ -1,3 +1,4 @@
+#include "rtrpch.h"
 #include "RTREngine/Core/Log.h"
 
 namespace RTREngine

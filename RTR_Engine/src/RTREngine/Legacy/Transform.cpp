@@ -1,3 +1,4 @@
+#include "rtrpch.h"
 #include "Transform.h"
 
 using namespace RTREngine;

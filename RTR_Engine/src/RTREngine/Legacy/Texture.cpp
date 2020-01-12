@@ -1,3 +1,4 @@
+#include "rtrpch.h"
 #include "Texture.h"
 
 using namespace RTREngine;

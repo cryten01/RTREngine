@@ -1,3 +1,4 @@
+#include "rtrpch.h"
 #include "Material.h"
 
 using namespace RTREngine;

@@ -1,3 +1,4 @@
+#include "rtrpch.h"
 #include "Window.h"
 
 using namespace RTREngine;

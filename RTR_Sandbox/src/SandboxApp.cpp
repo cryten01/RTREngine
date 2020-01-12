@@ -1,4 +1,4 @@
-#include <RTREngine/RTR.h>
+#include <RTR.h>
 
 class Sandbox : public RTREngine::App 
 {

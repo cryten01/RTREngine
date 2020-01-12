@@ -37,6 +37,10 @@ project "RTR_Engine"
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("build/" .. outputdir .. "/%{prj.name}")
 
+	-- Precompiled header
+	pchheader "rtrpch.h"
+	pchsource "RTR_Engine/src/rtrpch.cpp"
+
 	-- Adds files to a project
 	files
 	{

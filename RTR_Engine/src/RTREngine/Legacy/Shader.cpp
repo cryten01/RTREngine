@@ -1,3 +1,4 @@
+#include "rtrpch.h"
 #include "Shader.h"
 
 using namespace RTREngine;

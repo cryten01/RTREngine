@@ -1,3 +1,4 @@
+#include "rtrpch.h"
 #include "FrameBuffer.h"
 
 using namespace RTREngine;

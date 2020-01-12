@@ -13,6 +13,7 @@
 #include <typeinfo>
 
 // GLEW
+#define GLEW_STATIC
 #include <GL/glew.h>
 
 // GLFW (must be after GLEW)

@@ -14,13 +14,17 @@ workspace "RTR_Solution"
 -- Output directories
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
--- Include directories relative to root folder (solution directory)
+-- Include directories relative to root folder (solution directory), cpp compiler include directories
 IncludeDir = {}
+IncludeDir["SPDLOG"] = "external/SPDLOG/include"
 IncludeDir["GLFW"] = "external/GLFW/include"
 IncludeDir["GLEW"] = "external/GLEW/include"
 IncludeDir["ASSIMP"] = "external/ASSIMP/include"
 IncludeDir["GLM"] = "external/GLM/glm"
-IncludeDir["stb_image"] = "external/STB/include"
+IncludeDir["STB_IMAGE"] = "external/STB/include"
+
+-- Include other premake files
+include "external/GLFW"
 
 
 project "RTR_Engine"
@@ -37,26 +41,28 @@ project "RTR_Engine"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"external/STB/include/**.h",
+		"external/STB/include/**.cpp",
 	}
 
 	-- Specifies the include file search paths for the compiler
 	includedirs
 	{
-		"external/SPDLOG/include";	
+		"%{IncludeDir.SPDLOG}",	
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLEW}",
 		"%{IncludeDir.ASSIMP}",
 		"%{IncludeDir.GLM}",
-		"%{IncludeDir.stb_image}"
+		"%{IncludeDir.STB_IMAGE}"
 	}
 
 	-- Sets additional dependencies (.lib files)
 	links 
 	{ 
-		"opengl32",	
-		"glew32",
-		"glfw3",
+		"opengl32.lib",	
+		"glew32s.lib",
+		"GLFW",
 		"assimp-vc141-mtd"
 	}
 
@@ -64,7 +70,6 @@ project "RTR_Engine"
     libdirs { 
 		"external/ASSIMP/lib",
 		"external/GLEW/lib/win32",
-		"external/GLFW/lib-vc2017"
 	 }
 
 	-- Build settings for windows
@@ -119,7 +124,8 @@ project "RTR_Sandbox"
 	-- Specifies the include file search paths for the compiler
 	includedirs
 	{
-		"external/SPDLOG/include";
+		"%{IncludeDir.SPDLOG}",
+		"%{IncludeDir.ASSIMP}",
 		"RTR_Engine/src"
 	}
 

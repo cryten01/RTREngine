@@ -20,20 +20,20 @@ public:
 };
 
 
-class Sandbox : public RTREngine::App 
+class WinterWonderland : public RTREngine::App 
 {
 public:
-	Sandbox()
+	WinterWonderland()
 	{
 		PushLayer(new ExampleLayer());
 	}
 
-	~Sandbox() 
+	~WinterWonderland() 
 	{
 	};
 };
 
 RTREngine::App* RTREngine::CreateApp()
 {
-	return new Sandbox();
+	return new WinterWonderland();
 }

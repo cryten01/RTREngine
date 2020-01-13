@@ -2,7 +2,7 @@ workspace "RTR_Solution"
 
 	-- System architecture (either 32 or 64 bit)
 	architecture "x86"
-	startproject "RTR_Sandbox"
+	startproject "RTR_WinterWonderland"
 
 	configurations
 	{
@@ -90,8 +90,8 @@ project "RTR_Engine"
 
 		postbuildcommands
 		{
-			-- copies RTR_Engine.dll into RTR_Sandbox executable folder
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/RTR_Sandbox")
+			-- copies RTR_Engine.dll into RTR_WinterWonderland executable folder
+			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/RTR_WinterWonderland")
 		}
 
 	-- Build configurations
@@ -111,8 +111,8 @@ project "RTR_Engine"
 		optimize "on"
 
 
-project "RTR_Sandbox"
-	location "RTR_Sandbox"
+project "RTR_WinterWonderland"
+	location "RTR_WinterWonderland"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
@@ -151,7 +151,7 @@ project "RTR_Sandbox"
 
 		postbuildcommands
 		{
-			-- copies assimp-vc141-mtd.dll into RTR_Sandbox executable folder
+			-- copies assimp-vc141-mtd.dll into RTR_WinterWonderland executable folder
 			("{COPY} %{wks.location}external/ASSIMP/lib/assimp-vc141-mtd.dll %{cfg.targetdir}")
 		}
 

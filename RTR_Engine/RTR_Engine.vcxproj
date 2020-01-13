@@ -83,8 +83,7 @@
       <AdditionalIncludeDirectories>src;..\external\SPDLOG\include;..\external\GLFW\include;..\external\GLEW\include;..\external\ASSIMP\include;..\external\GLM\glm;..\external\STB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalOptions>/MDd %(AdditionalOptions)</AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -95,7 +94,7 @@
       <ImportLibrary>..\bin\Debug-windows-x86\RTR_Engine\RTR_Engine.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Debug-windows-x86\RTR_Engine\RTR_Engine.dll\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86\RTR_Engine\RTR_Engine.dll ..\bin\Debug-windows-x86\RTR_Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86\RTR_Engine\RTR_Engine.dll ..\bin\Debug-windows-x86\RTR_Sandbox &gt; nul)</Command>
+      <Command>IF EXIST ..\bin\Debug-windows-x86\RTR_Engine\RTR_Engine.dll\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86\RTR_Engine\RTR_Engine.dll ..\bin\Debug-windows-x86\RTR_WinterWonderland &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86\RTR_Engine\RTR_Engine.dll ..\bin\Debug-windows-x86\RTR_WinterWonderland &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -111,7 +110,6 @@
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalOptions>/MD %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -123,7 +121,7 @@
       <ImportLibrary>..\bin\Release-windows-x86\RTR_Engine\RTR_Engine.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Release-windows-x86\RTR_Engine\RTR_Engine.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86\RTR_Engine\RTR_Engine.dll ..\bin\Release-windows-x86\RTR_Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86\RTR_Engine\RTR_Engine.dll ..\bin\Release-windows-x86\RTR_Sandbox &gt; nul)</Command>
+      <Command>IF EXIST ..\bin\Release-windows-x86\RTR_Engine\RTR_Engine.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86\RTR_Engine\RTR_Engine.dll ..\bin\Release-windows-x86\RTR_WinterWonderland &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86\RTR_Engine\RTR_Engine.dll ..\bin\Release-windows-x86\RTR_WinterWonderland &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|Win32'">
@@ -139,7 +137,6 @@
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalOptions>/MD %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -151,7 +148,7 @@
       <ImportLibrary>..\bin\Distribution-windows-x86\RTR_Engine\RTR_Engine.lib</ImportLibrary>
     </Link>
     <PostBuildEvent>
-      <Command>IF EXIST ..\bin\Distribution-windows-x86\RTR_Engine\RTR_Engine.dll\ (xcopy /Q /E /Y /I ..\bin\Distribution-windows-x86\RTR_Engine\RTR_Engine.dll ..\bin\Distribution-windows-x86\RTR_Sandbox &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Distribution-windows-x86\RTR_Engine\RTR_Engine.dll ..\bin\Distribution-windows-x86\RTR_Sandbox &gt; nul)</Command>
+      <Command>IF EXIST ..\bin\Distribution-windows-x86\RTR_Engine\RTR_Engine.dll\ (xcopy /Q /E /Y /I ..\bin\Distribution-windows-x86\RTR_Engine\RTR_Engine.dll ..\bin\Distribution-windows-x86\RTR_WinterWonderland &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Distribution-windows-x86\RTR_Engine\RTR_Engine.dll ..\bin\Distribution-windows-x86\RTR_WinterWonderland &gt; nul)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

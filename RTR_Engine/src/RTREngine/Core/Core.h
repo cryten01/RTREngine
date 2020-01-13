@@ -3,26 +3,28 @@
 #include <memory>
 
 #ifdef RTR_PLATFORM_WINDOWS
-#ifdef RTR_BUILD_DLL
-#define RTR_API __declspec(dllexport)
+	#ifdef RTR_BUILD_DLL
+		#define RTR_API __declspec(dllexport)
+	#else
+		#define RTR_API __declspec(dllimport)
+	#endif
 #else
-#define RTR_API __declspec(dllimport)
-#endif // RTR_BUILD_DLL
-#else
-#error RTR_Engine only supports Windows!
-#endif // RTR_PLATFORM_WINDOWS
+	#error RTR_Engine only supports Windows!
+#endif
 
 #ifdef RTR_DEBUG
-#define RTR_ENABLE_ASSERTS
+	#define RTR_ENABLE_ASSERTS
 #endif
 
 #ifdef RTR_ENABLE_ASSERTS
-#define RTR_ASSERT(x, ...) { if(!(x)) { RTR_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
-#define RTR_CORE_ASSERT(x, ...) { if(!(x)) { RTR_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
+	#define RTR_ASSERT(x, ...) { if(!(x)) { RTR_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
+	#define RTR_CORE_ASSERT(x, ...) { if(!(x)) { RTR_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
 #else
-#define RTR_ASSERT(x, ...)
-#define RTR_CORE_ASSERT(x, ...)
+	#define RTR_ASSERT(x, ...)
+	#define RTR_CORE_ASSERT(x, ...)
 #endif
+
+#define BIT(x) (1 << x)
 
 
 namespace RTREngine {
@@ -42,5 +44,4 @@ namespace RTREngine {
 	{
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}
-
 }

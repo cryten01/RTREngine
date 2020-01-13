@@ -5,13 +5,13 @@
 
 namespace RTREngine {
 
-	class InputNew
+	class Input
 	{
 	protected:
-		InputNew() = default;
+		Input() = default;
 	public:
-		InputNew(const InputNew&) = delete;
-		InputNew& operator=(const InputNew&) = delete;
+		Input(const Input&) = delete;
+		Input& operator=(const Input&) = delete;
 
 		inline static bool IsKeyPressed(KeyCode key) { return s_Instance->IsKeyPressedImpl(key); }
 
@@ -20,7 +20,7 @@ namespace RTREngine {
 		inline static float GetMouseX() { return s_Instance->GetMouseXImpl(); }
 		inline static float GetMouseY() { return s_Instance->GetMouseYImpl(); }
 
-		static Scope<InputNew> Create();
+		static Scope<Input> Create();
 	protected:
 		virtual bool IsKeyPressedImpl(KeyCode key) = 0;
 
@@ -29,6 +29,6 @@ namespace RTREngine {
 		virtual float GetMouseXImpl() = 0;
 		virtual float GetMouseYImpl() = 0;
 	private:
-		static Scope<InputNew> s_Instance;
+		static Scope<Input> s_Instance;
 	};
 }

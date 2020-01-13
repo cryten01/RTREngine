@@ -9,7 +9,7 @@ using namespace RTREngine;
 *	glGenBuffers		Create Bufferobject (name only, context still needs to be defined)
 *	glBindBuffer		Connects GL_SHADER_STORAGE (Binding Point) with the SSBO
 *	glBufferdata		Define data-structure (defines how big the buffer is and what data it contains)
-*	GL_DYNAMIC_DRAW		Content of data-storage gets repeatedly declared by application.
+*	GL_DYNAMIC_DRAW		Content of data-storage gets repeatedly declared by App.
 **/
 ParticleSystem::ParticleSystem(std::vector<Particle> emitters, std::shared_ptr<Material> emitterMaterial, std::shared_ptr<Shader> computeShader, std::shared_ptr<Shader> renderShader, std::shared_ptr<Camera> camera)
 	: _emitterMaterial(emitterMaterial), _computeShader(computeShader), _renderShader(renderShader), _camera(camera)

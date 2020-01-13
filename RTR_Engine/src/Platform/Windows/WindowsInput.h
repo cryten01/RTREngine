@@ -1,10 +1,10 @@
 #pragma once
 
-#include "RTREngine/Core/InputNew.h"
+#include "RTREngine/Core/Input.h"
 
 namespace RTREngine {
 
-	class WindowsInput : public InputNew
+	class WindowsInput : public Input
 	{
 	protected:
 		virtual bool IsKeyPressedImpl(KeyCode key) override;

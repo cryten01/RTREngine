@@ -157,11 +157,12 @@
     <ClInclude Include="src\RTREngine\Core\App.h" />
     <ClInclude Include="src\RTREngine\Core\Core.h" />
     <ClInclude Include="src\RTREngine\Core\EntryPoint.h" />
-    <ClInclude Include="src\RTREngine\Core\InputNew.h" />
+    <ClInclude Include="src\RTREngine\Core\Input.h" />
     <ClInclude Include="src\RTREngine\Core\KeyCodes.h" />
     <ClInclude Include="src\RTREngine\Core\Log.h" />
     <ClInclude Include="src\RTREngine\Core\MouseCodes.h" />
-    <ClInclude Include="src\RTREngine\Events\ApplicationEvent.h" />
+    <ClInclude Include="src\RTREngine\Core\Window.h" />
+    <ClInclude Include="src\RTREngine\Events\AppEvent.h" />
     <ClInclude Include="src\RTREngine\Events\Event.h" />
     <ClInclude Include="src\RTREngine\Events\KeyEvent.h" />
     <ClInclude Include="src\RTREngine\Events\MouseEvent.h" />
@@ -188,12 +189,14 @@
     <ClInclude Include="src\RTREngine\Legacy\Window.h" />
     <ClInclude Include="src\rtrpch.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\external\STB\include\stb_image.cpp" />
     <ClCompile Include="src\RTREngine\Core\App.cpp" />
-    <ClCompile Include="src\RTREngine\Core\InputNew.cpp" />
+    <ClCompile Include="src\RTREngine\Core\Input.cpp" />
     <ClCompile Include="src\RTREngine\Core\Log.cpp" />
+    <ClCompile Include="src\RTREngine\Core\Window.cpp" />
     <ClCompile Include="src\RTREngine\Legacy\Camera.cpp" />
     <ClCompile Include="src\RTREngine\Legacy\FrameBuffer.cpp" />
     <ClCompile Include="src\RTREngine\Legacy\Framework.cpp" />
@@ -218,6 +221,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\external\GLFW\GLFW.vcxproj">

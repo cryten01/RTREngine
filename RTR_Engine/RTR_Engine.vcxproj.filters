@@ -111,11 +111,13 @@
     <ClInclude Include="src\RTREngine\Events\Event.h" />
     <ClInclude Include="src\RTREngine\Core\MouseCodes.h" />
     <ClInclude Include="src\RTREngine\Core\KeyCodes.h" />
-    <ClInclude Include="src\RTREngine\Core\InputNew.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
-    <ClInclude Include="src\RTREngine\Events\ApplicationEvent.h" />
     <ClInclude Include="src\RTREngine\Events\MouseEvent.h" />
     <ClInclude Include="src\RTREngine\Events\KeyEvent.h" />
+    <ClInclude Include="src\RTREngine\Core\Window.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
+    <ClInclude Include="src\RTREngine\Events\AppEvent.h" />
+    <ClInclude Include="src\RTREngine\Core\Input.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\external\STB\include\stb_image.cpp">
@@ -184,7 +186,9 @@
     <ClCompile Include="src\rtrpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\RTREngine\Core\InputNew.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
+    <ClCompile Include="src\RTREngine\Core\Window.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="src\RTREngine\Core\Input.cpp" />
   </ItemGroup>
 </Project>

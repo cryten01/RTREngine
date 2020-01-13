@@ -1,8 +1,11 @@
 #include "rtrpch.h"
+
 #include "Platform/Windows/WindowsInput.h"
 
 #include "RTREngine/Core/App.h"
+
 #include <GLFW/glfw3.h>
+
 
 namespace RTREngine {
 

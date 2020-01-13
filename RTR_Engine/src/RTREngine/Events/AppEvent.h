@@ -21,7 +21,7 @@ namespace RTREngine {
 		}
 
 		EVENT_CLASS_TYPE(WindowResize)
-			EVENT_CLASS_CATEGORY(EventCategoryApplication)
+			EVENT_CLASS_CATEGORY(EventCategoryApp)
 	private:
 		unsigned int m_Width, m_Height;
 	};
@@ -32,7 +32,7 @@ namespace RTREngine {
 		WindowCloseEvent() = default;
 
 		EVENT_CLASS_TYPE(WindowClose)
-			EVENT_CLASS_CATEGORY(EventCategoryApplication)
+			EVENT_CLASS_CATEGORY(EventCategoryApp)
 	};
 
 	class AppTickEvent : public Event
@@ -41,7 +41,7 @@ namespace RTREngine {
 		AppTickEvent() = default;
 
 		EVENT_CLASS_TYPE(AppTick)
-			EVENT_CLASS_CATEGORY(EventCategoryApplication)
+			EVENT_CLASS_CATEGORY(EventCategoryApp)
 	};
 
 	class AppUpdateEvent : public Event
@@ -50,7 +50,7 @@ namespace RTREngine {
 		AppUpdateEvent() = default;
 
 		EVENT_CLASS_TYPE(AppUpdate)
-			EVENT_CLASS_CATEGORY(EventCategoryApplication)
+			EVENT_CLASS_CATEGORY(EventCategoryApp)
 	};
 
 	class AppRenderEvent : public Event
@@ -59,6 +59,6 @@ namespace RTREngine {
 		AppRenderEvent() = default;
 
 		EVENT_CLASS_TYPE(AppRender)
-			EVENT_CLASS_CATEGORY(EventCategoryApplication)
+			EVENT_CLASS_CATEGORY(EventCategoryApp)
 	};
 }

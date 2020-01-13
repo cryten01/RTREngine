@@ -23,7 +23,8 @@ namespace RTREngine {
 	class Window
 	{
 	public:
-		using EventCallbackFn = std::function<void(Event&)>;
+		// Events are dispatched to callback function
+		using EventCallbackFn = std::function<void(Event&)>; 
 
 		virtual ~Window() = default;
 

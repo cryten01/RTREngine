@@ -15,7 +15,7 @@ namespace RTREngine {
 		RTR_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 		m_Window = Window::Create();
-		//m_Window->SetEventCallback(RTR_BIND_EVENT_FN(App::OnEvent));
+		m_Window->SetEventCallback(RTR_BIND_EVENT_FN(App::OnEvent));
 	}
 
 	App::~App()
@@ -24,9 +24,11 @@ namespace RTREngine {
 
 	void App::OnEvent(Event& e)
 	{
-		//EventDispatcher dispatcher(e);
-		//dispatcher.Dispatch<WindowCloseEvent>(RTR_BIND_EVENT_FN(App::OnWindowClose));
-		//dispatcher.Dispatch<WindowResizeEvent>(RTR_BIND_EVENT_FN(App::OnWindowResize));
+		RTR_CORE_TRACE("{0}", e);
+
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<WindowCloseEvent>(RTR_BIND_EVENT_FN(App::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(RTR_BIND_EVENT_FN(App::OnWindowResize));
 	}
 
 	void App::Run()
@@ -41,11 +43,20 @@ namespace RTREngine {
 
 	bool App::OnWindowClose(WindowCloseEvent& e)
 	{
-		return false;
+		m_Running = false;
+		return true;
 	}
 
 	bool App::OnWindowResize(WindowResizeEvent& e)
 	{
+		if (e.GetWidth() == 0 || e.GetHeight() == 0)
+		{
+			m_Minimized = true;
+			return false;
+		}
+
+		m_Minimized = false;
+
 		return false;
 	}
 }

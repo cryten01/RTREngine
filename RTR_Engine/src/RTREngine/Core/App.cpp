@@ -5,6 +5,7 @@
 
 #include <glfw/glfw3.h>
 
+
 namespace RTREngine {
 
 	App* App::s_Instance = nullptr;
@@ -23,6 +24,10 @@ namespace RTREngine {
 
 	void App::Run()
 	{
+		WindowResizeEvent e(1366, 768);
+		RTR_TRACE(e);
+
+
 		while (m_Running)
 		{
 		}

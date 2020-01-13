@@ -3,7 +3,7 @@
 #include "RTREngine/Core/Core.h"
 
 #include <spdlog/spdlog.h>
-#include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/fmt/ostr.h>
 
 
 namespace RTREngine 

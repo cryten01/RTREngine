@@ -9,7 +9,6 @@ extern RTREngine::App* RTREngine::CreateApp();
 int main(int argc, char** argv)
 {
 	RTREngine::Log::Init();
-
 	RTR_CORE_INFO("Initialized Log");
 
 	auto app = RTREngine::CreateApp();

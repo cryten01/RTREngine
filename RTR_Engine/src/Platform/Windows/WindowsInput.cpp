@@ -11,32 +11,37 @@ namespace RTREngine {
 
 	bool WindowsInput::IsKeyPressedImpl(KeyCode key)
 	{
-		// TODO
-		return true;
+		auto window = static_cast<GLFWwindow*>(App::Get().GetWindow().GetNativeWindow());
+		auto state = glfwGetKey(window, static_cast<int32_t>(key));
+		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 
 	bool WindowsInput::IsMouseButtonPressedImpl(MouseCode button)
 	{
-		// TODO
-		return true;
+		auto window = static_cast<GLFWwindow*>(App::Get().GetWindow().GetNativeWindow());
+		auto state = glfwGetMouseButton(window, static_cast<int32_t>(button));
+		return state == GLFW_PRESS;
 	}
 
 	std::pair<float, float> WindowsInput::GetMousePositionImpl()
 	{
-		// TODO
-		return { (float)1.0, (float)1.0 };
+		auto window = static_cast<GLFWwindow*>(App::Get().GetWindow().GetNativeWindow());
+		double xpos, ypos;
+		glfwGetCursorPos(window, &xpos, &ypos);
+
+		return { (float)xpos, (float)ypos };
 	}
 
 	float WindowsInput::GetMouseXImpl()
 	{
-		// TODO
-		return 1.0;
+		auto[x, y] = GetMousePositionImpl();
+		return x;
 	}
 
 	float WindowsInput::GetMouseYImpl()
 	{
-		// TODO
-		return 1.0;
+		auto[x, y] = GetMousePositionImpl();
+		return y;
 	}
 
 }

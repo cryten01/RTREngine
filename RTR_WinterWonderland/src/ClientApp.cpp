@@ -3,24 +3,24 @@
 class ExampleLayer : public RTREngine::Layer
 {
 public:
-	ExampleLayer() 
-		: Layer("Example") 
+	ExampleLayer()
+		: Layer("Example")
 	{
 	};
 
-	void OnUpdate() override 
+	void OnUpdate() override
 	{
-		RTR_CLIENT_INFO("ExampleLayer::Update");
+		//RTR_CLIENT_INFO("ExampleLayer::Update");
 	};
 
 	void OnEvent(RTREngine::Event& event) override
 	{
-		RTR_CLIENT_INFO("{0}", event);
+		//RTR_CLIENT_INFO("{0}", event);
 	};
 };
 
 
-class WinterWonderland : public RTREngine::App 
+class WinterWonderland : public RTREngine::App
 {
 public:
 	WinterWonderland()
@@ -28,7 +28,7 @@ public:
 		PushLayer(new ExampleLayer());
 	}
 
-	~WinterWonderland() 
+	~WinterWonderland()
 	{
 	};
 };

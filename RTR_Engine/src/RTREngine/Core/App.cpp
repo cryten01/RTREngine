@@ -63,6 +63,9 @@ namespace RTREngine {
 				layer->OnUpdate();
 			}
 
+			auto[x, y] = Input::GetMousePosition();
+			RTR_CORE_TRACE("{0}, {1}", x, y);
+
 			m_Window->OnUpdate();
 		}
 	}

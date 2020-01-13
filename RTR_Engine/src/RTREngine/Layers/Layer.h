@@ -5,7 +5,7 @@
 
 namespace RTREngine {
 
-	class Layer
+	class RTR_API Layer
 	{
 	public:
 		Layer(const std::string& name = "Layer");

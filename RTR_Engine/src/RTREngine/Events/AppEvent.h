@@ -4,7 +4,7 @@
 
 namespace RTREngine {
 
-	class WindowResizeEvent : public Event
+	class RTR_API WindowResizeEvent : public Event
 	{
 	public:
 		WindowResizeEvent(unsigned int width, unsigned int height)
@@ -26,7 +26,7 @@ namespace RTREngine {
 		unsigned int m_Width, m_Height;
 	};
 
-	class WindowCloseEvent : public Event
+	class RTR_API WindowCloseEvent : public Event
 	{
 	public:
 		WindowCloseEvent() = default;
@@ -35,7 +35,7 @@ namespace RTREngine {
 		EVENT_CLASS_CATEGORY(EventCategoryApp)
 	};
 
-	class AppTickEvent : public Event
+	class RTR_API AppTickEvent : public Event
 	{
 	public:
 		AppTickEvent() = default;
@@ -44,7 +44,7 @@ namespace RTREngine {
 		EVENT_CLASS_CATEGORY(EventCategoryApp)
 	};
 
-	class AppUpdateEvent : public Event
+	class RTR_API AppUpdateEvent : public Event
 	{
 	public:
 		AppUpdateEvent() = default;
@@ -53,7 +53,7 @@ namespace RTREngine {
 		EVENT_CLASS_CATEGORY(EventCategoryApp)
 	};
 
-	class AppRenderEvent : public Event
+	class RTR_API AppRenderEvent : public Event
 	{
 	public:
 		AppRenderEvent() = default;

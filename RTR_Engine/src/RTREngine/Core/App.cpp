@@ -1,4 +1,5 @@
 #include "rtrpch.h"
+
 #include "RTREngine/Core/App.h"
 #include "RTREngine/Core/Log.h"
 #include "RTREngine/Input/Input.h"
@@ -24,11 +25,29 @@ namespace RTREngine {
 
 	void App::OnEvent(Event& e)
 	{
-		RTR_CORE_TRACE("{0}", e);
-
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(RTR_BIND_EVENT_FN(App::OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(RTR_BIND_EVENT_FN(App::OnWindowResize));
+
+		// Update layers backwards (so that unnecessary calculations in deeper layers can be avoided)
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
+		{
+			(*it)->OnEvent(e);
+			if (e.Handled)
+				break;
+		}
+	}
+
+	void App::PushLayer(Layer* layer)
+	{
+		m_LayerStack.PushLayer(layer);
+		layer->OnAttach();
+	}
+
+	void App::PushOverlay(Layer* layer)
+	{
+		m_LayerStack.PushOverlay(layer);
+		layer->OnAttach();
 	}
 
 	void App::Run()
@@ -37,6 +56,13 @@ namespace RTREngine {
 		{
 			glClearColor(0.1, 0.1, 0.1, 1.0);
 			glClear(GL_COLOR_BUFFER_BIT);
+
+			// Updates every layer
+			for (Layer* layer : m_LayerStack) 
+			{
+				layer->OnUpdate();
+			}
+
 			m_Window->OnUpdate();
 		}
 	}
@@ -56,7 +82,6 @@ namespace RTREngine {
 		}
 
 		m_Minimized = false;
-
 		return false;
 	}
 }

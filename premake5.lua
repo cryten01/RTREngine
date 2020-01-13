@@ -11,6 +11,7 @@ workspace "RTR_Solution"
 		"Distribution"
 	}
 
+
 -- Output directories
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 

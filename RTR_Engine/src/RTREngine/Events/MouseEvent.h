@@ -5,7 +5,7 @@
 
 namespace RTREngine {
 
-	class MouseMovedEvent : public Event
+	class RTR_API MouseMovedEvent : public Event
 	{
 	public:
 		MouseMovedEvent(float x, float y)
@@ -27,7 +27,8 @@ namespace RTREngine {
 		float m_MouseX, m_MouseY;
 	};
 
-	class MouseScrolledEvent : public Event
+
+	class RTR_API MouseScrolledEvent : public Event
 	{
 	public:
 		MouseScrolledEvent(float xOffset, float yOffset)
@@ -49,7 +50,8 @@ namespace RTREngine {
 		float m_XOffset, m_YOffset;
 	};
 
-	class MouseButtonEvent : public Event
+
+	class RTR_API MouseButtonEvent : public Event
 	{
 	public:
 		inline MouseCode GetMouseButton() const { return m_Button; }
@@ -62,7 +64,8 @@ namespace RTREngine {
 		MouseCode m_Button;
 	};
 
-	class MouseButtonPressedEvent : public MouseButtonEvent
+
+	class RTR_API MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonPressedEvent(MouseCode button)
@@ -78,7 +81,8 @@ namespace RTREngine {
 		EVENT_CLASS_TYPE(MouseButtonPressed)
 	};
 
-	class MouseButtonReleasedEvent : public MouseButtonEvent
+
+	class RTR_API MouseButtonReleasedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonReleasedEvent(MouseCode button)
@@ -93,5 +97,4 @@ namespace RTREngine {
 
 		EVENT_CLASS_TYPE(MouseButtonReleased)
 	};
-
 }

@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "RTREngine/Core/Core.h"
 #include "RTREngine/Layers/Layer.h"
 
@@ -8,16 +7,17 @@
 
 namespace RTREngine {
 
-	class LayerStack
+	// Represents a wrapper over a vector of layers
+	class RTR_API LayerStack
 	{
 	public:
 		LayerStack() = default;
 		~LayerStack();
 
 		void PushLayer(Layer* layer);
-		void PushOverlay(Layer* overlay);
+		void PushOverlay(Layer* overlay); // always pushed at the very end
 		void PopLayer(Layer* layer);
-		void PopOverlay(Layer* overlay);
+		void PopOverlay(Layer* overlay);  // always popped at the very end
 
 		std::vector<Layer*>::iterator begin() { return m_Layers.begin(); }
 		std::vector<Layer*>::iterator end() { return m_Layers.end(); }

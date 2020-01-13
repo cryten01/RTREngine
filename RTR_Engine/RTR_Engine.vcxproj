@@ -83,7 +83,8 @@
       <AdditionalIncludeDirectories>src;..\external\SPDLOG\include;..\external\GLFW\include;..\external\GLEW\include;..\external\ASSIMP\include;..\external\GLM\glm;..\external\STB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalOptions>/MDd %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -110,6 +111,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/MD %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -137,6 +139,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/MD %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -153,23 +156,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\external\STB\include\stb_image.h" />
-    <ClInclude Include="src\RTREngine\Layers\LayerStack.h" />
-    <ClInclude Include="src\RTREngine\Layers\Layer.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
-    <ClInclude Include="src\RTR.h" />
-    <ClInclude Include="src\RTREngine\Core\App.h" />
-    <ClInclude Include="src\RTREngine\Core\Core.h" />
-    <ClInclude Include="src\RTREngine\Core\EntryPoint.h" />
-    <ClInclude Include="src\RTREngine\Core\Log.h" />
-    <ClInclude Include="src\RTREngine\Core\Window.h" />
-    <ClInclude Include="src\RTREngine\Events\AppEvent.h" />
-    <ClInclude Include="src\RTREngine\Events\Event.h" />
-    <ClInclude Include="src\RTREngine\Events\KeyEvent.h" />
-    <ClInclude Include="src\RTREngine\Events\MouseEvent.h" />
-    <ClInclude Include="src\RTREngine\Input\Input.h" />
-    <ClInclude Include="src\RTREngine\Input\KeyCodes.h" />
-    <ClInclude Include="src\RTREngine\Input\MouseCodes.h" />
     <ClInclude Include="src\Legacy\Camera.h" />
     <ClInclude Include="src\Legacy\FrameBuffer.h" />
     <ClInclude Include="src\Legacy\Framework.h" />
@@ -191,24 +177,31 @@
     <ClInclude Include="src\Legacy\Transform.h" />
     <ClInclude Include="src\Legacy\Utils.h" />
     <ClInclude Include="src\Legacy\Window.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
+    <ClInclude Include="src\RTR.h" />
+    <ClInclude Include="src\RTREngine\Core\App.h" />
+    <ClInclude Include="src\RTREngine\Core\Core.h" />
+    <ClInclude Include="src\RTREngine\Core\EntryPoint.h" />
+    <ClInclude Include="src\RTREngine\Core\Log.h" />
+    <ClInclude Include="src\RTREngine\Core\Window.h" />
+    <ClInclude Include="src\RTREngine\Events\AppEvent.h" />
+    <ClInclude Include="src\RTREngine\Events\Event.h" />
+    <ClInclude Include="src\RTREngine\Events\KeyEvent.h" />
+    <ClInclude Include="src\RTREngine\Events\MouseEvent.h" />
+    <ClInclude Include="src\RTREngine\Input\Input.h" />
+    <ClInclude Include="src\RTREngine\Input\KeyCodes.h" />
+    <ClInclude Include="src\RTREngine\Input\MouseCodes.h" />
+    <ClInclude Include="src\RTREngine\Layers\Layer.h" />
+    <ClInclude Include="src\RTREngine\Layers\LayerStack.h" />
     <ClInclude Include="src\rtrpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\external\STB\include\stb_image.cpp" />
-    <ClCompile Include="src\RTREngine\Layers\LayerStack.cpp" />
-    <ClCompile Include="src\RTREngine\Layers\Layer.cpp" />
-    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
-    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
-    <ClCompile Include="src\RTREngine\Core\App.cpp" />
-    <ClCompile Include="src\RTREngine\Core\Log.cpp" />
-    <ClCompile Include="src\RTREngine\Core\Window.cpp" />
-    <ClCompile Include="src\RTREngine\Input\Input.cpp" />
     <ClCompile Include="src\Legacy\Camera.cpp" />
     <ClCompile Include="src\Legacy\FrameBuffer.cpp" />
     <ClCompile Include="src\Legacy\Framework.cpp" />
-    <ClCompile Include="src\Legacy\Input.cpp">
-      <ObjectFileName>$(IntDir)\Input1.obj</ObjectFileName>
-    </ClCompile>
+    <ClCompile Include="src\Legacy\Input.cpp" />
     <ClCompile Include="src\Legacy\LegacyApp.cpp" />
     <ClCompile Include="src\Legacy\Material.cpp" />
     <ClCompile Include="src\Legacy\Mesh.cpp" />
@@ -222,9 +215,19 @@
     <ClCompile Include="src\Legacy\Texture.cpp" />
     <ClCompile Include="src\Legacy\Time.cpp" />
     <ClCompile Include="src\Legacy\Transform.cpp" />
-    <ClCompile Include="src\Legacy\Window.cpp">
+    <ClCompile Include="src\Legacy\Window.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
+    <ClCompile Include="src\RTREngine\Core\App.cpp" />
+    <ClCompile Include="src\RTREngine\Core\Log.cpp" />
+    <ClCompile Include="src\RTREngine\Core\Window.cpp">
       <ObjectFileName>$(IntDir)\Window1.obj</ObjectFileName>
     </ClCompile>
+    <ClCompile Include="src\RTREngine\Input\Input.cpp">
+      <ObjectFileName>$(IntDir)\Input1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\RTREngine\Layers\Layer.cpp" />
+    <ClCompile Include="src\RTREngine\Layers\LayerStack.cpp" />
     <ClCompile Include="src\rtrpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

@@ -44,5 +44,4 @@ namespace RTREngine {
 			m_Layers.erase(it);
 		}
 	}
-
 }

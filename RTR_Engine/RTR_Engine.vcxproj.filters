@@ -13,11 +13,23 @@
     <Filter Include="src">
       <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Platform">
+      <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Platform\Windows">
+      <UniqueIdentifier>{5B054582-4794-CE4B-F0B2-E246DC20DFF1}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\RTREngine">
       <UniqueIdentifier>{8A316958-F6F1-E48E-BF2C-2E0C2BAC296B}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\RTREngine\Core">
       <UniqueIdentifier>{22DC3094-0EC0-F1E9-7720-EC3C6323DC6B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\RTREngine\Events">
+      <UniqueIdentifier>{2E7EFA68-1A0D-8432-C32B-982DAF9994D8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\RTREngine\Input">
+      <UniqueIdentifier>{0961B81A-75C2-9528-FE2F-DCDA6A90CCE7}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\RTREngine\Legacy">
       <UniqueIdentifier>{4ED91B78-3A68-A541-E386-B93CCFF4B5E7}</UniqueIdentifier>
@@ -26,6 +38,12 @@
   <ItemGroup>
     <ClInclude Include="..\external\STB\include\stb_image.h">
       <Filter>external\STB\include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h">
+      <Filter>src\Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
+      <Filter>src\Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\RTR.h">
       <Filter>src</Filter>
@@ -41,6 +59,30 @@
     </ClInclude>
     <ClInclude Include="src\RTREngine\Core\Log.h">
       <Filter>src\RTREngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RTREngine\Core\Window.h">
+      <Filter>src\RTREngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RTREngine\Events\AppEvent.h">
+      <Filter>src\RTREngine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RTREngine\Events\Event.h">
+      <Filter>src\RTREngine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RTREngine\Events\KeyEvent.h">
+      <Filter>src\RTREngine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RTREngine\Events\MouseEvent.h">
+      <Filter>src\RTREngine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RTREngine\Input\Input.h">
+      <Filter>src\RTREngine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RTREngine\Input\KeyCodes.h">
+      <Filter>src\RTREngine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RTREngine\Input\MouseCodes.h">
+      <Filter>src\RTREngine\Input</Filter>
     </ClInclude>
     <ClInclude Include="src\RTREngine\Legacy\Camera.h">
       <Filter>src\RTREngine\Legacy</Filter>
@@ -108,26 +150,30 @@
     <ClInclude Include="src\rtrpch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\RTREngine\Events\Event.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
-    <ClInclude Include="src\RTREngine\Events\MouseEvent.h" />
-    <ClInclude Include="src\RTREngine\Events\KeyEvent.h" />
-    <ClInclude Include="src\RTREngine\Core\Window.h" />
-    <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
-    <ClInclude Include="src\RTREngine\Events\AppEvent.h" />
-    <ClInclude Include="src\RTREngine\Input\Input.h" />
-    <ClInclude Include="src\RTREngine\Input\KeyCodes.h" />
-    <ClInclude Include="src\RTREngine\Input\MouseCodes.h" />
+    <ClInclude Include="src\RTREngine\Layers\Layer.h" />
+    <ClInclude Include="src\RTREngine\Layers\LayerStack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\external\STB\include\stb_image.cpp">
       <Filter>external\STB\include</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
+      <Filter>src\Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
+      <Filter>src\Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\RTREngine\Core\App.cpp">
       <Filter>src\RTREngine\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\RTREngine\Core\Log.cpp">
       <Filter>src\RTREngine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RTREngine\Core\Window.cpp">
+      <Filter>src\RTREngine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RTREngine\Input\Input.cpp">
+      <Filter>src\RTREngine\Input</Filter>
     </ClCompile>
     <ClCompile Include="src\RTREngine\Legacy\Camera.cpp">
       <Filter>src\RTREngine\Legacy</Filter>
@@ -186,9 +232,7 @@
     <ClCompile Include="src\rtrpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
-    <ClCompile Include="src\RTREngine\Core\Window.cpp" />
-    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
-    <ClCompile Include="src\RTREngine\Input\Input.cpp" />
+    <ClCompile Include="src\RTREngine\Layers\Layer.cpp" />
+    <ClCompile Include="src\RTREngine\Layers\LayerStack.cpp" />
   </ItemGroup>
 </Project>

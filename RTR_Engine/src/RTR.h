@@ -8,6 +8,9 @@
 #include "RTREngine/Input/KeyCodes.h"
 #include "RTREngine/Input/MouseCodes.h"
 
+#include "RTREngine/Layers/Layer.h"
+#include "RTREngine/Layers/LayerStack.h"
+
 //-----------------------------------
 // Entry point
 //-----------------------------------

@@ -33,7 +33,7 @@ project "RTR_Engine"
 	kind "SharedLib"
 	language "C++"
 	cppdialect "C++17"
-	staticruntime "on"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("build/" .. outputdir .. "/%{prj.name}")
@@ -94,7 +94,7 @@ project "RTR_Engine"
 			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/RTR_WinterWonderland")
 		}
 
-	-- Build configurations
+	-- Build configurations (runtime sets runtime library to /MDd for Debug and /MD to all other configs)
 	filter "configurations:Debug"
 		defines "RTR_DEBUG"
 		runtime "Debug"
@@ -116,7 +116,7 @@ project "RTR_WinterWonderland"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
-	staticruntime "on"
+	staticruntime "off"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("build/" .. outputdir .. "/%{prj.name}")

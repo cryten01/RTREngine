@@ -12,6 +12,10 @@ namespace RTREngine {
 
 	App::App()
 	{
+		RTR_CORE_ASSERT(!s_Instance, "Application already exists!");
+		s_Instance = this;
+		m_Window = Window::Create();
+		//m_Window->SetEventCallback(RTR_BIND_EVENT_FN(App::OnEvent));
 	}
 
 	App::~App()
@@ -20,16 +24,18 @@ namespace RTREngine {
 
 	void App::OnEvent(Event& e)
 	{
+		//EventDispatcher dispatcher(e);
+		//dispatcher.Dispatch<WindowCloseEvent>(RTR_BIND_EVENT_FN(App::OnWindowClose));
+		//dispatcher.Dispatch<WindowResizeEvent>(RTR_BIND_EVENT_FN(App::OnWindowResize));
 	}
 
 	void App::Run()
 	{
-		WindowResizeEvent e(1366, 768);
-		RTR_CLIENT_TRACE(e);
-
-
 		while (m_Running)
 		{
+			glClearColor(0.1, 0.1, 0.1, 1.0);
+			glClear(GL_COLOR_BUFFER_BIT);
+			m_Window->OnUpdate();
 		}
 	}
 

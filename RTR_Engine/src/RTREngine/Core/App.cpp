@@ -25,7 +25,7 @@ namespace RTREngine {
 	void App::Run()
 	{
 		WindowResizeEvent e(1366, 768);
-		RTR_TRACE(e);
+		RTR_CLIENT_TRACE(e);
 
 
 		while (m_Running)

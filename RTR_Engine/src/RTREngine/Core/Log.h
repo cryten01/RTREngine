@@ -3,7 +3,7 @@
 #include "RTREngine/Core/Core.h"
 
 #include <spdlog/spdlog.h>
-#include <spdlog/fmt/ostr.h>
+#include <spdlog/fmt/ostr.h> // For logging custom types
 
 
 namespace RTREngine 
@@ -29,8 +29,8 @@ namespace RTREngine
 #define RTR_CORE_CRITICAL(...) ::RTREngine::Log::GetCoreLogger()->critical(__VA_ARGS__)
 
 // Client log macros
-#define RTR_TRACE(...)         ::RTREngine::Log::GetClientLogger()->trace(__VA_ARGS__)
-#define RTR_INFO(...)          ::RTREngine::Log::GetClientLogger()->info(__VA_ARGS__)
-#define RTR_WARN(...)          ::RTREngine::Log::GetClientLogger()->warn(__VA_ARGS__)
-#define RTR_ERROR(...)         ::RTREngine::Log::GetClientLogger()->error(__VA_ARGS__)
-#define RTR_CRITICAL(...)      ::RTREngine::Log::GetClientLogger()->critical(__VA_ARGS__)
+#define RTR_CLIENT_TRACE(...)         ::RTREngine::Log::GetClientLogger()->trace(__VA_ARGS__)
+#define RTR_CLIENT_INFO(...)          ::RTREngine::Log::GetClientLogger()->info(__VA_ARGS__)
+#define RTR_CLIENT_WARN(...)          ::RTREngine::Log::GetClientLogger()->warn(__VA_ARGS__)
+#define RTR_CLIENT_ERROR(...)         ::RTREngine::Log::GetClientLogger()->error(__VA_ARGS__)
+#define RTR_CLIENT_CRITICAL(...)      ::RTREngine::Log::GetClientLogger()->critical(__VA_ARGS__)

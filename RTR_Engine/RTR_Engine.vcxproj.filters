@@ -84,74 +84,74 @@
     <ClInclude Include="src\RTREngine\Input\MouseCodes.h">
       <Filter>src\RTREngine\Input</Filter>
     </ClInclude>
-    <ClInclude Include="src\RTREngine\Legacy\Camera.h">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\Legacy\FrameBuffer.h">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\Legacy\Framework.h">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\Legacy\Input.h">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\Legacy\Interfaces.h">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\Legacy\LegacyApp.h">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\Legacy\Light.h">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\Legacy\Material.h">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\Legacy\Mesh.h">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\Legacy\Model.h">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\Legacy\ParticleSystem.h">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\Legacy\Resources.h">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\Legacy\Scene.h">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\Legacy\SceneObject.h">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\Legacy\Shader.h">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\Legacy\Skybox.h">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\Legacy\Texture.h">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\Legacy\Time.h">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\Legacy\Transform.h">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\Legacy\Utils.h">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RTREngine\Legacy\Window.h">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClInclude>
     <ClInclude Include="src\rtrpch.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\RTREngine\Layers\Layer.h" />
     <ClInclude Include="src\RTREngine\Layers\LayerStack.h" />
+    <ClInclude Include="src\Legacy\Camera.h">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Legacy\FrameBuffer.h">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Legacy\Framework.h">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Legacy\Input.h">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Legacy\Interfaces.h">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Legacy\LegacyApp.h">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Legacy\Light.h">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Legacy\Material.h">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Legacy\Mesh.h">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Legacy\Model.h">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Legacy\ParticleSystem.h">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Legacy\Resources.h">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Legacy\Scene.h">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Legacy\SceneObject.h">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Legacy\Shader.h">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Legacy\Skybox.h">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Legacy\Texture.h">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Legacy\Time.h">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Legacy\Transform.h">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Legacy\Utils.h">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Legacy\Window.h">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\external\STB\include\stb_image.cpp">
@@ -175,64 +175,64 @@
     <ClCompile Include="src\RTREngine\Input\Input.cpp">
       <Filter>src\RTREngine\Input</Filter>
     </ClCompile>
-    <ClCompile Include="src\RTREngine\Legacy\Camera.cpp">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RTREngine\Legacy\FrameBuffer.cpp">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RTREngine\Legacy\Framework.cpp">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RTREngine\Legacy\Input.cpp">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RTREngine\Legacy\LegacyApp.cpp">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RTREngine\Legacy\Material.cpp">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RTREngine\Legacy\Mesh.cpp">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RTREngine\Legacy\Model.cpp">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RTREngine\Legacy\ParticleSystem.cpp">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RTREngine\Legacy\Resources.cpp">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RTREngine\Legacy\Scene.cpp">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RTREngine\Legacy\SceneObject.cpp">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RTREngine\Legacy\Shader.cpp">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RTREngine\Legacy\Skybox.cpp">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RTREngine\Legacy\Texture.cpp">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RTREngine\Legacy\Time.cpp">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RTREngine\Legacy\Transform.cpp">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RTREngine\Legacy\Window.cpp">
-      <Filter>src\RTREngine\Legacy</Filter>
-    </ClCompile>
     <ClCompile Include="src\rtrpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\RTREngine\Layers\Layer.cpp" />
     <ClCompile Include="src\RTREngine\Layers\LayerStack.cpp" />
+    <ClCompile Include="src\Legacy\Camera.cpp">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Legacy\FrameBuffer.cpp">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Legacy\Framework.cpp">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Legacy\Input.cpp">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Legacy\LegacyApp.cpp">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Legacy\Material.cpp">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Legacy\Mesh.cpp">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Legacy\Model.cpp">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Legacy\ParticleSystem.cpp">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Legacy\Resources.cpp">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Legacy\Scene.cpp">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Legacy\SceneObject.cpp">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Legacy\Shader.cpp">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Legacy\Skybox.cpp">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Legacy\Texture.cpp">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Legacy\Time.cpp">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Legacy\Transform.cpp">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Legacy\Window.cpp">
+      <Filter>src\RTREngine\Legacy</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

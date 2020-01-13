@@ -1,7 +1,7 @@
 #include "rtrpch.h"
 #include "RTREngine/Core/App.h"
 #include "RTREngine/Core/Log.h"
-#include "RTREngine/Core/Input.h"
+#include "RTREngine/Input/Input.h"
 
 #include <glfw/glfw3.h>
 

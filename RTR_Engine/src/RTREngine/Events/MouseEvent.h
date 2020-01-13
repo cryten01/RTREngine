@@ -1,7 +1,7 @@
 #pragma once
 
 #include "RTREngine/Events/Event.h"
-#include "RTREngine/Core/Input.h"
+#include "RTREngine/Input/Input.h"
 
 namespace RTREngine {
 

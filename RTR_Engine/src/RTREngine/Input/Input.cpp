@@ -1,5 +1,5 @@
 #include "rtrpch.h"
-#include "RTREngine/Core/Input.h"
+#include "RTREngine/Input/Input.h"
 
 #ifdef RTR_PLATFORM_WINDOWS
 	#include "Platform/Windows/WindowsInput.h"

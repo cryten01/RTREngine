@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RTREngine/Core/Input.h"
+#include "RTREngine/Input/Input.h"
 
 namespace RTREngine {
 

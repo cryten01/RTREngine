@@ -4,9 +4,9 @@
 #include "RTREngine/Core/App.h"
 #include "RTREngine/Core/Log.h"
 
-#include "RTREngine/Core/Input.h"
-#include "RTREngine/Core/KeyCodes.h"
-#include "RTREngine/Core/MouseCodes.h"
+#include "RTREngine/Input/Input.h"
+#include "RTREngine/Input/KeyCodes.h"
+#include "RTREngine/Input/MouseCodes.h"
 
 //-----------------------------------
 // Entry point

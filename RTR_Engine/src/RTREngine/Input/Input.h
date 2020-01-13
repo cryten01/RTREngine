@@ -1,7 +1,7 @@
 #pragma once
 #include "RTREngine/Core/Core.h"
-#include "RTREngine/Core/KeyCodes.h"
-#include "RTREngine/Core/MouseCodes.h"
+#include "RTREngine/Input/KeyCodes.h"
+#include "RTREngine/Input/MouseCodes.h"
 
 namespace RTREngine {
 

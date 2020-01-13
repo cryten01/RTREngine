@@ -1,7 +1,7 @@
 #include "rtrpch.h"
 #include "Platform/Windows/WindowsWindow.h"
 
-#include "RTREngine/Core/Input.h"
+#include "RTREngine/Input/Input.h"
 
 #include "RTREngine/Events/AppEvent.h"
 #include "RTREngine/Events/MouseEvent.h"

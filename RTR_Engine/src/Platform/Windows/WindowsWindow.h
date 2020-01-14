@@ -1,6 +1,7 @@
 #pragma once
 
 #include "RTREngine/Core/Window.h"
+#include "RTREngine/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>
 
@@ -28,6 +29,7 @@ namespace RTREngine {
 		virtual void Shutdown();
 	private:
 		GLFWwindow* m_Window;
+		Scope<GraphicsContext> m_Context;
 
 		struct WindowData
 		{

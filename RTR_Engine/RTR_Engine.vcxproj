@@ -144,6 +144,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\external\STB\include\stb_image.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\RTREngine\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Legacy\Camera.h" />
     <ClInclude Include="src\Legacy\FrameBuffer.h" />
     <ClInclude Include="src\Legacy\Framework.h" />
@@ -186,6 +188,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\external\STB\include\stb_image.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\RTREngine\Renderer\GraphicsContext.cpp" />
     <ClCompile Include="src\Legacy\Camera.cpp" />
     <ClCompile Include="src\Legacy\FrameBuffer.cpp" />
     <ClCompile Include="src\Legacy\Framework.cpp" />

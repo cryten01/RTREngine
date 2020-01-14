@@ -7,7 +7,6 @@
 
 namespace RTREngine
 {
-
 	Scope<Window> Window::Create(const WindowProps& props)
 	{
 #ifdef RTR_PLATFORM_WINDOWS
@@ -17,5 +16,4 @@ namespace RTREngine
 		return nullptr;
 #endif
 	}
-
 }

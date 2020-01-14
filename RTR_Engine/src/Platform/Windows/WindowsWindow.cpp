@@ -1,6 +1,7 @@
 #include "rtrpch.h"
 
 #include "Platform/Windows/WindowsWindow.h"
+#include "Platform/OpenGL/OpenGLContext.h"
 
 #include "RTREngine/Input/Input.h"
 #include "RTREngine/Events/AppEvent.h"
@@ -47,7 +48,9 @@ namespace RTREngine {
 			++s_GLFWWindowCount;
 		}
 
-		glfwMakeContextCurrent(m_Window);
+		m_Context = GraphicsContext::Create(m_Window);
+		m_Context->Init();
+
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
 
@@ -160,7 +163,7 @@ namespace RTREngine {
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(m_Window);
+		m_Context->SwapBuffers();
 	}
 
 	void WindowsWindow::SetVSync(bool enabled)

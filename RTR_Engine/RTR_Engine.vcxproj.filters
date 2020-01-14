@@ -159,6 +159,8 @@
     <ClInclude Include="src\rtrpch.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\RTREngine\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\external\STB\include\stb_image.cpp">
@@ -245,5 +247,7 @@
     <ClCompile Include="src\rtrpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\RTREngine\Renderer\GraphicsContext.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
   </ItemGroup>
 </Project>

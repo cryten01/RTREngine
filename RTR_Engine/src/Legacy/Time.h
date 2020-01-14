@@ -3,7 +3,7 @@
 
 namespace RTREngine 
 {
-	class Time
+	class TimeLegacy
 	{
 	private:
 		float currentTime;
@@ -14,8 +14,8 @@ namespace RTREngine
 		int fps;
 
 	public:
-		Time();
-		~Time();
+		TimeLegacy();
+		~TimeLegacy();
 
 		float getDeltaTime();
 		void update();

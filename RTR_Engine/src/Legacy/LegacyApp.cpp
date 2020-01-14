@@ -14,8 +14,8 @@ void RTREngine::loadLegacyEngine()
 	resources.init();
 
 	// Load test scene into window
-	std::shared_ptr<Window> window = framework.getWindow();
-	std::shared_ptr<Input> input = framework.getInput();
+	std::shared_ptr<WindowLegacy> window = framework.getWindow();
+	std::shared_ptr<InputLegacy> input = framework.getInput();
 
 	SceneResources& sceneResources = SceneResources::Instance();
 	sceneResources.init(input);

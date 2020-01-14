@@ -9,7 +9,7 @@ namespace RTREngine
 	class Camera : public SceneComponent
 	{
 	private:
-		std::shared_ptr<Input> _input;
+		std::shared_ptr<InputLegacy> _input;
 
 		glm::mat4 _viewMatrix;
 		glm::mat4 _projMatrix;
@@ -21,7 +21,7 @@ namespace RTREngine
 		void processMouseMovement(int x, int y);
 
 	public:
-		 Camera(float fov, float aspect, float near, float far, std::shared_ptr<Input> input);
+		 Camera(float fov, float aspect, float near, float far, std::shared_ptr<InputLegacy> input);
 		~Camera();
 
 		glm::vec3 getPosition();

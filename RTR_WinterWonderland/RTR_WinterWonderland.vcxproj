@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\RTR_Engine\external\SPDLOG\include;..\RTR_Engine\external\ASSIMP\include;..\RTR_Engine\external\GLM;..\RTR_Engine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\RTR_Engine\external\SPDLOG\include;..\RTR_Engine\external\GLFW\include;..\RTR_Engine\external\GLEW\include;..\RTR_Engine\external\ASSIMP\include;..\RTR_Engine\external\GLM;..\RTR_Engine\external\STB\include;..\RTR_Engine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -98,7 +98,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\RTR_Engine\external\SPDLOG\include;..\RTR_Engine\external\ASSIMP\include;..\RTR_Engine\external\GLM;..\RTR_Engine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\RTR_Engine\external\SPDLOG\include;..\RTR_Engine\external\GLFW\include;..\RTR_Engine\external\GLEW\include;..\RTR_Engine\external\ASSIMP\include;..\RTR_Engine\external\GLM;..\RTR_Engine\external\STB\include;..\RTR_Engine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -121,7 +121,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_DISTRIBUTION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\RTR_Engine\external\SPDLOG\include;..\RTR_Engine\external\ASSIMP\include;..\RTR_Engine\external\GLM;..\RTR_Engine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\RTR_Engine\external\SPDLOG\include;..\RTR_Engine\external\GLFW\include;..\RTR_Engine\external\GLEW\include;..\RTR_Engine\external\ASSIMP\include;..\RTR_Engine\external\GLM;..\RTR_Engine\external\STB\include;..\RTR_Engine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>

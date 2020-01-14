@@ -7,7 +7,7 @@ namespace RTREngine
 {
 	class Scene;
 
-	class Window
+	class WindowLegacy
 	{
 	private:
 		GLFWwindow* _window;
@@ -18,8 +18,8 @@ namespace RTREngine
 		int init();
 
 	public:
-		 Window(const char* title, const int width, const int height);
-		~Window();
+		 WindowLegacy(const char* title, const int width, const int height);
+		~WindowLegacy();
 
 		GLFWwindow* getGLFWWindow();
 		const int getWidth();

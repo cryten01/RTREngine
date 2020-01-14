@@ -46,7 +46,7 @@ SceneResources::~SceneResources()
 }
 
 
-void SceneResources::init(std::shared_ptr<Input> input)
+void SceneResources::init(std::shared_ptr<InputLegacy> input)
 {
 	// Textures
 	leatherTexture = std::make_shared<Texture>("../assets/textures/leather.jpg", TEX_DIFFUSE);
@@ -109,7 +109,7 @@ void SceneResources::init(std::shared_ptr<Input> input)
 }
 
 
-std::shared_ptr<Scene> SceneResources::loadTestScene(std::shared_ptr<Input> input)
+std::shared_ptr<Scene> SceneResources::loadTestScene(std::shared_ptr<InputLegacy> input)
 {
 	std::shared_ptr<Scene> scene = std::make_shared<Scene>();
 

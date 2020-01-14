@@ -1,5 +1,8 @@
 #pragma once
+
 #include "RTREngine/Core/Core.h"
+#include "Legacy/LegacyApp.h"
+
 
 #ifdef RTR_PLATFORM_WINDOWS
 
@@ -14,6 +17,8 @@ int main(int argc, char** argv)
 	auto app = RTREngine::CreateApp();
 	app->Run();
 	delete app;
+
+	//RTREngine::loadLegacyEngine();
 }
 
 #endif

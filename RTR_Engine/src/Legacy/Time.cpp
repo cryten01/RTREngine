@@ -3,7 +3,7 @@
 
 using namespace RTREngine;
 
-Time::Time()
+TimeLegacy::TimeLegacy()
 {
 	currentTime = float(glfwGetTime());
 	lastTime = float(glfwGetTime());
@@ -14,16 +14,16 @@ Time::Time()
 }
 
 
-Time::~Time()
+TimeLegacy::~TimeLegacy()
 {
 }
 
-float Time::getDeltaTime() 
+float TimeLegacy::getDeltaTime() 
 {
 	return this->deltaTime;
 }
 
-void Time::update()
+void TimeLegacy::update()
 {
 	// Update time
 	deltaTime = currentTime;

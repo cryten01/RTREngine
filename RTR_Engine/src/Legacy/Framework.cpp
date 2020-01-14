@@ -25,9 +25,9 @@ int Framework::init()
 		EXIT_WITH_ERROR("Failed to init GLFW")
 	}
 
-	window = std::make_shared<Window>("RTR Engine", 800, 600);
-	input = std::make_shared<Input>(window->getGLFWWindow());
-	time = std::make_unique<Time>();
+	window = std::make_shared<WindowLegacy>("RTR Engine", 800, 600);
+	input = std::make_shared<InputLegacy>(window->getGLFWWindow());
+	time = std::make_unique<TimeLegacy>();
 
 	// GLEW init
 	glewExperimental = true; // if true GLEW uses a modern approach for retrieving function pointers and extensions
@@ -65,12 +65,12 @@ int Framework::destroy()
 	return EXIT_SUCCESS;
 }
 
-std::shared_ptr<Window> Framework::getWindow()
+std::shared_ptr<WindowLegacy> Framework::getWindow()
 {
 	return this->window;
 }
 
-std::shared_ptr<Input> Framework::getInput()
+std::shared_ptr<InputLegacy> Framework::getInput()
 {
 	return this->input;
 }

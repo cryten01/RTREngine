@@ -3,19 +3,19 @@
 
 using namespace RTREngine;
 
-bool Input::_wireframe;
-bool Input::_hdr;
-bool Input::_culling;
-bool Input::_dragging;
-bool Input::_strafing;
-float Input::_zoom;
-float Input::_height;
-bool Input::_freezeScene;
-float Input::_exposure;
-double Input::mouse_x;
-double Input::mouse_y;
+bool InputLegacy::_wireframe;
+bool InputLegacy::_hdr;
+bool InputLegacy::_culling;
+bool InputLegacy::_dragging;
+bool InputLegacy::_strafing;
+float InputLegacy::_zoom;
+float InputLegacy::_height;
+bool InputLegacy::_freezeScene;
+float InputLegacy::_exposure;
+double InputLegacy::mouse_x;
+double InputLegacy::mouse_y;
 
-Input::Input(GLFWwindow* window)
+InputLegacy::InputLegacy(GLFWwindow* window)
 {
 	// Set camera control defaults here
 	_wireframe = false;
@@ -37,18 +37,18 @@ Input::Input(GLFWwindow* window)
 }
 
 
-Input::~Input()
+InputLegacy::~InputLegacy()
 {
 }
 
 
-void Input::update(GLFWwindow* window)
+void InputLegacy::update(GLFWwindow* window)
 {
 	glfwGetCursorPos(window, &mouse_x, &mouse_y);
 }
 
 
-void Input::key_polling(GLFWwindow* window, float deltaTime)
+void InputLegacy::key_polling(GLFWwindow* window, float deltaTime)
 {
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 	{
@@ -62,7 +62,7 @@ void Input::key_polling(GLFWwindow* window, float deltaTime)
 }
 
 
-void Input::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+void InputLegacy::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
 		_dragging = true;
@@ -79,13 +79,13 @@ void Input::mouse_button_callback(GLFWwindow* window, int button, int action, in
 }
 
 
-void Input::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+void InputLegacy::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	_zoom -= float(yoffset) * 0.5f;
 }
 
 
-void Input::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+void InputLegacy::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	// F1 - Wireframe
 	// F2 - Culling

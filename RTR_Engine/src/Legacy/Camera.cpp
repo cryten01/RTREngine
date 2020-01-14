@@ -3,7 +3,7 @@
 
 using namespace RTREngine;
 
-Camera::Camera(float fov, float aspect, float near, float far, std::shared_ptr<Input> input)
+Camera::Camera(float fov, float aspect, float near, float far, std::shared_ptr<InputLegacy> input)
 	:_input(input)
 {
 	// Creates a new projection matrix

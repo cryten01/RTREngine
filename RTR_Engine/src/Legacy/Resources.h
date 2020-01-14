@@ -112,8 +112,8 @@ namespace RTREngine
 
 
 		// Methods
-		void init(std::shared_ptr<Input> input);
-		std::shared_ptr<Scene> loadTestScene(std::shared_ptr<Input> input);
+		void init(std::shared_ptr<InputLegacy> input);
+		std::shared_ptr<Scene> loadTestScene(std::shared_ptr<InputLegacy> input);
 	};
 }
 

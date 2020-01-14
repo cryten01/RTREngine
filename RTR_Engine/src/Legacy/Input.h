@@ -8,11 +8,11 @@ namespace RTREngine
 	*	Note all callback functions and variables must be global or static in order to be C compatible
 	*	For further information see: https://gamedev.stackexchange.com/questions/58541/how-can-i-associate-a-key-callback-with-a-wrapper-class-instance
 	**/
-	class Input
+	class InputLegacy
 	{
 	public:
-		Input(GLFWwindow* window);
-		~Input();
+		InputLegacy(GLFWwindow* window);
+		~InputLegacy();
 
 		// Mouse controls
 		static double mouse_x, mouse_y;

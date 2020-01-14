@@ -3,19 +3,19 @@
 
 using namespace RTREngine;
 
-Window::Window(const char* title, const int width, const int height)
+WindowLegacy::WindowLegacy(const char* title, const int width, const int height)
 	: _title(title), _width(width), _height(height)
 {
 	this->init();
 }
 
 
-Window::~Window()
+WindowLegacy::~WindowLegacy()
 {
 }
 
 
-int Window::init()
+int WindowLegacy::init()
 {
 	// Set required options for GLFW
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -40,25 +40,25 @@ int Window::init()
 }
 
 
-GLFWwindow* Window::getGLFWWindow()
+GLFWwindow* WindowLegacy::getGLFWWindow()
 {
 	return this->_window;
 }
 
 
-const int Window::getWidth()
+const int WindowLegacy::getWidth()
 {
 	return this->_width;
 }
 
 
-const int Window::getHeight()
+const int WindowLegacy::getHeight()
 {
 	return this->_height;
 }
 
 
-void Window::setActiveScene(std::shared_ptr<Scene> scene)
+void WindowLegacy::setActiveScene(std::shared_ptr<Scene> scene)
 {
 	this->_activeScene = scene;
 }
@@ -67,7 +67,7 @@ void Window::setActiveScene(std::shared_ptr<Scene> scene)
 /**
 *	Updates all content thats inside the window
 **/
-void Window::update(float deltaTime)
+void WindowLegacy::update(float deltaTime)
 {
 	_activeScene->update(deltaTime);
 }
@@ -75,7 +75,7 @@ void Window::update(float deltaTime)
 /**
 *	Renders all content thats inside the window
 **/
-void Window::render()
+void WindowLegacy::render()
 {
 	/********************/
 	//	Preparations

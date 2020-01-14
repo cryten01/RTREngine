@@ -54,12 +54,11 @@ namespace RTREngine {
 	{
 		while (m_Running)
 		{
-			// Calculate deltaTime
 			float time = (float)glfwGetTime();
 			Time deltaTime = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
-			// OpenGL Window preparation TODO: move
+			// TODO: move OpenGL Renderer
 			glClearColor(0.1, 0.1, 0.1, 1.0);
 			glClear(GL_COLOR_BUFFER_BIT);
 

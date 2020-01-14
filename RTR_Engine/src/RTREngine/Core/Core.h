@@ -9,7 +9,6 @@
 	#error RTR_Engine only supports Windows!
 #endif
 
-
 #ifdef RTR_DEBUG
 	#define RTR_ENABLE_ASSERTS
 #endif
@@ -29,16 +28,20 @@
 
 namespace RTREngine {
 
+	// Simplifies std::unique_ptr<Shader> -> Scope<Shader>. Used for RTR specific resources
 	template<typename T>
 	using Scope = std::unique_ptr<T>;
+	  
 	template<typename T, typename ... Args>
 	constexpr Scope<T> CreateScope(Args&& ... args)
 	{
 		return std::make_unique<T>(std::forward<Args>(args)...);
 	}
 
+	// Simplifies std::shared_ptr<Shader> -> Ref<Shader>. Used for RTR specific resources
 	template<typename T>
 	using Ref = std::shared_ptr<T>;
+	
 	template<typename T, typename ... Args>
 	constexpr Ref<T> CreateRef(Args&& ... args)
 	{

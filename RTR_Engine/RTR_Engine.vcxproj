@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClInclude Include="..\external\STB\include\stb_image.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\RTREngine\Core\Time.h" />
     <ClInclude Include="src\RTREngine\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Legacy\Camera.h" />
     <ClInclude Include="src\Legacy\FrameBuffer.h" />

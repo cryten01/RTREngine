@@ -1,8 +1,10 @@
 #pragma once
 
-// Used only for RTR Apps
+// Used for RTR Apps
+
 #include "RTREngine/Core/App.h"
 #include "RTREngine/Core/Log.h"
+#include "RTREngine/Core/Time.h"
 
 #include "RTREngine/Input/Input.h"
 #include "RTREngine/Input/KeyCodes.h"

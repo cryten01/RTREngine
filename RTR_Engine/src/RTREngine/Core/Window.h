@@ -20,7 +20,7 @@ namespace RTREngine {
 	};
 
 	// Interface representing a desktop system based Window
-	class RTR_API Window
+	class Window
 	{
 	public:
 		// Events are dispatched to callback function

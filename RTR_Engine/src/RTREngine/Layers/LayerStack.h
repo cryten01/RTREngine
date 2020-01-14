@@ -8,7 +8,7 @@
 namespace RTREngine {
 
 	// Represents a wrapper over a vector of layers
-	class RTR_API LayerStack
+	class LayerStack
 	{
 	public:
 		LayerStack() = default;

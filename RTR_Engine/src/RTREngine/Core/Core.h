@@ -2,15 +2,13 @@
 
 #include <memory>
 
-#ifdef RTR_PLATFORM_WINDOWS
-	#ifdef RTR_BUILD_DLL
-		#define RTR_API __declspec(dllexport)
-	#else
-		#define RTR_API __declspec(dllimport)
-	#endif
+// Platform detection using predefined macros
+#ifdef _WIN32
+	#define HZ_PLATFORM_WINDOWS
 #else
 	#error RTR_Engine only supports Windows!
 #endif
+
 
 #ifdef RTR_DEBUG
 	#define RTR_ENABLE_ASSERTS

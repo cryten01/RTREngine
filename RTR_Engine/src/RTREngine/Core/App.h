@@ -11,7 +11,7 @@ int main(int argc, char** argv);
 
 namespace RTREngine
 {
-	class RTR_API App
+	class App
 	{
 	public:
 		App();

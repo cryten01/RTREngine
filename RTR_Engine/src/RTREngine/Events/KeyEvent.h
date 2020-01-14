@@ -5,7 +5,7 @@
 
 namespace RTREngine {
 
-	class RTR_API KeyEvent : public Event
+	class KeyEvent : public Event
 	{
 	public:
 		inline KeyCode GetKeyCode() const { return m_KeyCode; }
@@ -18,7 +18,7 @@ namespace RTREngine {
 		KeyCode m_KeyCode;
 	};
 
-	class RTR_API KeyPressedEvent : public KeyEvent
+	class KeyPressedEvent : public KeyEvent
 	{
 	public:
 		KeyPressedEvent(KeyCode keycode, int repeatCount)
@@ -38,7 +38,7 @@ namespace RTREngine {
 		int m_RepeatCount;
 	};
 
-	class RTR_API KeyReleasedEvent : public KeyEvent
+	class KeyReleasedEvent : public KeyEvent
 	{
 	public:
 		KeyReleasedEvent(KeyCode keycode)
@@ -54,7 +54,7 @@ namespace RTREngine {
 		EVENT_CLASS_TYPE(KeyReleased)
 	};
 
-	class RTR_API KeyTypedEvent : public KeyEvent
+	class KeyTypedEvent : public KeyEvent
 	{
 	public:
 		KeyTypedEvent(KeyCode keycode)

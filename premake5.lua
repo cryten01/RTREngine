@@ -30,10 +30,10 @@ include "external/GLFW"
 
 project "RTR_Engine"
 	location "RTR_Engine"
-	kind "SharedLib"
+	kind "Staticlib"
 	language "C++"
 	cppdialect "C++17"
-	staticruntime "off"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("build/" .. outputdir .. "/%{prj.name}")
@@ -73,7 +73,7 @@ project "RTR_Engine"
 	}
 
 	 -- For 32 bit use these library paths
-    libdirs { 
+	libdirs { 
 		"external/ASSIMP/lib",
 		"external/GLEW/lib/win32",
 	 }
@@ -86,12 +86,6 @@ project "RTR_Engine"
 		{
 			"RTR_PLATFORM_WINDOWS",
 			"RTR_BUILD_DLL"
-		}
-
-		postbuildcommands
-		{
-			-- copies RTR_Engine.dll into RTR_WinterWonderland executable folder
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/RTR_WinterWonderland")
 		}
 
 	-- Build configurations (runtime sets runtime library to /MDd for Debug and /MD to all other configs)
@@ -116,7 +110,7 @@ project "RTR_WinterWonderland"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
-	staticruntime "off"
+	staticruntime "on"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("build/" .. outputdir .. "/%{prj.name}")

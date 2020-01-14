@@ -11,7 +11,7 @@ public:
 	void OnUpdate(RTREngine::Time deltaTime) override
 	{
 		//RTR_CLIENT_INFO("ExampleLayer::Update");
-		RTR_CLIENT_TRACE("Delta time: {0} ({1}ms)", deltaTime.GetSeconds(), deltaTime.GetMilliseconds());
+		//RTR_CLIENT_TRACE("Delta time: {0} ({1}ms)", deltaTime.GetSeconds(), deltaTime.GetMilliseconds());
 	};
 
 	void OnEvent(RTREngine::Event& event) override

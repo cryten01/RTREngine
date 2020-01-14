@@ -17,16 +17,17 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 -- Include directories relative to root folder (solution directory), cpp compiler include directories
 IncludeDir = {}
-IncludeDir["SPDLOG"] = "external/SPDLOG/include"
-IncludeDir["GLFW"] = "external/GLFW/include"
-IncludeDir["GLEW"] = "external/GLEW/include"
-IncludeDir["ASSIMP"] = "external/ASSIMP/include"
-IncludeDir["GLM"] = "external/GLM/glm"
-IncludeDir["STB_IMAGE"] = "external/STB/include"
+IncludeDir["SPDLOG"] = "RTR_Engine/external/SPDLOG/include"
+IncludeDir["GLFW"] = "RTR_Engine/external/GLFW/include"
+IncludeDir["GLEW"] = "RTR_Engine/external/GLEW/include"
+IncludeDir["ASSIMP"] = "RTR_Engine/external/ASSIMP/include"
+IncludeDir["GLM"] = "RTR_Engine/external/GLM"
+IncludeDir["STB_IMAGE"] = "RTR_Engine/external/STB/include"
 
 -- Include other premake files
-include "external/GLFW"
-
+group "Dependencies"
+	include "RTR_Engine/external/GLFW"
+group ""
 
 project "RTR_Engine"
 	location "RTR_Engine"
@@ -47,8 +48,10 @@ project "RTR_Engine"
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
-		"external/STB/include/**.h",
-		"external/STB/include/**.cpp",
+		"%{prj.name}/external/STB/include/**.h",
+		"%{prj.name}/external/STB/include/**.cpp",
+		"%{prj.name}/external/GLM/glm/**.hpp",
+		"%{prj.name}/external/GLM/glm/**.inl",
 	}
 
 	-- Specifies the include file search paths for the compiler
@@ -74,8 +77,8 @@ project "RTR_Engine"
 
 	 -- For 32 bit use these library paths
 	libdirs { 
-		"external/ASSIMP/lib",
-		"external/GLEW/lib/win32",
+		"RTR_Engine/external/ASSIMP/lib",
+		"RTR_Engine/external/GLEW/lib/win32",
 	 }
 
 	-- Build settings for windows
@@ -126,6 +129,7 @@ project "RTR_WinterWonderland"
 	{
 		"%{IncludeDir.SPDLOG}",
 		"%{IncludeDir.ASSIMP}",
+		"%{IncludeDir.GLM}",
 		"RTR_Engine/src"
 	}
 
@@ -146,7 +150,7 @@ project "RTR_WinterWonderland"
 		postbuildcommands
 		{
 			-- copies assimp-vc141-mtd.dll into RTR_WinterWonderland executable folder
-			("{COPY} %{wks.location}external/ASSIMP/lib/assimp-vc141-mtd.dll %{cfg.targetdir}")
+			("{COPY} %{wks.location}RTR_Engine/external/ASSIMP/lib/assimp-vc141-mtd.dll %{cfg.targetdir}")
 		}
 
 

@@ -1188,9 +1188,6 @@
     <ClInclude Include="src\Legacy\Interfaces.h">
       <Filter>src\Legacy</Filter>
     </ClInclude>
-    <ClInclude Include="src\Legacy\LegacyApp.h">
-      <Filter>src\Legacy</Filter>
-    </ClInclude>
     <ClInclude Include="src\Legacy\Light.h">
       <Filter>src\Legacy</Filter>
     </ClInclude>
@@ -1311,6 +1308,9 @@
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\RTREngine\Renderer\VertexArray.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
+    <ClInclude Include="src\Legacy\App.h">
+      <Filter>src\Legacy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="external\STB\include\stb_image.cpp">
@@ -1326,9 +1326,6 @@
       <Filter>src\Legacy</Filter>
     </ClCompile>
     <ClCompile Include="src\Legacy\Input.cpp">
-      <Filter>src\Legacy</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Legacy\LegacyApp.cpp">
       <Filter>src\Legacy</Filter>
     </ClCompile>
     <ClCompile Include="src\Legacy\Material.cpp">
@@ -1418,5 +1415,8 @@
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\RTREngine\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
+    <ClCompile Include="src\Legacy\App.cpp">
+      <Filter>src\Legacy</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

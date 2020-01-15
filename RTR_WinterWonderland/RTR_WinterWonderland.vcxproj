@@ -141,11 +141,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\ClientApp.cpp" />
+    <ClCompile Include="src\SceneLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RTR_Engine\RTR_Engine.vcxproj">
       <Project>{F2EECCA0-DEA6-0EEE-47AE-E7493385A9DE}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Keymappings.h" />
+    <ClInclude Include="src\SceneLayer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

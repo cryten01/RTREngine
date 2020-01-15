@@ -26,14 +26,14 @@ namespace RTREngine {
 		virtual void SetMat3(const std::string& name, const glm::mat3& matrix) override;
 		virtual void SetMat4(const std::string& name, const glm::mat4& matrix) override;
 
-		virtual const std::string& GetName() const override { return m_Name; }
+		virtual const std::string& GetName() const override { return m_ShaderName; }
 
 	private:
-		std::string ReadFile(const std::string& filepath);
+		std::string ReadFile(const std::string& filepath); // used for single file shader loading
 		std::unordered_map<GLenum, std::string> PreProcess(const std::string& source);
 		void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
 	private:
-		uint32_t m_RendererID;
-		std::string m_Name;
+		uint32_t m_ShaderProgID;
+		std::string m_ShaderName;
 	};
 }

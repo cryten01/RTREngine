@@ -26,10 +26,3 @@
 #include "RTREngine/Renderer/Buffer.h"
 #include "RTREngine/Renderer/Shader.h"
 #include "RTREngine/Renderer/VertexArray.h"
-
-
-//-----------------------------------
-// Entry point
-//-----------------------------------
-
-#include "RTREngine/Core/Entrypoint.h"

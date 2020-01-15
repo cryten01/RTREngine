@@ -9,7 +9,7 @@
 namespace RTREngine {
 
 	/*
-	*	An interface for choosing a RenderAPI.
+	*	An interface for choosing a RenderAPI
 	*/
 	class RenderAPI
 	{

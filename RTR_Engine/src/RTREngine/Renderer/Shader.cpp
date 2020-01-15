@@ -35,6 +35,9 @@ namespace RTREngine {
 	}
 
 
+	//-----------------------------------
+	// Shader library
+	//-----------------------------------
 
 	void ShaderLibrary::Add(const std::string& name, const Ref<Shader>& shader)
 	{

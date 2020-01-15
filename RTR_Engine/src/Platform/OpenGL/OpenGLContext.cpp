@@ -33,7 +33,6 @@ namespace RTREngine {
 		int versionMinor;
 		glGetIntegerv(GL_MAJOR_VERSION, &versionMajor);
 		glGetIntegerv(GL_MINOR_VERSION, &versionMinor);
-
 		RTR_CORE_ASSERT(versionMajor > 4 || (versionMajor == 4 && versionMinor >= 3), "RTREngine requires at least OpenGL version 4.3!");
 #endif
 	}

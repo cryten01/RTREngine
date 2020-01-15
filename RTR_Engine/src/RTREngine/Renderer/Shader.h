@@ -6,6 +6,9 @@
 
 namespace RTREngine {
 
+	/*
+	*	An interface creating and binding shaders
+	*/
 	class Shader
 	{
 	public:
@@ -25,7 +28,7 @@ namespace RTREngine {
 		virtual const std::string& GetName() const = 0;
 
 		// TODO: Create compute and geometry shader
-		static Ref<Shader> Create(const std::string& filepath); 
+		static Ref<Shader> Create(const std::string& filepath); // used for single file shader loading
 		static Ref<Shader> Create(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
 	};
 

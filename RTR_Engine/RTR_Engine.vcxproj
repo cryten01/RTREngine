@@ -525,7 +525,7 @@
     <ClInclude Include="src\Legacy\Framework.h" />
     <ClInclude Include="src\Legacy\Input.h" />
     <ClInclude Include="src\Legacy\Interfaces.h" />
-    <ClInclude Include="src\Legacy\LegacyApp.h" />
+    <ClInclude Include="src\Legacy\App.h" />
     <ClInclude Include="src\Legacy\Light.h" />
     <ClInclude Include="src\Legacy\Material.h" />
     <ClInclude Include="src\Legacy\Mesh.h" />
@@ -579,7 +579,7 @@
     <ClCompile Include="src\Legacy\FrameBuffer.cpp" />
     <ClCompile Include="src\Legacy\Framework.cpp" />
     <ClCompile Include="src\Legacy\Input.cpp" />
-    <ClCompile Include="src\Legacy\LegacyApp.cpp" />
+    <ClCompile Include="src\Legacy\App.cpp" />
     <ClCompile Include="src\Legacy\Material.cpp" />
     <ClCompile Include="src\Legacy\Mesh.cpp" />
     <ClCompile Include="src\Legacy\Model.cpp" />

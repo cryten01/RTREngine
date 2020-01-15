@@ -7,6 +7,9 @@
 
 namespace RTREngine {
 
+	/*
+	*	An interface for choosing the RenderAPI.
+	*/
 	class RenderAPI
 	{
 	public:

@@ -25,4 +25,8 @@ namespace RTREngine {
 	void Renderer::EndScene()
 	{
 	}
+
+
+
+	Scope<RenderAPI> RenderCommand::s_RenderAPI = RenderAPI::Create();
 }

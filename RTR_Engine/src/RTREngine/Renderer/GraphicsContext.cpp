@@ -17,5 +17,4 @@ namespace RTREngine {
 		RTR_CORE_ASSERT(false, "Unknown RendererAPI!");
 		return nullptr;
 	}
-
 }

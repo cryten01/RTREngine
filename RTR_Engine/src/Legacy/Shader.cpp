@@ -6,7 +6,7 @@ using namespace RTREngine;
 /**
 *	Creates a shader porgram. Needs at least one shader
 **/
-Shader::Shader(const std::string& vertexFileName, const std::string& fragmentFileName, const std::string& geometryFileName)
+ShaderLegacy::ShaderLegacy(const std::string& vertexFileName, const std::string& fragmentFileName, const std::string& geometryFileName)
 {
 	_programID = glCreateProgram();
 	addToProgram(GL_VERTEX_SHADER, vertexFileName);
@@ -21,7 +21,7 @@ Shader::Shader(const std::string& vertexFileName, const std::string& fragmentFil
 }
 
 
-Shader::Shader(const std::string & computeFileName)
+ShaderLegacy::ShaderLegacy(const std::string & computeFileName)
 {
 	_programID = glCreateProgram();
 	addToProgram(GL_COMPUTE_SHADER, computeFileName);
@@ -32,14 +32,14 @@ Shader::Shader(const std::string & computeFileName)
 }
 
 
-Shader::~Shader()
+ShaderLegacy::~ShaderLegacy()
 {
 	glUseProgram(0);
 	glDeleteProgram(_programID);
 }
 
 
-void Shader::addToProgram(GLenum shaderType, const std::string& fileName)
+void ShaderLegacy::addToProgram(GLenum shaderType, const std::string& fileName)
 {
 	GLuint shaderID;
 
@@ -56,7 +56,7 @@ void Shader::addToProgram(GLenum shaderType, const std::string& fileName)
 
 
 /** OpenGL compiles the shader source code and assign an identifier to it */
-GLuint Shader::compileShader(const std::string& source, GLuint type)
+GLuint ShaderLegacy::compileShader(const std::string& source, GLuint type)
 {
 	// Necessary because OpenGL needs a raw string
 	const char* shaderSource = source.c_str();
@@ -92,63 +92,63 @@ GLuint Shader::compileShader(const std::string& source, GLuint type)
 }
 
 
-void Shader::use() const
+void ShaderLegacy::use() const
 {
 	glUseProgram(_programID);
 }
 
-void Shader::unuse() const
+void ShaderLegacy::unuse() const
 {
 	glUseProgram(0);
 }
 
 
 
-GLint Shader::getUniformLocation(const std::string &name) {
+GLint ShaderLegacy::getUniformLocation(const std::string &name) {
 	return glGetUniformLocation(_programID, name.c_str());
 }
 
-void Shader::setUniform(GLint location, const glm::vec3& vec) 
+void ShaderLegacy::setUniform(GLint location, const glm::vec3& vec) 
 {
 	glUniform3fv(location, 1, &vec[0]);
 }
 
-void Shader::setUniform(GLint location, const glm::vec4& vec)
+void ShaderLegacy::setUniform(GLint location, const glm::vec4& vec)
 {
 	glUniform4fv(location, 1, &vec[0]);
 }
 
 
-void Shader::setUniform(std::string uniform, int i)
+void ShaderLegacy::setUniform(std::string uniform, int i)
 {
 	GLuint location = glGetUniformLocation(_programID, uniform.c_str());
 	glUniform1i(location, i);
 }
 
-void Shader::setUniform(std::string uniform, const unsigned int i)
+void ShaderLegacy::setUniform(std::string uniform, const unsigned int i)
 {
 	GLuint location = glGetUniformLocation(_programID, uniform.c_str());
 	glUniform1ui(location, i);
 }
 
-void Shader::setUniform(std::string uniform, const float f)
+void ShaderLegacy::setUniform(std::string uniform, const float f)
 {
 	GLuint location = glGetUniformLocation(_programID, uniform.c_str());
 	glUniform1f(location, f);
 }
 
-void Shader::setUniform(std::string uniform, const glm::vec3& vec) 
+void ShaderLegacy::setUniform(std::string uniform, const glm::vec3& vec) 
 {
 	GLuint location = glGetUniformLocation(_programID, uniform.c_str());
 	glUniform3fv(location, 1, &vec[0]);
 }
-void Shader::setUniform(std::string uniform, const glm::mat3& mat)
+void ShaderLegacy::setUniform(std::string uniform, const glm::mat3& mat)
 {
 	GLuint location = glGetUniformLocation(_programID, uniform.c_str());
 	glUniformMatrix3fv(location, 1, GL_FALSE, &mat[0][0]);
 }
 
-void Shader::setUniform(std::string uniform, const glm::mat4& mat)
+void ShaderLegacy::setUniform(std::string uniform, const glm::mat4& mat)
 {
 	GLuint location = glGetUniformLocation(_programID, uniform.c_str());
 	glUniformMatrix4fv(location, 1, GL_FALSE, &mat[0][0]);

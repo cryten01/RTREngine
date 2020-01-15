@@ -31,8 +31,8 @@ namespace RTREngine
 		~Mesh();
 
 		void update(float deltaTime) override;
-		void setUniforms(std::shared_ptr<Shader> shader) override;
-		void render(std::shared_ptr<Shader> shader) override;
+		void setUniforms(std::shared_ptr<ShaderLegacy> shader) override;
+		void render(std::shared_ptr<ShaderLegacy> shader) override;
 
 		std::shared_ptr<Material> getMaterial();
 

@@ -113,7 +113,7 @@ void Transform::resetModelMatrix()
 	this->_modelMatrix = glm::mat4(1);
 }
 
-void Transform::setUniforms(std::shared_ptr<Shader> shader)
+void Transform::setUniforms(std::shared_ptr<ShaderLegacy> shader)
 {
 	shader->use();
 	shader->setUniform("modelMatrix", _modelMatrix);

@@ -59,7 +59,7 @@ void Camera::processMouseMovement(int x, int y)
 }
 
 
-void Camera::setUniforms(std::shared_ptr<Shader> shader)
+void Camera::setUniforms(std::shared_ptr<ShaderLegacy> shader)
 {
 	shader->use();
 	shader->setUniform("viewProjMatrix", this->_projMatrix * this->_viewMatrix);

@@ -28,6 +28,6 @@ namespace RTREngine
 
 		// Render & Update
 		void update(float deltaTime);
-		void setUniforms(std::shared_ptr<Shader> shader);
+		void setUniforms(std::shared_ptr<ShaderLegacy> shader);
 	};
 }

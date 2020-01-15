@@ -23,7 +23,7 @@ namespace RTREngine
 		glm::vec3 direction;
 
 
-		void setUniforms(std::shared_ptr<Shader> shader) override
+		void setUniforms(std::shared_ptr<ShaderLegacy> shader) override
 		{
 			shader->use();
 			shader->setUniform("dirL.color", this->color);
@@ -54,7 +54,7 @@ namespace RTREngine
 
 
 		// Index is necessary because light is stored in an array in shader file
-		void setUniforms(std::shared_ptr<Shader> shader, unsigned int index)
+		void setUniforms(std::shared_ptr<ShaderLegacy> shader, unsigned int index)
 		{
 			shader->setUniform("pointL[" + std::to_string(index) + "].color", this->color);
 			shader->setUniform("pointL[" + std::to_string(index) + "].position", this->position);
@@ -85,7 +85,7 @@ namespace RTREngine
 
 
 		// Index is necessary because light is stored in an array in shader file
-		void setUniforms(std::shared_ptr<Shader> shader, unsigned int index)
+		void setUniforms(std::shared_ptr<ShaderLegacy> shader, unsigned int index)
 		{
 			shader->setUniform("spotL[" + std::to_string(index) + "].color", this->color);
 			shader->setUniform("spotL[" + std::to_string(index) + "].position", this->position);

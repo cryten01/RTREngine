@@ -17,7 +17,7 @@ namespace RTREngine
 	class Material
 	{
 	protected:
-		std::shared_ptr<Shader> _shader;
+		std::shared_ptr<ShaderLegacy> _shader;
 
 		MaterialType _type;
 		glm::vec3 _color;
@@ -27,16 +27,16 @@ namespace RTREngine
 		bool _isReflective;
 
 	public:
-		Material(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, glm::vec3 color);
+		Material(std::shared_ptr<ShaderLegacy> shader, glm::vec3 reflectionConstants, float alpha, glm::vec3 color);
 		virtual ~Material();
 
-		Shader* getShader();
+		ShaderLegacy* getShader();
 		MaterialType& getType();
 		void setType(MaterialType state);
 		void setIsRefractive(bool state);
 		void setIsReflective(bool state);
 
-		virtual void setUniforms(std::shared_ptr<Shader> shader);
+		virtual void setUniforms(std::shared_ptr<ShaderLegacy> shader);
 	};
 
 
@@ -47,10 +47,10 @@ namespace RTREngine
 		std::vector<std::shared_ptr<Texture>> _textures;
 
 	public:
-		TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, std::shared_ptr<Texture> texture);
-		TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, std::vector<std::shared_ptr<Texture>> textures);
+		TextureMaterial(std::shared_ptr<ShaderLegacy> shader, glm::vec3 reflectionConstants, float alpha, std::shared_ptr<Texture> texture);
+		TextureMaterial(std::shared_ptr<ShaderLegacy> shader, glm::vec3 reflectionConstants, float alpha, std::vector<std::shared_ptr<Texture>> textures);
 		virtual ~TextureMaterial();
 
-		virtual void setUniforms(std::shared_ptr<Shader> _shader);
+		virtual void setUniforms(std::shared_ptr<ShaderLegacy> _shader);
 	};
 }

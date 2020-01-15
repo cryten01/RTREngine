@@ -7,7 +7,7 @@ using namespace RTREngine;
 // Base material
 /* --------------------------------------------- */
 
-Material::Material(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, glm::vec3 color)
+Material::Material(std::shared_ptr<ShaderLegacy> shader, glm::vec3 reflectionConstants, float alpha, glm::vec3 color)
 	: _shader(shader), _reflectionConstants(reflectionConstants), _alpha(alpha), _color(color)
 {
 	_type = DIFFUSE;
@@ -20,7 +20,7 @@ Material::~Material()
 {
 }
 
-Shader* Material::getShader()
+ShaderLegacy* Material::getShader()
 {
 	return _shader.get();
 }
@@ -45,7 +45,7 @@ void Material::setIsReflective(bool state)
 	this->_isReflective = state;
 }
 
-void Material::setUniforms(std::shared_ptr<Shader> _shader)
+void Material::setUniforms(std::shared_ptr<ShaderLegacy> _shader)
 {
 	_shader->setUniform("material.type", _type);
 	_shader->setUniform("material.light", _reflectionConstants);
@@ -60,7 +60,7 @@ void Material::setUniforms(std::shared_ptr<Shader> _shader)
 // Texture material
 /* --------------------------------------------- */
 
-TextureMaterial::TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, std::shared_ptr<Texture> texture)
+TextureMaterial::TextureMaterial(std::shared_ptr<ShaderLegacy> shader, glm::vec3 reflectionConstants, float alpha, std::shared_ptr<Texture> texture)
 	: Material(shader, reflectionConstants, alpha, glm::vec3(1.0f, 0.0f, 1.0f))
 {
 	_type = TEXTURE;
@@ -68,7 +68,7 @@ TextureMaterial::TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 refle
 	_textures.push_back(texture);
 }
 
-TextureMaterial::TextureMaterial(std::shared_ptr<Shader> shader, glm::vec3 reflectionConstants, float alpha, std::vector<std::shared_ptr<Texture>> textures)
+TextureMaterial::TextureMaterial(std::shared_ptr<ShaderLegacy> shader, glm::vec3 reflectionConstants, float alpha, std::vector<std::shared_ptr<Texture>> textures)
 	: Material(shader, reflectionConstants, alpha, glm::vec3(1.0f, 0.0f, 1.0f)), _textures(textures)
 {
 	_type = TEXTURE;
@@ -80,7 +80,7 @@ TextureMaterial::~TextureMaterial()
 }
 
 
-void TextureMaterial::setUniforms(std::shared_ptr<Shader> _shader)
+void TextureMaterial::setUniforms(std::shared_ptr<ShaderLegacy> _shader)
 {
 	// Set all non texture related uniforms
 	Material::setUniforms(_shader);

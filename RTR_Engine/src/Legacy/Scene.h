@@ -33,7 +33,7 @@ namespace RTREngine
 		void addRenderable(std::shared_ptr<Renderable> renderObject);
 
 		void update(float deltaTime);
-		void setPerFrameUniforms(std::shared_ptr<Shader> shader);
-		void render(std::shared_ptr<Shader> shader);
+		void setPerFrameUniforms(std::shared_ptr<ShaderLegacy> shader);
+		void render(std::shared_ptr<ShaderLegacy> shader);
 	};
 }

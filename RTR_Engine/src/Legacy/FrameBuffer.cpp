@@ -122,7 +122,7 @@ void FrameBuffer::unuse()
 }
 
 
-void FrameBuffer::renderScreenQuad(std::shared_ptr<Shader> shader, bool hdr, float exposure)
+void FrameBuffer::renderScreenQuad(std::shared_ptr<ShaderLegacy> shader, bool hdr, float exposure)
 {
 	shader->use();
 

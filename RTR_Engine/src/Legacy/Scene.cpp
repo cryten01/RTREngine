@@ -52,7 +52,7 @@ void Scene::update(float deltaTime)
 /**
 *	Set all Uniforms that must be existent before objects are rendered
 **/
-void Scene::setPerFrameUniforms(std::shared_ptr<Shader> shader)
+void Scene::setPerFrameUniforms(std::shared_ptr<ShaderLegacy> shader)
 {
 	shader->use();
 
@@ -71,7 +71,7 @@ void Scene::setPerFrameUniforms(std::shared_ptr<Shader> shader)
 }
 
 
-void Scene::render(std::shared_ptr<Shader> shader)
+void Scene::render(std::shared_ptr<ShaderLegacy> shader)
 {
 	shader->use();
 

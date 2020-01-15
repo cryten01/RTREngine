@@ -35,6 +35,6 @@ namespace RTREngine
 		void use();
 		void unuse();
 
-		void renderScreenQuad(std::shared_ptr<Shader> shader, bool hdr, float exposure);
+		void renderScreenQuad(std::shared_ptr<ShaderLegacy> shader, bool hdr, float exposure);
 	};
 }

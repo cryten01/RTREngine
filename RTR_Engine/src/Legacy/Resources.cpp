@@ -20,12 +20,12 @@ void Resources::init()
 	hdrBuffer = std::make_shared<FrameBuffer>(800, 600, FLOAT);
 
 	// Shaders
-	standardShader = std::make_shared<Shader>("standard.vert", "standard.frag", "standard.geom");
-	skyboxShader = std::make_shared<Shader>("skybox.vert", "skybox.frag");
-	postProcessShader = std::make_shared<Shader>("framebuffer.vert", "framebuffer.frag");
-	geometryShader = std::make_shared<Shader>("geometry.vert", "geometry.frag", "geometry.geom");
-	particleRenderShader = std::make_shared<Shader>("particles.vert", "particles.frag", "particles.geom");
-	particleComputeShader = std::make_shared<Shader>("particles.comp");
+	standardShader = std::make_shared<ShaderLegacy>("standard.vert", "standard.frag", "standard.geom");
+	skyboxShader = std::make_shared<ShaderLegacy>("skybox.vert", "skybox.frag");
+	postProcessShader = std::make_shared<ShaderLegacy>("framebuffer.vert", "framebuffer.frag");
+	geometryShader = std::make_shared<ShaderLegacy>("geometry.vert", "geometry.frag", "geometry.geom");
+	particleRenderShader = std::make_shared<ShaderLegacy>("particles.vert", "particles.frag", "particles.geom");
+	particleComputeShader = std::make_shared<ShaderLegacy>("particles.comp");
 
 	// ModelLoader
 	modelLoader = std::make_shared<Model>();

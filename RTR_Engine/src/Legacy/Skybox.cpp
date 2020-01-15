@@ -40,7 +40,7 @@ Skybox::~Skybox()
 }
 
 
-void Skybox::setUniforms(std::shared_ptr<Shader> shader)
+void Skybox::setUniforms(std::shared_ptr<ShaderLegacy> shader)
 {
 	shader->use();
 
@@ -71,7 +71,7 @@ void Skybox::bindTextures(unsigned int unit)
 }
 
 
-void Skybox::render(std::shared_ptr<Shader> shader)
+void Skybox::render(std::shared_ptr<ShaderLegacy> shader)
 {
 	shader->use();
 

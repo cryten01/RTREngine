@@ -49,7 +49,7 @@ namespace RTREngine
 		void resetModelMatrix();
 		void transform(glm::mat4 transformation);
 
-		void setUniforms(std::shared_ptr<Shader> shader) override;
+		void setUniforms(std::shared_ptr<ShaderLegacy> shader) override;
 		void update(float deltaTime) override;
 	};
 }

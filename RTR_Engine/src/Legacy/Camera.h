@@ -28,7 +28,7 @@ namespace RTREngine
 		glm::mat4 getViewMatrix();
 		glm::mat4 getProjMatrix();
 
-		void setUniforms(std::shared_ptr<Shader> shader);
+		void setUniforms(std::shared_ptr<ShaderLegacy> shader);
 		void update(float deltaTime) override;
 	};
 }

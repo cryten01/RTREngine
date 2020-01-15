@@ -43,12 +43,12 @@ namespace RTREngine
 		std::shared_ptr<FrameBuffer> hdrBuffer;
 
 		// Load shaders here (location starts at solution folder)
-		std::shared_ptr<Shader> standardShader;
-		std::shared_ptr<Shader> skyboxShader;
-		std::shared_ptr<Shader> postProcessShader;
-		std::shared_ptr<Shader> geometryShader;
-		std::shared_ptr<Shader> particleRenderShader;
-		std::shared_ptr<Shader> particleComputeShader;
+		std::shared_ptr<ShaderLegacy> standardShader;
+		std::shared_ptr<ShaderLegacy> skyboxShader;
+		std::shared_ptr<ShaderLegacy> postProcessShader;
+		std::shared_ptr<ShaderLegacy> geometryShader;
+		std::shared_ptr<ShaderLegacy> particleRenderShader;
+		std::shared_ptr<ShaderLegacy> particleComputeShader;
 
 		// Create model loader here (object files must be in separate directory)
 		std::shared_ptr<Model> modelLoader;

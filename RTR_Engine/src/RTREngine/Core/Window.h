@@ -13,7 +13,7 @@ namespace RTREngine {
 		unsigned int Width;
 		unsigned int Height;
 
-		WindowProps(const std::string& title = "RTR Engine", unsigned int width = 640, unsigned int height = 480)
+		WindowProps(const std::string& title = "RTR Engine", unsigned int width = 1024, unsigned int height = 768)
 			: Title(title), Width(width), Height(height)
 		{
 		}

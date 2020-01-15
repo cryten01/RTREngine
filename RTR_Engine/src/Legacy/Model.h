@@ -13,7 +13,7 @@ namespace RTREngine
 	{
 	private:
 		std::string _directory;						// Directory of the model
-		std::shared_ptr<Shader> _shader;			// The shader thats needed in sceneObjects, meshes, materials, textures
+		std::shared_ptr<ShaderLegacy> _shader;			// The shader thats needed in sceneObjects, meshes, materials, textures
 		std::vector<Texture> _textures_loaded;		// Textures that are already loaded from the model
 
 		void processNode(std::shared_ptr<SceneObject> target, aiNode* node, const aiScene* scene);

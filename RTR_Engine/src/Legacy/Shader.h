@@ -5,7 +5,7 @@ namespace RTREngine
 {
 	static const std::string& SHADER_ROOT_LOCATION = "../assets/shader/";
 
-	class Shader
+	class ShaderLegacy
 	{
 	private:
 		GLuint _programID;
@@ -14,9 +14,9 @@ namespace RTREngine
 		void addToProgram(GLenum shaderType, const std::string& filePath);
 
 	public:
-		Shader(const std::string& fileName, const std::string& fragmentFilePath, const std::string& geometryFilePath = "");
-		Shader(const std::string& computeFilePath);
-		~Shader();
+		ShaderLegacy(const std::string& fileName, const std::string& fragmentFilePath, const std::string& geometryFilePath = "");
+		ShaderLegacy(const std::string& computeFilePath);
+		~ShaderLegacy();
 
 		void use() const;
 		void unuse() const;

@@ -11,7 +11,7 @@ using namespace RTREngine;
 *	glBufferdata		Define data-structure (defines how big the buffer is and what data it contains)
 *	GL_DYNAMIC_DRAW		Content of data-storage gets repeatedly declared by App.
 **/
-ParticleSystem::ParticleSystem(std::vector<Particle> emitters, std::shared_ptr<Material> emitterMaterial, std::shared_ptr<Shader> computeShader, std::shared_ptr<Shader> renderShader, std::shared_ptr<Camera> camera)
+ParticleSystem::ParticleSystem(std::vector<Particle> emitters, std::shared_ptr<Material> emitterMaterial, std::shared_ptr<ShaderLegacy> computeShader, std::shared_ptr<ShaderLegacy> renderShader, std::shared_ptr<Camera> camera)
 	: _emitterMaterial(emitterMaterial), _computeShader(computeShader), _renderShader(renderShader), _camera(camera)
 {
 	// Init values
@@ -133,7 +133,7 @@ void ParticleSystem::update(float deltaTime)
 	glMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
 }
 
-void ParticleSystem::setUniforms(std::shared_ptr<Shader> shader)
+void ParticleSystem::setUniforms(std::shared_ptr<ShaderLegacy> shader)
 {
 	shader = _renderShader; // Override because specific shader is needed
 
@@ -154,7 +154,7 @@ void ParticleSystem::setUniforms(std::shared_ptr<Shader> shader)
 	shader->unuse();
 }
 
-void ParticleSystem::render(std::shared_ptr<Shader> shader)
+void ParticleSystem::render(std::shared_ptr<ShaderLegacy> shader)
 {
 	glBindVertexArray(_vaos[_pingPongIndex]);		// bind current VAO
 	glDrawArrays(GL_POINTS, 0, _particleCount);		// draw particles (points are necessary for generating quads

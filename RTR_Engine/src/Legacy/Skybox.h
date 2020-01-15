@@ -31,7 +31,7 @@ namespace RTREngine
 		 Skybox(std::shared_ptr<Camera> camera, float size, std::vector<std::string>& textureFileNames);
 		~Skybox();
 
-		void setUniforms(std::shared_ptr<Shader> shader);
-		void render(std::shared_ptr<Shader> shader) override;
+		void setUniforms(std::shared_ptr<ShaderLegacy> shader);
+		void render(std::shared_ptr<ShaderLegacy> shader) override;
 	};
 }

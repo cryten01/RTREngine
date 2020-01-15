@@ -55,7 +55,7 @@ void SceneObject::update(float deltaTime)
 	}
 }
 
-void SceneObject::setUniforms(std::shared_ptr<Shader> shader)
+void SceneObject::setUniforms(std::shared_ptr<ShaderLegacy> shader)
 {
 	for (std::shared_ptr<SceneComponent> component : _components)
 	{

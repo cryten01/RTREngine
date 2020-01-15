@@ -143,6 +143,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
+    <ClInclude Include="src\RTREngine\Renderer\Buffer.h" />
     <ClInclude Include="external\GLM\glm\common.hpp" />
     <ClInclude Include="external\GLM\glm\detail\_features.hpp" />
     <ClInclude Include="external\GLM\glm\detail\_fixes.hpp" />
@@ -562,6 +564,8 @@
     <ClInclude Include="src\rtrpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
+    <ClCompile Include="src\RTREngine\Renderer\Buffer.cpp" />
     <ClCompile Include="external\STB\include\stb_image.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLRenderAPI.cpp" />
     <ClCompile Include="src\RTREngine\Renderer\RenderAPI.cpp" />

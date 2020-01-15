@@ -50,7 +50,6 @@ namespace RTREngine {
 		{
 			s_RenderAPI->Clear();
 		}
-
 	private:
 		static Scope<RenderAPI> s_RenderAPI;
 	};

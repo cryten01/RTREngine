@@ -1307,6 +1307,8 @@
     <ClInclude Include="src\RTREngine\Renderer\Renderer.h" />
     <ClInclude Include="src\RTREngine\Renderer\RenderAPI.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRenderAPI.h" />
+    <ClInclude Include="src\RTREngine\Renderer\Buffer.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="external\STB\include\stb_image.cpp">
@@ -1410,5 +1412,7 @@
     <ClCompile Include="src\RTREngine\Renderer\Renderer.cpp" />
     <ClCompile Include="src\RTREngine\Renderer\RenderAPI.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLRenderAPI.cpp" />
+    <ClCompile Include="src\RTREngine\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
   </ItemGroup>
 </Project>

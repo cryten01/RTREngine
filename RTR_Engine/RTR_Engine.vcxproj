@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>rtrpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_BUILD_DLL;RTR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;external\SPDLOG\include;external\GLFW\include;external\GLEW\include;external\ASSIMP\include;external\GLM;external\STB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;external\SPDLOG\include;external\GLFW\include;external\GLEW\include;external\ASSIMP\include;external\GLM;external\STB\include;external\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -98,7 +98,7 @@
       <PrecompiledHeaderFile>rtrpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_BUILD_DLL;RTR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;external\SPDLOG\include;external\GLFW\include;external\GLEW\include;external\ASSIMP\include;external\GLM;external\STB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;external\SPDLOG\include;external\GLFW\include;external\GLEW\include;external\ASSIMP\include;external\GLM;external\STB\include;external\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -123,7 +123,7 @@
       <PrecompiledHeaderFile>rtrpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_BUILD_DLL;RTR_DISTRIBUTION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;external\SPDLOG\include;external\GLFW\include;external\GLEW\include;external\ASSIMP\include;external\GLM;external\STB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;external\SPDLOG\include;external\GLFW\include;external\GLEW\include;external\ASSIMP\include;external\GLM;external\STB\include;external\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -512,7 +512,6 @@
     <ClInclude Include="external\GLM\glm\vec4.hpp" />
     <ClInclude Include="external\GLM\glm\vector_relational.hpp" />
     <ClInclude Include="external\STB\include\stb_image.h" />
-    <ClInclude Include="src\Legacy.h" />
     <ClInclude Include="src\Legacy\Camera.h" />
     <ClInclude Include="src\Legacy\FrameBuffer.h" />
     <ClInclude Include="src\Legacy\Framework.h" />
@@ -548,6 +547,7 @@
     <ClInclude Include="src\RTREngine\Events\Event.h" />
     <ClInclude Include="src\RTREngine\Events\KeyEvent.h" />
     <ClInclude Include="src\RTREngine\Events\MouseEvent.h" />
+    <ClInclude Include="src\RTREngine\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\RTREngine\Input\Input.h" />
     <ClInclude Include="src\RTREngine\Input\KeyCodes.h" />
     <ClInclude Include="src\RTREngine\Input\MouseCodes.h" />
@@ -584,6 +584,8 @@
     <ClCompile Include="src\RTREngine\Core\Window.cpp">
       <ObjectFileName>$(IntDir)\Window1.obj</ObjectFileName>
     </ClCompile>
+    <ClCompile Include="src\RTREngine\ImGui\ImGuiBuild.cpp" />
+    <ClCompile Include="src\RTREngine\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\RTREngine\Input\Input.cpp">
       <ObjectFileName>$(IntDir)\Input1.obj</ObjectFileName>
     </ClCompile>
@@ -597,6 +599,9 @@
   <ItemGroup>
     <ProjectReference Include="external\GLFW\GLFW.vcxproj">
       <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="external\IMGUI\ImGui.vcxproj">
+      <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

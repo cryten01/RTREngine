@@ -17,6 +17,9 @@ namespace RTREngine {
 		s_Instance = this;
 		m_Window = Window::Create();
 		m_Window->SetEventCallback(RTR_BIND_EVENT_FN(App::OnEvent));
+
+		m_ImGuiLayer = new ImGuiLayer();
+		PushOverlay(m_ImGuiLayer);
 	}
 
 	App::~App()
@@ -58,14 +61,25 @@ namespace RTREngine {
 			Time deltaTime = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
-			// TODO: move OpenGL Renderer
-			glClearColor(0.1, 0.1, 0.1, 1.0);
-			glClear(GL_COLOR_BUFFER_BIT);
 
-			// Updates every layer
-			for (Layer* layer : m_LayerStack) 
+			if (!m_Minimized) 
 			{
-				layer->OnUpdate(deltaTime);
+				// TODO: move OpenGL Renderer
+				glClearColor(0.1, 0.1, 0.1, 1.0);
+				glClear(GL_COLOR_BUFFER_BIT);
+
+				m_ImGuiLayer->Begin();
+				{
+					for (Layer* layer : m_LayerStack)
+						layer->OnImGuiRender();
+				}
+				m_ImGuiLayer->End();
+
+				// Updates every layer
+				for (Layer* layer : m_LayerStack)
+				{
+					layer->OnUpdate(deltaTime);
+				}
 			}
 
 			m_Window->OnUpdate();

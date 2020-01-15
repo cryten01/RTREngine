@@ -52,6 +52,9 @@
     <Filter Include="src\RTREngine\Events">
       <UniqueIdentifier>{2E7EFA68-1A0D-8432-C32B-982DAF9994D8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\RTREngine\ImGui">
+      <UniqueIdentifier>{3426B71A-A087-9428-29F5-DADA9555CBE7}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\RTREngine\Input">
       <UniqueIdentifier>{0961B81A-75C2-9528-FE2F-DCDA6A90CCE7}</UniqueIdentifier>
     </Filter>
@@ -1170,9 +1173,6 @@
     <ClInclude Include="external\STB\include\stb_image.h">
       <Filter>external\STB\include</Filter>
     </ClInclude>
-    <ClInclude Include="src\Legacy.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="src\Legacy\Camera.h">
       <Filter>src\Legacy</Filter>
     </ClInclude>
@@ -1278,6 +1278,9 @@
     <ClInclude Include="src\RTREngine\Events\MouseEvent.h">
       <Filter>src\RTREngine\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\RTREngine\ImGui\ImGuiLayer.h">
+      <Filter>src\RTREngine\ImGui</Filter>
+    </ClInclude>
     <ClInclude Include="src\RTREngine\Input\Input.h">
       <Filter>src\RTREngine\Input</Filter>
     </ClInclude>
@@ -1375,6 +1378,12 @@
     </ClCompile>
     <ClCompile Include="src\RTREngine\Core\Window.cpp">
       <Filter>src\RTREngine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RTREngine\ImGui\ImGuiBuild.cpp">
+      <Filter>src\RTREngine\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RTREngine\ImGui\ImGuiLayer.cpp">
+      <Filter>src\RTREngine\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\RTREngine\Input\Input.cpp">
       <Filter>src\RTREngine\Input</Filter>

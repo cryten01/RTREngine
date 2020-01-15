@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencie
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GLFW", "RTR_Engine\external\GLFW\GLFW.vcxproj", "{154B857C-0182-860D-AA6E-6C109684020F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImGui", "RTR_Engine\external\IMGUI\ImGui.vcxproj", "{C0FF640D-2C14-8DBE-F595-301E616989EF}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RTR_Engine", "RTR_Engine\RTR_Engine.vcxproj", "{F2EECCA0-DEA6-0EEE-47AE-E7493385A9DE}"
 EndProject
 Global
@@ -28,6 +30,12 @@ Global
 		{154B857C-0182-860D-AA6E-6C109684020F}.Distribution|Win32.Build.0 = Distribution|Win32
 		{154B857C-0182-860D-AA6E-6C109684020F}.Release|Win32.ActiveCfg = Release|Win32
 		{154B857C-0182-860D-AA6E-6C109684020F}.Release|Win32.Build.0 = Release|Win32
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Debug|Win32.Build.0 = Debug|Win32
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Distribution|Win32.ActiveCfg = Distribution|Win32
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Distribution|Win32.Build.0 = Distribution|Win32
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Release|Win32.ActiveCfg = Release|Win32
+		{C0FF640D-2C14-8DBE-F595-301E616989EF}.Release|Win32.Build.0 = Release|Win32
 		{F2EECCA0-DEA6-0EEE-47AE-E7493385A9DE}.Debug|Win32.ActiveCfg = Debug|Win32
 		{F2EECCA0-DEA6-0EEE-47AE-E7493385A9DE}.Debug|Win32.Build.0 = Debug|Win32
 		{F2EECCA0-DEA6-0EEE-47AE-E7493385A9DE}.Distribution|Win32.ActiveCfg = Distribution|Win32
@@ -40,5 +48,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{154B857C-0182-860D-AA6E-6C109684020F} = {53E47842-3FC8-3998-A828-34EB942B241A}
+		{C0FF640D-2C14-8DBE-F595-301E616989EF} = {53E47842-3FC8-3998-A828-34EB942B241A}
 	EndGlobalSection
 EndGlobal

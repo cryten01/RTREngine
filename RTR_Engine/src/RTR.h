@@ -13,6 +13,8 @@
 #include "RTREngine/Layers/Layer.h"
 #include "RTREngine/Layers/LayerStack.h"
 
+#include "RTREngine/ImGui/ImGuiLayer.h"
+
 //-----------------------------------
 // Entry point
 //-----------------------------------

@@ -23,10 +23,12 @@ IncludeDir["GLEW"] = "RTR_Engine/external/GLEW/include"
 IncludeDir["ASSIMP"] = "RTR_Engine/external/ASSIMP/include"
 IncludeDir["GLM"] = "RTR_Engine/external/GLM"
 IncludeDir["STB_IMAGE"] = "RTR_Engine/external/STB/include"
+IncludeDir["IMGUI"] = "RTR_Engine/external/imgui"
 
 -- Include other premake files
 group "Dependencies"
 	include "RTR_Engine/external/GLFW"
+	include "RTR_Engine/external/IMGUI"
 group ""
 
 project "RTR_Engine"
@@ -63,7 +65,8 @@ project "RTR_Engine"
 		"%{IncludeDir.GLEW}",
 		"%{IncludeDir.ASSIMP}",
 		"%{IncludeDir.GLM}",
-		"%{IncludeDir.STB_IMAGE}"
+		"%{IncludeDir.STB_IMAGE}",
+		"%{IncludeDir.IMGUI}",
 	}
 
 	-- Sets additional dependencies (.lib files)
@@ -72,7 +75,8 @@ project "RTR_Engine"
 		"opengl32.lib",	
 		"glew32s.lib",
 		"GLFW",
-		"assimp-vc141-mtd"
+		"assimp-vc141-mtd",
+		"IMGUI",
 	}
 
 	 -- For 32 bit use these library paths

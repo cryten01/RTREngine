@@ -6,6 +6,7 @@
 #include "RTREngine/Events/Event.h"
 #include "RTREngine/Events/AppEvent.h"
 #include "RTREngine/Layers/Layerstack.h"
+#include "RTREngine/ImGui/ImGuiLayer.h"
 
 
 int main(int argc, char** argv);
@@ -34,6 +35,7 @@ namespace RTREngine
 	private:
 		std::unique_ptr<Window> m_Window;
 		LayerStack m_LayerStack;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		bool m_Minimized = false;
 		float m_LastFrameTime = 0.0f;

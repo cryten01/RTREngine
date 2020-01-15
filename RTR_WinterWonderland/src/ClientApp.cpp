@@ -27,6 +27,7 @@ public:
 	WinterWonderland()
 	{
 		PushLayer(new ExampleLayer());
+		PushOverlay(new RTREngine::ImGuiLayer());
 	}
 
 	~WinterWonderland()

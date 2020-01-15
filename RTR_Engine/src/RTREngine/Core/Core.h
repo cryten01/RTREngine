@@ -4,7 +4,7 @@
 
 // Platform detection using predefined macros
 #ifdef _WIN32
-	#define HZ_PLATFORM_WINDOWS
+	#define RTR_PLATFORM_WINDOWS
 #else
 	#error RTR_Engine only supports Windows!
 #endif

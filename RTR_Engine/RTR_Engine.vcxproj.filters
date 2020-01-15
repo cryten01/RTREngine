@@ -1302,6 +1302,11 @@
     <ClInclude Include="src\rtrpch.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\RTREngine\Renderer\Shader.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
+    <ClInclude Include="src\RTREngine\Renderer\Renderer.h" />
+    <ClInclude Include="src\RTREngine\Renderer\RenderAPI.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRenderAPI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="external\STB\include\stb_image.cpp">
@@ -1400,5 +1405,10 @@
     <ClCompile Include="src\rtrpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\RTREngine\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
+    <ClCompile Include="src\RTREngine\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\RTREngine\Renderer\RenderAPI.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRenderAPI.cpp" />
   </ItemGroup>
 </Project>

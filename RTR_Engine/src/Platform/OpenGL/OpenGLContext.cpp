@@ -1,9 +1,9 @@
-#include "RTRpch.h"
+#include "rtrpch.h"
 
 #include "Platform/OpenGL/OpenGLContext.h"
 
 #define GLEW_STATIC
-#include <GL/glew.h> // must be added before GL and glfw!
+#include <GL/glew.h> // must be added before GL.h and glfw3.h!
 #include <GL/GL.h>		
 #include <GLFW/glfw3.h> 
 
@@ -19,10 +19,7 @@ namespace RTREngine {
 	{
 		glfwMakeContextCurrent(m_WindowHandle);
 
-		// If true GLEW uses a modern approach for retrieving function pointers and extensions
-		glewExperimental = true;
-
-		// Initialize GLEW to setup OpenGL function pointers
+		glewExperimental = true; // if true GLEW uses a modern approach for retrieving function pointers and extensionsis used
 		int status = glewInit();
 		RTR_CORE_ASSERT(status == GLEW_OK, "Failed to init GLEW!")
 	
@@ -30,7 +27,6 @@ namespace RTREngine {
 		RTR_CORE_INFO("  Vendor: {0}", glGetString(GL_VENDOR));
 		RTR_CORE_INFO("  Renderer: {0}", glGetString(GL_RENDERER));
 		RTR_CORE_INFO("  Version: {0}", glGetString(GL_VERSION));
-
 
 #ifdef RTR_ENABLE_ASSERTS
 		int versionMajor;
@@ -40,7 +36,6 @@ namespace RTREngine {
 
 		RTR_CORE_ASSERT(versionMajor > 4 || (versionMajor == 4 && versionMinor >= 3), "RTREngine requires at least OpenGL version 4.3!");
 #endif
-
 	}
 
 	void OpenGLContext::SwapBuffers()

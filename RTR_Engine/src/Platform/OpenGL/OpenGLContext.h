@@ -16,4 +16,5 @@ namespace RTREngine {
 	private:
 		GLFWwindow* m_WindowHandle;
 	};
+
 }

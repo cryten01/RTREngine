@@ -512,6 +512,11 @@
     <ClInclude Include="external\GLM\glm\vec4.hpp" />
     <ClInclude Include="external\GLM\glm\vector_relational.hpp" />
     <ClInclude Include="external\STB\include\stb_image.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRenderAPI.h" />
+    <ClInclude Include="src\RTREngine\Renderer\RenderAPI.h" />
+    <ClInclude Include="src\RTREngine\Renderer\Renderer.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
+    <ClInclude Include="src\RTREngine\Renderer\Shader.h" />
     <ClInclude Include="src\Legacy\Camera.h" />
     <ClInclude Include="src\Legacy\FrameBuffer.h" />
     <ClInclude Include="src\Legacy\Framework.h" />
@@ -558,6 +563,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="external\STB\include\stb_image.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRenderAPI.cpp" />
+    <ClCompile Include="src\RTREngine\Renderer\RenderAPI.cpp" />
+    <ClCompile Include="src\RTREngine\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
+    <ClCompile Include="src\RTREngine\Renderer\Shader.cpp" />
     <ClCompile Include="src\Legacy\Camera.cpp" />
     <ClCompile Include="src\Legacy\FrameBuffer.cpp" />
     <ClCompile Include="src\Legacy\Framework.cpp" />

@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\RTR_Engine\external\SPDLOG\include;..\RTR_Engine\external\GLFW\include;..\RTR_Engine\external\GLEW\include;..\RTR_Engine\external\ASSIMP\include;..\RTR_Engine\external\GLM;..\RTR_Engine\external\STB\include;..\RTR_Engine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\RTR_Engine\src;..\RTR_Engine\external\SPDLOG\include;..\RTR_Engine\external\GLFW\include;..\RTR_Engine\external\GLEW\include;..\RTR_Engine\external\ASSIMP\include;..\RTR_Engine\external\GLM;..\RTR_Engine\external\STB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -98,7 +98,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\RTR_Engine\external\SPDLOG\include;..\RTR_Engine\external\GLFW\include;..\RTR_Engine\external\GLEW\include;..\RTR_Engine\external\ASSIMP\include;..\RTR_Engine\external\GLM;..\RTR_Engine\external\STB\include;..\RTR_Engine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\RTR_Engine\src;..\RTR_Engine\external\SPDLOG\include;..\RTR_Engine\external\GLFW\include;..\RTR_Engine\external\GLEW\include;..\RTR_Engine\external\ASSIMP\include;..\RTR_Engine\external\GLM;..\RTR_Engine\external\STB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -121,7 +121,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>RTR_PLATFORM_WINDOWS;RTR_DISTRIBUTION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\RTR_Engine\external\SPDLOG\include;..\RTR_Engine\external\GLFW\include;..\RTR_Engine\external\GLEW\include;..\RTR_Engine\external\ASSIMP\include;..\RTR_Engine\external\GLM;..\RTR_Engine\external\STB\include;..\RTR_Engine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\RTR_Engine\src;..\RTR_Engine\external\SPDLOG\include;..\RTR_Engine\external\GLFW\include;..\RTR_Engine\external\GLEW\include;..\RTR_Engine\external\ASSIMP\include;..\RTR_Engine\external\GLM;..\RTR_Engine\external\STB\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -140,6 +140,10 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Keymappings.h" />
+    <ClInclude Include="src\SceneLayer.h" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="src\ClientApp.cpp" />
     <ClCompile Include="src\SceneLayer.cpp" />
   </ItemGroup>
@@ -147,10 +151,6 @@
     <ProjectReference Include="..\RTR_Engine\RTR_Engine.vcxproj">
       <Project>{F2EECCA0-DEA6-0EEE-47AE-E7493385A9DE}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\Keymappings.h" />
-    <ClInclude Include="src\SceneLayer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

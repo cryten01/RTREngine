@@ -14,5 +14,7 @@ namespace WinterWonderland
 	private:
 		RTREngine::Ref<RTREngine::Shader> m_Shader;
 		RTREngine::Ref<RTREngine::VertexArray> m_VertexArray;
+
+		void createTriangle(RTREngine::Ref<RTREngine::VertexArray> vertexArray);
 	};
 }

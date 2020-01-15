@@ -20,9 +20,12 @@ namespace RTREngine
 		virtual ~App();
 
 		void OnEvent(Event& e);
+
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* layer);
+		
 		inline static App& Get() { return *s_Instance; }
+		
 		inline Window& GetWindow() { return *m_Window; }
 
 	private:

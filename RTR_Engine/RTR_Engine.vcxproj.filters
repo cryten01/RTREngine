@@ -1173,6 +1173,9 @@
     <ClInclude Include="external\STB\include\stb_image.h">
       <Filter>external\STB\include</Filter>
     </ClInclude>
+    <ClInclude Include="src\Legacy\App.h">
+      <Filter>src\Legacy</Filter>
+    </ClInclude>
     <ClInclude Include="src\Legacy\Camera.h">
       <Filter>src\Legacy</Filter>
     </ClInclude>
@@ -1233,7 +1236,19 @@
     <ClInclude Include="src\Legacy\Window.h">
       <Filter>src\Legacy</Filter>
     </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRenderAPI.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsInput.h">
@@ -1293,28 +1308,34 @@
     <ClInclude Include="src\RTREngine\Layers\LayerStack.h">
       <Filter>src\RTREngine\Layers</Filter>
     </ClInclude>
+    <ClInclude Include="src\RTREngine\Renderer\Buffer.h">
+      <Filter>src\RTREngine\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\RTREngine\Renderer\GraphicsContext.h">
+      <Filter>src\RTREngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RTREngine\Renderer\RenderAPI.h">
+      <Filter>src\RTREngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RTREngine\Renderer\Renderer.h">
+      <Filter>src\RTREngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RTREngine\Renderer\Shader.h">
+      <Filter>src\RTREngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RTREngine\Renderer\VertexArray.h">
       <Filter>src\RTREngine\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\rtrpch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\RTREngine\Renderer\Shader.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
-    <ClInclude Include="src\RTREngine\Renderer\Renderer.h" />
-    <ClInclude Include="src\RTREngine\Renderer\RenderAPI.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLRenderAPI.h" />
-    <ClInclude Include="src\RTREngine\Renderer\Buffer.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
-    <ClInclude Include="src\RTREngine\Renderer\VertexArray.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
-    <ClInclude Include="src\Legacy\App.h">
-      <Filter>src\Legacy</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="external\STB\include\stb_image.cpp">
       <Filter>external\STB\include</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Legacy\App.cpp">
+      <Filter>src\Legacy</Filter>
     </ClCompile>
     <ClCompile Include="src\Legacy\Camera.cpp">
       <Filter>src\Legacy</Filter>
@@ -1367,7 +1388,19 @@
     <ClCompile Include="src\Legacy\Window.cpp">
       <Filter>src\Legacy</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRenderAPI.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
@@ -1400,23 +1433,26 @@
     <ClCompile Include="src\RTREngine\Layers\LayerStack.cpp">
       <Filter>src\RTREngine\Layers</Filter>
     </ClCompile>
+    <ClCompile Include="src\RTREngine\Renderer\Buffer.cpp">
+      <Filter>src\RTREngine\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\RTREngine\Renderer\GraphicsContext.cpp">
+      <Filter>src\RTREngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RTREngine\Renderer\RenderAPI.cpp">
+      <Filter>src\RTREngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RTREngine\Renderer\Renderer.cpp">
+      <Filter>src\RTREngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RTREngine\Renderer\Shader.cpp">
+      <Filter>src\RTREngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RTREngine\Renderer\VertexArray.cpp">
       <Filter>src\RTREngine\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\rtrpch.cpp">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RTREngine\Renderer\Shader.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
-    <ClCompile Include="src\RTREngine\Renderer\Renderer.cpp" />
-    <ClCompile Include="src\RTREngine\Renderer\RenderAPI.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLRenderAPI.cpp" />
-    <ClCompile Include="src\RTREngine\Renderer\Buffer.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
-    <ClCompile Include="src\RTREngine\Renderer\VertexArray.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
-    <ClCompile Include="src\Legacy\App.cpp">
-      <Filter>src\Legacy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -143,9 +143,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
-    <ClInclude Include="src\RTREngine\Renderer\Buffer.h" />
     <ClInclude Include="external\GLM\glm\common.hpp" />
     <ClInclude Include="external\GLM\glm\detail\_features.hpp" />
     <ClInclude Include="external\GLM\glm\detail\_fixes.hpp" />
@@ -515,17 +512,12 @@
     <ClInclude Include="external\GLM\glm\vec4.hpp" />
     <ClInclude Include="external\GLM\glm\vector_relational.hpp" />
     <ClInclude Include="external\STB\include\stb_image.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLRenderAPI.h" />
-    <ClInclude Include="src\RTREngine\Renderer\RenderAPI.h" />
-    <ClInclude Include="src\RTREngine\Renderer\Renderer.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
-    <ClInclude Include="src\RTREngine\Renderer\Shader.h" />
+    <ClInclude Include="src\Legacy\App.h" />
     <ClInclude Include="src\Legacy\Camera.h" />
     <ClInclude Include="src\Legacy\FrameBuffer.h" />
     <ClInclude Include="src\Legacy\Framework.h" />
     <ClInclude Include="src\Legacy\Input.h" />
     <ClInclude Include="src\Legacy\Interfaces.h" />
-    <ClInclude Include="src\Legacy\App.h" />
     <ClInclude Include="src\Legacy\Light.h" />
     <ClInclude Include="src\Legacy\Material.h" />
     <ClInclude Include="src\Legacy\Mesh.h" />
@@ -541,7 +533,11 @@
     <ClInclude Include="src\Legacy\Transform.h" />
     <ClInclude Include="src\Legacy\Utils.h" />
     <ClInclude Include="src\Legacy\Window.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRenderAPI.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
     <ClInclude Include="src\RTR.h" />
@@ -561,25 +557,21 @@
     <ClInclude Include="src\RTREngine\Input\MouseCodes.h" />
     <ClInclude Include="src\RTREngine\Layers\Layer.h" />
     <ClInclude Include="src\RTREngine\Layers\LayerStack.h" />
+    <ClInclude Include="src\RTREngine\Renderer\Buffer.h" />
     <ClInclude Include="src\RTREngine\Renderer\GraphicsContext.h" />
-    <ClInclude Include="src\rtrpch.h" />
+    <ClInclude Include="src\RTREngine\Renderer\RenderAPI.h" />
+    <ClInclude Include="src\RTREngine\Renderer\Renderer.h" />
+    <ClInclude Include="src\RTREngine\Renderer\Shader.h" />
     <ClInclude Include="src\RTREngine\Renderer\VertexArray.h" />
+    <ClInclude Include="src\rtrpch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
-    <ClCompile Include="src\RTREngine\Renderer\Buffer.cpp" />
     <ClCompile Include="external\STB\include\stb_image.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLRenderAPI.cpp" />
-    <ClCompile Include="src\RTREngine\Renderer\RenderAPI.cpp" />
-    <ClCompile Include="src\RTREngine\Renderer\Renderer.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
-    <ClCompile Include="src\RTREngine\Renderer\Shader.cpp" />
+    <ClCompile Include="src\Legacy\App.cpp" />
     <ClCompile Include="src\Legacy\Camera.cpp" />
     <ClCompile Include="src\Legacy\FrameBuffer.cpp" />
     <ClCompile Include="src\Legacy\Framework.cpp" />
     <ClCompile Include="src\Legacy\Input.cpp" />
-    <ClCompile Include="src\Legacy\App.cpp" />
     <ClCompile Include="src\Legacy\Material.cpp" />
     <ClCompile Include="src\Legacy\Mesh.cpp" />
     <ClCompile Include="src\Legacy\Model.cpp" />
@@ -593,10 +585,16 @@
     <ClCompile Include="src\Legacy\Time.cpp" />
     <ClCompile Include="src\Legacy\Transform.cpp" />
     <ClCompile Include="src\Legacy\Window.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRenderAPI.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
-    <ClCompile Include="src\RTREngine\Core\App.cpp" />
+    <ClCompile Include="src\RTREngine\Core\App.cpp">
+      <ObjectFileName>$(IntDir)\App1.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="src\RTREngine\Core\Log.cpp" />
     <ClCompile Include="src\RTREngine\Core\Window.cpp">
       <ObjectFileName>$(IntDir)\Window1.obj</ObjectFileName>
@@ -608,11 +606,17 @@
     </ClCompile>
     <ClCompile Include="src\RTREngine\Layers\Layer.cpp" />
     <ClCompile Include="src\RTREngine\Layers\LayerStack.cpp" />
+    <ClCompile Include="src\RTREngine\Renderer\Buffer.cpp" />
     <ClCompile Include="src\RTREngine\Renderer\GraphicsContext.cpp" />
+    <ClCompile Include="src\RTREngine\Renderer\RenderAPI.cpp" />
+    <ClCompile Include="src\RTREngine\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\RTREngine\Renderer\Shader.cpp">
+      <ObjectFileName>$(IntDir)\Shader1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\RTREngine\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\rtrpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\RTREngine\Renderer\VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="external\GLFW\GLFW.vcxproj">

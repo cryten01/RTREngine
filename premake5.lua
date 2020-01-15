@@ -131,13 +131,14 @@ project "RTR_WinterWonderland"
 	-- Specifies the include file search paths for the compiler
 	includedirs
 	{
+		"%{prj.name}/src",			-- Included so that headers can be included from the source
+		"RTR_Engine/src",
 		"%{IncludeDir.SPDLOG}",	
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.GLEW}",
 		"%{IncludeDir.ASSIMP}",
 		"%{IncludeDir.GLM}",
 		"%{IncludeDir.STB_IMAGE}",
-		"RTR_Engine/src"
 	}
 
 	links 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "RTREngine/Renderer/RenderAPI.h"
+#include "RTREngine/Renderer/VertexArray.h"
 #include "RTREngine/Renderer/Shader.h"
 
 namespace RTREngine {
@@ -10,12 +11,10 @@ namespace RTREngine {
 	public:
 		static void Init();
 		static void Shutdown();
-
 		static void OnWindowResize(uint32_t width, uint32_t height);
-
 		static void BeginScene();
 		static void EndScene();
-
+		static void Render(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f));
 		inline static RenderAPI::API GetAPI() { return RenderAPI::GetAPI(); }
 	private:
 		struct SceneData
@@ -50,6 +49,12 @@ namespace RTREngine {
 		{
 			s_RenderAPI->Clear();
 		}
+
+		inline static void DrawIndexed(const Ref<VertexArray>& vertexArray)
+		{
+			s_RenderAPI->DrawIndexed(vertexArray);
+		}
+
 	private:
 		static Scope<RenderAPI> s_RenderAPI;
 	};

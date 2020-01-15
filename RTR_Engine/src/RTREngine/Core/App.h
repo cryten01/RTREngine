@@ -20,18 +20,11 @@ namespace RTREngine
 		virtual ~App();
 
 		void OnEvent(Event& e);
-
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* layer);
-
-		inline Window& GetWindow() { return *m_Window; }
-		
 		inline static App& Get() { return *s_Instance; }
+		inline Window& GetWindow() { return *m_Window; }
 
-	private:
-		void Run();
-		bool OnWindowClose(WindowCloseEvent& e);
-		bool OnWindowResize(WindowResizeEvent& e);
 	private:
 		std::unique_ptr<Window> m_Window;
 		LayerStack m_LayerStack;
@@ -39,7 +32,11 @@ namespace RTREngine
 		bool m_Running = true;
 		bool m_Minimized = false;
 		float m_LastFrameTime = 0.0f;
-	private:
+
+		void Run();
+		bool OnWindowClose(WindowCloseEvent& e);
+		bool OnWindowResize(WindowResizeEvent& e);
+
 		static App* s_Instance;
 		friend int ::main(int argc, char** argv);
 	};

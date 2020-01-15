@@ -26,6 +26,7 @@ namespace RTREngine {
 		unsigned int m_Width, m_Height;
 	};
 
+
 	class WindowCloseEvent : public Event
 	{
 	public:
@@ -34,6 +35,7 @@ namespace RTREngine {
 		EVENT_CLASS_TYPE(WindowClose)
 		EVENT_CLASS_CATEGORY(EventCategoryApp)
 	};
+
 
 	class AppTickEvent : public Event
 	{
@@ -44,6 +46,7 @@ namespace RTREngine {
 		EVENT_CLASS_CATEGORY(EventCategoryApp)
 	};
 
+
 	class AppUpdateEvent : public Event
 	{
 	public:
@@ -52,6 +55,7 @@ namespace RTREngine {
 		EVENT_CLASS_TYPE(AppUpdate)
 		EVENT_CLASS_CATEGORY(EventCategoryApp)
 	};
+
 
 	class AppRenderEvent : public Event
 	{

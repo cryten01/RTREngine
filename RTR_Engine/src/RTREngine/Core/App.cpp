@@ -3,6 +3,7 @@
 #include "RTREngine/Core/App.h"
 #include "RTREngine/Core/Log.h"
 #include "RTREngine/Input/Input.h"
+#include "RTREngine/Renderer/Renderer.h"
 
 #include <glfw/glfw3.h>
 
@@ -10,6 +11,7 @@
 namespace RTREngine {
 
 	App* App::s_Instance = nullptr;
+
 
 	App::App()
 	{
@@ -22,9 +24,11 @@ namespace RTREngine {
 		PushOverlay(m_ImGuiLayer);
 	}
 
+
 	App::~App()
 	{
 	}
+
 
 	void App::OnEvent(Event& e)
 	{
@@ -32,7 +36,7 @@ namespace RTREngine {
 		dispatcher.Dispatch<WindowCloseEvent>(RTR_BIND_EVENT_FN(App::OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(RTR_BIND_EVENT_FN(App::OnWindowResize));
 
-		// Update layers backwards (so that unnecessary calculations in deeper layers can be avoided)
+		// Updates LayerStack from last to first so that unnecessary calculations in deeper layers can be avoided
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it)
 		{
 			(*it)->OnEvent(e);
@@ -41,11 +45,13 @@ namespace RTREngine {
 		}
 	}
 
+
 	void App::PushLayer(Layer* layer)
 	{
 		m_LayerStack.PushLayer(layer);
 		layer->OnAttach();
 	}
+
 
 	void App::PushOverlay(Layer* layer)
 	{
@@ -53,6 +59,9 @@ namespace RTREngine {
 		layer->OnAttach();
 	}
 
+	/*
+	*	Represents the actual render loop of the application
+	*/
 	void App::Run()
 	{
 		while (m_Running)
@@ -61,36 +70,33 @@ namespace RTREngine {
 			Time deltaTime = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
-
 			if (!m_Minimized) 
 			{
-				// TODO: move OpenGL Renderer
-				glClearColor(0.1, 0.1, 0.1, 1.0);
-				glClear(GL_COLOR_BUFFER_BIT);
+				for (Layer* layer : m_LayerStack)
+				{
+					layer->OnUpdate(deltaTime);
+				}
 
+				// Always update UI GUI last
 				m_ImGuiLayer->Begin();
 				{
 					for (Layer* layer : m_LayerStack)
 						layer->OnImGuiRender();
 				}
 				m_ImGuiLayer->End();
-
-				// Updates every layer
-				for (Layer* layer : m_LayerStack)
-				{
-					layer->OnUpdate(deltaTime);
-				}
 			}
 
 			m_Window->OnUpdate();
 		}
 	}
 
+
 	bool App::OnWindowClose(WindowCloseEvent& e)
 	{
 		m_Running = false;
 		return true;
 	}
+
 
 	bool App::OnWindowResize(WindowResizeEvent& e)
 	{

@@ -16,8 +16,8 @@ namespace WinterWonderland {
 
 		// Render
 		{
-			RTREngine::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
-			RTREngine::RenderCommand::Clear();
+			RTREngine::Renderer::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+			RTREngine::Renderer::Clear();
 		}
 	}
 
